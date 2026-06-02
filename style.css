@@ -249,6 +249,11 @@ a {
   height: 48px;
   width: auto;
   transition: var(--transition-smooth);
+  filter: brightness(0) saturate(100%) invert(40%) sepia(26%) saturate(242%) hue-rotate(355deg) brightness(140%) contrast(180%);
+}
+
+.logo-link:hover .nav-logo {
+  filter: brightness(0) saturate(100%) invert(90%) sepia(23%) saturate(280%) hue-rotate(343deg) brightness(94%) contrast(86%);
 }
 
 .header.sticky .nav-logo {
@@ -1262,6 +1267,12 @@ a {
   height: 50px;
   width: auto;
   margin-bottom: 24px;
+  transition: var(--transition-smooth);
+  filter: brightness(0) saturate(100%) invert(40%) sepia(26%) saturate(242%) hue-rotate(355deg) brightness(140%) contrast(180%);
+}
+
+.footer-brand img:hover {
+  filter: brightness(0) saturate(100%) invert(90%) sepia(23%) saturate(280%) hue-rotate(343deg) brightness(94%) contrast(86%);
 }
 
 .footer-brand p {
