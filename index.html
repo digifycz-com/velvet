@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Pasáž Velvet – Moderní gastronomický zážitek v srdci Pardubic. Vynikající česká a mezinárodní kuchyně, útulný interiér a letní zahrádka." />
+    <meta name="author" content="Pasáž Velvet" />
+    <title>Pasáž Velvet | Moderní restaurace v srdci Pardubic</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- Custom Page Loader -->
+    <div id="loader" class="loader-container">
+      <div class="loader-content">
+        <span class="loader-text">VELVET</span>
+        <div class="loader-line"></div>
+      </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="header">
+      <div class="container nav-container">
+        <a href="#" class="logo-link">
+          <img src="/images/logo.png" alt="Pasáž Velvet Logo" class="nav-logo" id="logo-img" />
+        </a>
+        
+        <nav class="nav-menu" id="nav-menu">
+          <ul class="nav-list">
+            <li><a href="#domu" class="nav-item active">Domů</a></li>
+            <li><a href="#o-nas" class="nav-item">O nás</a></li>
+            <li><a href="#menu" class="nav-item">Menu</a></li>
+            <li><a href="#rezervace" class="nav-item">Rezervace</a></li>
+            <li><a href="#galerie" class="nav-item">Galerie</a></li>
+            <li><a href="#kontakt" class="nav-item">Kontakt</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="#rezervace" class="btn btn-primary btn-sm btn-nav">Rezervovat stůl</a>
+          <button class="mobile-toggle" aria-label="Otevřít menu" id="mobile-toggle">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="domu" class="hero">
+      <div class="hero-bg">
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="container hero-container">
+        <div class="hero-content">
+          <span class="hero-subtitle scroll-reveal">Prémiový gastronomický zážitek</span>
+          <h1 class="hero-title scroll-reveal">Chutě, které probouzí smysly</h1>
+          <p class="hero-desc scroll-reveal">Vítejte v Pasáži Velvet. Vychutnejte si vynikající moderní pojetí české i mezinárodní kuchyně v luxusním prostředí v samém srdci Pardubic.</p>
+          <div class="hero-btns scroll-reveal">
+            <a href="#menu" class="btn btn-primary">Prohlédnout Menu</a>
+            <a href="#rezervace" class="btn btn-outline">Rezervovat Stůl</a>
+          </div>
+        </div>
+      </div>
+      <a href="#o-nas" class="hero-scroll-btn" aria-label="Přejít dolů">
+        <span class="scroll-mouse"><span class="wheel"></span></span>
+        <span class="scroll-arrow"></span>
+      </a>
+    </section>
+
+    <!-- About Section -->
+    <section id="o-nas" class="about">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-images scroll-reveal">
+            <div class="img-wrapper main-img">
+              <img src="/images/terrace_1.png" alt="Moderní terasa restaurace Pasáž Velvet" />
+            </div>
+            <div class="img-wrapper sub-img">
+              <img src="/images/terrace_2.png" alt="Nové venkovní posezení Pasáž Velvet" />
+            </div>
+          </div>
+          <div class="about-content scroll-reveal">
+            <span class="section-subtitle">O Nás</span>
+            <h2 class="section-title">Kde se tradice potkává s moderním luxusem</h2>
+            <p class="section-desc">Pasáž Velvet je oázou klidu a skvělé chuti na rušné třídě Míru v Pardubicích. Náš elegantní, klimatizovaný a nekuřácký interiér poskytuje ideální zázemí pro rodinné oslavy, romantické večeře i pracovní obědy.</p>
+            
+            <div class="features-grid">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+                <div class="feature-text">
+                  <h3>Letní zahrádka</h3>
+                  <p>Útulné venkovní posezení ve stínu, ideální pro horké letní dny a večery.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-kitchen-set"></i></div>
+                <div class="feature-text">
+                  <h3>Špičková kuchyně</h3>
+                  <p>Připravujeme jídla z čerstvých lokálních surovin s důrazem na kvalitu a detail.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-child"></i></div>
+                <div class="feature-text">
+                  <h3>Dětský koutek</h3>
+                  <p>Zázemí pro rodiny s dětmi, aby si u nás odpočinuli malí i velcí návštěvníci.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                <div class="feature-text">
+                  <h3>Klimatizace & Wi-Fi</h3>
+                  <p>Moderní, komfortní prostředí s rychlým internetem a příjemnou teplotou.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section">
+      <div class="container">
+        <div class="text-center scroll-reveal">
+          <span class="section-subtitle">Jídelní lístek</span>
+          <h2 class="section-title">Vyberte si z naší nabídky</h2>
+          <p class="section-desc max-width-600 mx-auto">Každé jídlo připravujeme s vášní a precizností. Vyberte si z našeho poledního menu nebo stálého sezónního lístku.</p>
+        </div>
+
+        <!-- Menu Tabs -->
+        <div class="menu-tabs-container scroll-reveal">
+          <div class="menu-tabs">
+            <button class="menu-tab-btn active" data-target="daily">Polední menu</button>
+            <button class="menu-tab-btn" data-target="seasonal">Sezónní menu</button>
+          </div>
+        </div>
+
+        <!-- Daily Menu Tab Content -->
+        <div class="menu-grid active" id="menu-daily">
+          <!-- Soup Section -->
+          <div class="menu-category scroll-reveal">
+            <h3 class="category-title"><i class="fa-solid fa-bowl-food"></i> Polévka</h3>
+            <div class="menu-items">
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Kuřecí s nudlemi a mačkanou zeleninou</h4>
+                  <span class="menu-item-price">35 Kč</span>
+                </div>
+                <p class="menu-item-description">Tradiční poctivý kuřecí vývar se zeleninou a domácími nudlemi.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Dishes Section -->
+          <div class="menu-category scroll-reveal">
+            <h3 class="category-title"><i class="fa-solid fa-utensils"></i> Hlavní chody</h3>
+            <div class="menu-items">
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name"><span class="item-number">1</span> Krkovice s americkou krustou</h4>
+                  <span class="menu-item-price">159 Kč</span>
+                </div>
+                <p class="menu-item-description">170g krkovice zapečená s cheddarem, anglickou slaninou a cibulkou. Podáváno se steakovými hranolky a grilovacím dipem.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name"><span class="item-number">2</span> Steak z kuřecího prsa</h4>
+                  <span class="menu-item-price">159 Kč</span>
+                </div>
+                <p class="menu-item-description">140g grilovaný plátek s bramborovými kroketami, krémem z nivy a malým šopským salátkem.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name"><span class="item-number">3</span> Medailonky z vepřové panenky</h4>
+                  <span class="menu-item-price">159 Kč</span>
+                </div>
+                <p class="menu-item-description">150g medailonků se sázeným slaninovým vajíčkem, šťouchané brambory s jarní cibulkou, domácí tatarská omáčka.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name"><span class="item-number">4</span> Kuřecí restované stripsy</h4>
+                  <span class="menu-item-price">155 Kč</span>
+                </div>
+                <p class="menu-item-description">150g restovaných kuřecích stripů s cibulkou a slaninou, silná přírodní omáčka, šlehaná bramborová kaše.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name"><span class="item-number">5</span> Hovězí vídeňská roštěná</h4>
+                  <span class="menu-item-price">159 Kč</span>
+                </div>
+                <p class="menu-item-description">150g hovězí roštěné s bohatou vídeňskou omáčkou plnou smažené cibulky, dušená jasmínová rýže.</p>
+              </div>
+            </div>
+            <div class="menu-note text-center">
+              <p><i class="fa-solid fa-circle-info"></i> Rádi vám vyměníme přílohu v rámci jiného denního menu.</p>
+              <a href="http://eepurl.com/bTX329" target="_blank" class="btn btn-outline btn-sm btn-email-menu"><i class="fa-regular fa-envelope"></i> Chci menu na e-mail</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seasonal Menu Tab Content -->
+        <div class="menu-grid" id="menu-seasonal">
+          <!-- Starters & Soups -->
+          <div class="menu-category">
+            <h3 class="category-title"><i class="fa-solid fa-bowl-food"></i> Předkrmy & Polévky</h3>
+            <div class="menu-items">
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Jemný hovězí tatarák</h4>
+                  <span class="menu-item-price">195 Kč</span>
+                </div>
+                <p class="menu-item-description">100g čerstvě namíchaného hovězího masa s křupavými topinkami na sádle, česnek.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Grilovaný kozí sýr</h4>
+                  <span class="menu-item-price">165 Kč</span>
+                </div>
+                <p class="menu-item-description">Rozpečený kozí sýr na trhaném listovém salátku s karamelizovanými vlašskými ořechy, brusinkami a medovo-hořčičným dresinkem.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Hráškový krém s krutonky</h4>
+                  <span class="menu-item-price">65 Kč</span>
+                </div>
+                <p class="menu-item-description">Jemný krém z čerstvého hrášku, zjemněný smetanou, podávaný s dokřupava opečenými bylinkovými krutonky.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Courses -->
+          <div class="menu-category">
+            <h3 class="category-title"><i class="fa-solid fa-wine-glass"></i> Hlavní chody</h3>
+            <div class="menu-items">
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Hovězí svíčková na smetaně</h4>
+                  <span class="menu-item-price">215 Kč</span>
+                </div>
+                <p class="menu-item-description">150g špikované hovězí pečeně v tradiční smetanové omáčce, podávaná s domácím karlovarským knedlíkem a brusinkovým terčem se šlehačkou.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Grilovaný flank steak</h4>
+                  <span class="menu-item-price">325 Kč</span>
+                </div>
+                <p class="menu-item-description">200g prémiového flank steaku s omáčkou ze zeleného pepře, podávaný s restovanými fazolkami se slaninou a česnekem.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Smažený sýr Gouda</h4>
+                  <span class="menu-item-price">175 Kč</span>
+                </div>
+                <p class="menu-item-description">120g smaženého sýru Gouda (48% t.v.s.) v křupavé trojobalu, podávaný s hranolky a naší domácí tatarskou omáčkou.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desserts -->
+          <div class="menu-category">
+            <h3 class="category-title"><i class="fa-solid fa-ice-cream"></i> Dezerty</h3>
+            <div class="menu-items">
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Tradiční jablečný závin</h4>
+                  <span class="menu-item-price">95 Kč</span>
+                </div>
+                <p class="menu-item-description">Teplý domácí štrúdl s vlašskými ořechy a rozinkami, kopeček pravé vanilkové zmrzliny a šlehačka.</p>
+              </div>
+
+              <div class="menu-item-card">
+                <div class="menu-item-header">
+                  <h4 class="menu-item-name">Čokoládový fondant</h4>
+                  <span class="menu-item-price">120 Kč</span>
+                </div>
+                <p class="menu-item-description">Belgický čokoládový koláček s tekutým středem, přelitý horkou malinovou omáčkou.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section id="rezervace" class="reservation">
+      <div class="reservation-bg"></div>
+      <div class="container">
+        <div class="reservation-card scroll-reveal">
+          <div class="text-center">
+            <span class="section-subtitle">Rezervace</span>
+            <h2 class="section-title">Zajistěte si svůj stůl</h2>
+            <p class="section-desc">Rezervujte si stůl online a my vám potvrdíme rezervaci co nejdříve. Pro rezervace nad 10 osob nás prosím kontaktujte telefonicky.</p>
+          </div>
+
+          <form id="reservation-form" class="reservation-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="res-name"><i class="fa-regular fa-user"></i> Jméno a Příjmení</label>
+                <input type="text" id="res-name" name="name" required placeholder="Např. Jan Novák" />
+              </div>
+              <div class="form-group">
+                <label for="res-phone"><i class="fa-solid fa-phone"></i> Telefonní číslo</label>
+                <input type="tel" id="res-phone" name="phone" required placeholder="Např. +420 777 777 777" />
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="res-email"><i class="fa-regular fa-envelope"></i> E-mailová adresa</label>
+                <input type="email" id="res-email" name="email" required placeholder="Např. jan.novak@email.cz" />
+              </div>
+              <div class="form-group">
+                <label for="res-guests"><i class="fa-solid fa-users"></i> Počet osob</label>
+                <select id="res-guests" name="guests" required>
+                  <option value="1">1 osoba</option>
+                  <option value="2" selected>2 osoby</option>
+                  <option value="3">3 osoby</option>
+                  <option value="4">4 osoby</option>
+                  <option value="5">5 osob</option>
+                  <option value="6">6 osob</option>
+                  <option value="7">7 osob</option>
+                  <option value="8">8 osob</option>
+                  <option value="9">9 osob</option>
+                  <option value="10">10 osob</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="res-date"><i class="fa-regular fa-calendar"></i> Datum</label>
+                <input type="date" id="res-date" name="date" required />
+              </div>
+              <div class="form-group">
+                <label for="res-time"><i class="fa-regular fa-clock"></i> Čas</label>
+                <input type="time" id="res-time" name="time" required min="11:00" max="22:00" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="res-message"><i class="fa-regular fa-comment"></i> Speciální požadavky (nepovinné)</label>
+              <textarea id="res-message" name="message" rows="3" placeholder="Poznámka pro personál (např. dětská židlička, bezlepková dieta, stůl na zahrádce)..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="submit-btn">
+              <span class="btn-text">Odeslat rezervaci</span>
+              <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+            </button>
+          </form>
+
+          <!-- Success Modal View -->
+          <div class="reservation-success" id="reservation-success">
+            <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h3>Rezervace odeslána!</h3>
+            <p>Děkujeme. Vaši žádost o rezervaci stolu na jméno <strong id="summary-name"></strong> pro <strong id="summary-guests"></strong> osob dne <strong id="summary-date"></strong> v <strong id="summary-time"></strong> jsme úspěšně přijali.</p>
+            <p class="small-text">Během několika minut vám zašleme potvrzení na e-mail <span id="summary-email"></span> nebo vás kontaktujeme telefonicky.</p>
+            <button class="btn btn-primary btn-sm" id="reset-res-btn">Nová rezervace</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galerie" class="gallery">
+      <div class="container">
+        <div class="text-center scroll-reveal">
+          <span class="section-subtitle">Fotogalerie</span>
+          <h2 class="section-title">Nahlédněte k nám</h2>
+          <p class="section-desc max-width-600 mx-auto">Prohlédněte si naše kulinářské výtvory, jedinečnou atmosféru naší restaurace i útulnou letní zahrádku.</p>
+        </div>
+
+        <div class="gallery-grid scroll-reveal">
+          <div class="gallery-item" data-image="/images/kulajda.jpg">
+            <img src="/images/kulajda.jpg" alt="Tradiční krémová kulajda s pošírovaným vejcem" />
+            <div class="gallery-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>Poctivá kulajda s vejcem</span>
+            </div>
+          </div>
+          <div class="gallery-item" data-image="/images/peas_cream.jpg">
+            <img src="/images/peas_cream.jpg" alt="Jemný hráškový krém s krutonky" />
+            <div class="gallery-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>Hráškový krém s krutonky</span>
+            </div>
+          </div>
+          <div class="gallery-item" data-image="/images/real_burger.jpg">
+            <img src="/images/real_burger.jpg" alt="Domácí hovězí burger s hranolky" />
+            <div class="gallery-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>Hovězí burger s hranolky</span>
+            </div>
+          </div>
+          <div class="gallery-item" data-image="/images/real_svickova.png">
+            <img src="/images/real_svickova.png" alt="Tradiční hovězí svíčková na smetaně" />
+            <div class="gallery-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>Tradiční svíčková na smetaně</span>
+            </div>
+          </div>
+          <div class="gallery-item" data-image="/images/fried_cheese.jpg">
+            <img src="/images/fried_cheese.jpg" alt="Smažený sýr Gouda s pažitkovými brambory a tatarkou" />
+            <div class="gallery-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>Smažený sýr Gouda s bramborem</span>
+            </div>
+          </div>
+          <div class="gallery-item" data-image="/images/lemonade.png">
+            <img src="/images/lemonade.png" alt="Domácí malinová limonáda s ledem" />
+            <div class="gallery-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>Domácí malinová limonáda</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox Modal for Gallery -->
+    <div class="lightbox" id="lightbox">
+      <span class="lightbox-close">&times;</span>
+      <img class="lightbox-img" id="lightbox-img" src="" alt="Zvětšený náhled" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+
+    <!-- Contact & Map Section -->
+    <section id="kontakt" class="contact">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info scroll-reveal">
+            <span class="section-subtitle">Kontakt</span>
+            <h2 class="section-title">Kde nás najdete</h2>
+            <p class="section-desc">Budeme rádi, když nás navštívíte na naší adrese přímo v centru města, nebo nás kontaktujete pro rezervace a speciální eventy.</p>
+            
+            <div class="info-list">
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="info-text">
+                  <h3>Adresa</h3>
+                  <p>třída Míru 109, 530 02 Pardubice I - Zelené Předměstí</p>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="info-text">
+                  <h3>Telefon</h3>
+                  <p><a href="tel:+420733745377">+420 733 745 377</a></p>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div class="info-text">
+                  <h3>E-mail</h3>
+                  <p><a href="mailto:info@pardubickyvelvet.cz">info@pardubickyvelvet.cz</a></p>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+                <div class="info-text">
+                  <h3>Otevírací doba</h3>
+                  <div class="opening-hours-grid">
+                    <span>Po – Út:</span><span>10:50 – 22:00</span>
+                    <span>St – Čt:</span><span>10:50 – 23:00</span>
+                    <span>Pátek:</span><span>10:50 – 23:59</span>
+                    <span>Sobota:</span><span>11:00 – 23:00</span>
+                    <span>Neděle:</span><span>11:00 – 21:00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="social-links">
+              <a href="https://www.facebook.com/pasazvelvet" target="_blank" aria-label="Facebook Pasáž Velvet"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" aria-label="Tripadvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+            </div>
+          </div>
+
+          <!-- Map Container -->
+          <div class="contact-map scroll-reveal">
+            <div class="map-card">
+              <!-- Styled Google Maps iframe with custom luxury dark design overlay -->
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2560.106691652758!2d15.7709322!3d50.0374187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470dc38a8e1b9b1f%3A0xc07a82fe814389df!2zVMWZw61kYSBNw6lydSAxMDksIDUzMCAwMiBQYXJkdWJpY2UgMS1ab2xlbsOpIFDFmWVkbcSbcm7DrSwgQ3plY2hpYQ!5e0!3m2!1sen!2s!4v1685712345678!5m2!1sen!2s" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Pasáž Velvet Mapa"
+                class="google-map-iframe"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <img src="/images/logo.png" alt="Pasáž Velvet Logo" class="footer-logo" />
+          <p>Spojení výjimečné chuti, luxusního designu a nezapomenutelné atmosféry.</p>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Rychlé odkazy</h3>
+          <ul>
+            <li><a href="#domu">Úvodní stránka</a></li>
+            <li><a href="#o-nas">O nás</a></li>
+            <li><a href="#menu">Jídelní lístek</a></li>
+            <li><a href="#rezervace">Rezervace stolu</a></li>
+            <li><a href="#galerie">Fotogalerie</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-newsletter">
+          <h3>Odběr poledního menu</h3>
+          <p>Zadejte svůj e-mail a každé ráno vám zašleme naši denní nabídku.</p>
+          <form class="newsletter-form" action="http://eepurl.com/bTX329" method="GET" target="_blank">
+            <input type="email" placeholder="Váš e-mail" required name="EMAIL" />
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <p>&copy; 2026 Restaurace Pasáž Velvet. Všechna práva vyhrazena. Design by Velvet Team.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Main JavaScript Entry -->
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
