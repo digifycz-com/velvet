@@ -1,0 +1,42 @@
+{
+  "lastUpdated": "2026-06-14T16:00:00+02:00",
+  "updatedBy": "initial",
+  "soup": {
+    "name": "Kuřecí s nudlemi a mačkanou zeleninou",
+    "description": "Tradiční poctivý kuřecí vývar se zeleninou a domácími nudlemi.",
+    "price": 35
+  },
+  "dishes": [
+    {
+      "id": 1,
+      "name": "Krkovice s americkou krustou",
+      "description": "170g krkovice zapečená s cheddarem, anglickou slaninou a cibulkou. Podáváno se steakovými hranolky a grilovacím dipem.",
+      "price": 159
+    },
+    {
+      "id": 2,
+      "name": "Steak z kuřecího prsa",
+      "description": "140g grilovaný plátek s bramborovými kroketami, krémem z nivy a malým šopským salátkem.",
+      "price": 159
+    },
+    {
+      "id": 3,
+      "name": "Medailonky z vepřové panenky",
+      "description": "150g medailonků se sázeným slaninovým vajíčkem, šťouchané brambory s jarní cibulkou, domácí tatarská omáčka.",
+      "price": 159
+    },
+    {
+      "id": 4,
+      "name": "Kuřecí restované stripsy",
+      "description": "150g restovaných kuřecích stripů s cibulkou a slaninou, silná přírodní omáčka, šlehaná bramborová kaše.",
+      "price": 155
+    },
+    {
+      "id": 5,
+      "name": "Hovězí vídeňská roštěná",
+      "description": "150g hovězí roštěné s bohatou vídeňskou omáčkou plnou smažené cibulky, dušená jasmínová rýže.",
+      "price": 159
+    }
+  ],
+  "note": "Rádi vám vyměníme přílohu v rámci jiného denního menu."
+}

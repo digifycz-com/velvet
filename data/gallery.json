@@ -1,0 +1,47 @@
+{
+  "lastUpdated": "2026-06-14T16:00:00+02:00",
+  "images": [
+    {
+      "id": "img-001",
+      "src": "/images/kulajda.jpg",
+      "alt": "Tradiční krémová kulajda s pošírovaným vejcem",
+      "caption": "Poctivá kulajda s vejcem",
+      "order": 1
+    },
+    {
+      "id": "img-002",
+      "src": "/images/peas_cream.jpg",
+      "alt": "Jemný hráškový krém s krutonky",
+      "caption": "Hráškový krém s krutonky",
+      "order": 2
+    },
+    {
+      "id": "img-003",
+      "src": "/images/real_burger.jpg",
+      "alt": "Domácí hovězí burger s hranolky",
+      "caption": "Hovězí burger s hranolky",
+      "order": 3
+    },
+    {
+      "id": "img-004",
+      "src": "/images/real_svickova.png",
+      "alt": "Tradiční hovězí svíčková na smetaně",
+      "caption": "Tradiční svíčková na smetaně",
+      "order": 4
+    },
+    {
+      "id": "img-005",
+      "src": "/images/fried_cheese.jpg",
+      "alt": "Smažený sýr Gouda s pažitkovými brambory a tatarkou",
+      "caption": "Smažený sýr Gouda s bramborem",
+      "order": 5
+    },
+    {
+      "id": "img-006",
+      "src": "/images/lemonade.png",
+      "alt": "Domácí malinová limonáda s ledem",
+      "caption": "Domácí malinová limonáda",
+      "order": 6
+    }
+  ]
+}

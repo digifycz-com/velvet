@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Administrace | Pasáž Velvet</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body class="admin-body">
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div id="login-screen" class="login-screen">
+      <div class="login-card">
+        <div class="login-brand">
+          <img src="/images/logo.png" alt="Pasáž Velvet Logo" class="login-logo" />
+          <span class="login-badge">ADMINISTRACE</span>
+        </div>
+        <h1 class="login-title">Přihlášení</h1>
+        <p class="login-subtitle">Zadejte své přihlašovací údaje pro přístup do administrace.</p>
+        
+        <form id="login-form" class="login-form" autocomplete="off">
+          <div class="admin-form-group">
+            <label for="login-email"><i class="fa-regular fa-envelope"></i> E-mail</label>
+            <input type="email" id="login-email" required placeholder="admin@email.cz" autocomplete="email" />
+          </div>
+          <div class="admin-form-group">
+            <label for="login-password"><i class="fa-solid fa-lock"></i> Heslo</label>
+            <div class="password-wrapper">
+              <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password" />
+              <button type="button" class="password-toggle" id="password-toggle" aria-label="Zobrazit heslo">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div id="login-error" class="login-error"></div>
+          <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+            <span class="btn-text">Přihlásit se</span>
+            <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+          </button>
+        </form>
+        
+        <a href="/" class="login-back-link"><i class="fa-solid fa-arrow-left"></i> Zpět na web</a>
+      </div>
+    </div>
+
+    <!-- ===== ADMIN DASHBOARD ===== -->
+    <div id="admin-dashboard" class="admin-dashboard" style="display: none;">
+      
+      <!-- Admin Header -->
+      <header class="admin-header">
+        <div class="container admin-header-inner">
+          <a href="/" class="logo-link">
+            <img src="/images/logo.png" alt="Pasáž Velvet Logo" class="nav-logo admin-logo" />
+            <span class="admin-header-badge">ADMIN</span>
+          </a>
+          <div class="admin-header-actions">
+            <span class="admin-user" id="admin-user-email"></span>
+            <button class="btn btn-outline btn-sm" id="logout-btn">
+              <i class="fa-solid fa-right-from-bracket"></i> Odhlásit
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- GitHub Token Setup -->
+      <div id="github-token-bar" class="github-token-bar" style="display: none;">
+        <div class="container">
+          <div class="token-bar-inner">
+            <div class="token-info">
+              <i class="fa-brands fa-github"></i>
+              <span>Pro ukládání změn do repozitáře je potřeba GitHub token.</span>
+            </div>
+            <div class="token-input-group">
+              <input type="password" id="github-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+              <button class="btn btn-primary btn-sm" id="save-token-btn">Uložit token</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Token Status Bar (shown when token is saved) -->
+      <div id="github-token-status" class="github-token-status" style="display: none;">
+        <div class="container">
+          <div class="token-status-inner">
+            <span><i class="fa-brands fa-github"></i> GitHub připojen</span>
+            <button class="token-clear-btn" id="clear-token-btn" title="Odpojit GitHub token">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Content -->
+      <main class="admin-main">
+        <div class="container">
+          
+          <!-- Admin Tabs -->
+          <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="menu-editor" id="tab-menu">
+              <i class="fa-solid fa-utensils"></i> Polední Menu
+            </button>
+            <button class="admin-tab" data-tab="gallery-manager" id="tab-gallery">
+              <i class="fa-solid fa-images"></i> Galerie
+            </button>
+          </div>
+
+          <!-- ===== MENU EDITOR TAB ===== -->
+          <section id="menu-editor" class="admin-section active">
+            <div class="section-header">
+              <div>
+                <h2><i class="fa-solid fa-bowl-food"></i> Editor poledního menu</h2>
+                <p>Upravte denní nabídku polévky a hlavních chodů. Změny se po uložení promítnou na webu.</p>
+              </div>
+              <button class="btn btn-primary" id="save-menu-btn" disabled>
+                <i class="fa-solid fa-cloud-arrow-up"></i> Uložit menu
+              </button>
+            </div>
+
+            <!-- Soup -->
+            <div class="editor-card">
+              <h3 class="editor-card-title"><i class="fa-solid fa-bowl-food"></i> Polévka</h3>
+              <div class="editor-row">
+                <div class="admin-form-group flex-grow">
+                  <label for="soup-name">Název polévky</label>
+                  <input type="text" id="soup-name" placeholder="Např. Kuřecí vývar s nudlemi" />
+                </div>
+                <div class="admin-form-group w-120">
+                  <label for="soup-price">Cena (Kč)</label>
+                  <input type="number" id="soup-price" placeholder="35" min="0" />
+                </div>
+              </div>
+              <div class="admin-form-group">
+                <label for="soup-desc">Popis</label>
+                <input type="text" id="soup-desc" placeholder="Krátký popis polévky..." />
+              </div>
+            </div>
+
+            <!-- Dishes Container -->
+            <div class="editor-card">
+              <div class="editor-card-header">
+                <h3 class="editor-card-title"><i class="fa-solid fa-utensils"></i> Hlavní chody</h3>
+                <button class="btn btn-outline btn-sm" id="add-dish-btn">
+                  <i class="fa-solid fa-plus"></i> Přidat chod
+                </button>
+              </div>
+              <div id="dishes-container"></div>
+            </div>
+
+            <!-- Menu Note -->
+            <div class="editor-card">
+              <h3 class="editor-card-title"><i class="fa-solid fa-circle-info"></i> Poznámka k menu</h3>
+              <div class="admin-form-group">
+                <label for="menu-note">Text poznámky</label>
+                <input type="text" id="menu-note" placeholder="Např. Rádi vám vyměníme přílohu..." />
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== GALLERY MANAGER TAB ===== -->
+          <section id="gallery-manager" class="admin-section">
+            <div class="section-header">
+              <div>
+                <h2><i class="fa-solid fa-images"></i> Správce galerie</h2>
+                <p>Přidejte, odstraňte a upravte fotografie v galerii na webu.</p>
+              </div>
+              <button class="btn btn-primary" id="save-gallery-btn" disabled>
+                <i class="fa-solid fa-cloud-arrow-up"></i> Uložit galerii
+              </button>
+            </div>
+
+            <!-- Upload Area -->
+            <div class="editor-card">
+              <div class="upload-zone" id="upload-zone">
+                <div class="upload-zone-content">
+                  <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                  <h3>Přetáhněte fotografie sem</h3>
+                  <p>nebo klikněte pro výběr souborů</p>
+                  <span class="upload-hint">JPG, PNG, WebP — max 5 MB</span>
+                </div>
+                <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple hidden />
+              </div>
+            </div>
+
+            <!-- Upload Preview (shown when files are staged) -->
+            <div class="editor-card" id="upload-preview-card" style="display: none;">
+              <h3 class="editor-card-title"><i class="fa-solid fa-upload"></i> Připraveno k nahrání</h3>
+              <div class="upload-preview-grid" id="upload-preview-grid"></div>
+              <div class="upload-actions">
+                <button class="btn btn-outline btn-sm" id="cancel-upload-btn">Zrušit</button>
+                <button class="btn btn-primary btn-sm" id="confirm-upload-btn">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Nahrát fotografie
+                </button>
+              </div>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="editor-card">
+              <h3 class="editor-card-title"><i class="fa-solid fa-grip"></i> Aktuální fotografie</h3>
+              <div class="gallery-admin-grid" id="gallery-admin-grid">
+                <!-- Dynamically populated -->
+              </div>
+              <div class="gallery-empty" id="gallery-empty" style="display: none;">
+                <i class="fa-regular fa-image"></i>
+                <p>Galerie je prázdná. Přidejte první fotografii výše.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Edit Image Modal -->
+    <div class="modal-overlay" id="edit-image-modal" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-pen-to-square"></i> Upravit fotografii</h3>
+          <button class="modal-close" id="close-edit-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-image-preview">
+            <img id="edit-modal-img" src="" alt="Náhled" />
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-img-caption">Popisek</label>
+            <input type="text" id="edit-img-caption" placeholder="Popisek fotografie..." />
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-img-alt">Alt text (pro SEO)</label>
+            <input type="text" id="edit-img-alt" placeholder="Popis pro čtečky obrazovek..." />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline btn-sm" id="cancel-edit-modal">Zrušit</button>
+          <button class="btn btn-primary btn-sm" id="save-edit-modal">Uložit změny</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="/admin.js"></script>
+  </body>
+</html>
