@@ -213,6 +213,10 @@ async function saveJsonToGithub(path, data, message) {
 // AUTHENTICATION
 // ==========================================================================
 
+// TEST MODE: login is temporarily disabled so /admin opens directly.
+// Set AUTH_ENABLED back to true to require e-mail/password login again.
+const AUTH_ENABLED = false;
+
 const loginScreen = document.getElementById('login-screen');
 const dashboard = document.getElementById('admin-dashboard');
 const loginForm = document.getElementById('login-form');
@@ -273,25 +277,33 @@ if (logoutBtn) {
 }
 
 // Auth state observer
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginScreen.style.display = 'none';
-    dashboard.style.display = 'block';
-    document.getElementById('admin-user-email').textContent = user.email;
-    initDashboard();
-  } else {
-    loginScreen.style.display = 'flex';
-    dashboard.style.display = 'none';
-  }
-});
+if (AUTH_ENABLED) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginScreen.style.display = 'none';
+      dashboard.style.display = 'block';
+      document.getElementById('admin-user-email').textContent = user.email;
+      initDashboard();
+    } else {
+      loginScreen.style.display = 'flex';
+      dashboard.style.display = 'none';
+    }
+  });
+} else {
+  loginScreen.style.display = 'none';
+  dashboard.style.display = 'block';
+  document.getElementById('admin-user-email').textContent = 'testovací režim';
+  if (logoutBtn) logoutBtn.style.display = 'none';
+  initDashboard();
+}
 
 // ==========================================================================
 // DASHBOARD INIT
 // ==========================================================================
 
 function initDashboard() {
-  // Check GitHub token
-  updateTokenUI();
+  // Saving requires a GitHub token in localStorage ('velvet_github_token')
+  enableSaveButtons(Boolean(getGithubToken()));
 
   // Setup tabs
   setupTabs();
@@ -302,46 +314,10 @@ function initDashboard() {
   }
 }
 
-function updateTokenUI() {
-  const tokenBar = document.getElementById('github-token-bar');
-  const tokenStatus = document.getElementById('github-token-status');
-  const token = getGithubToken();
-
-  if (token) {
-    tokenBar.style.display = 'none';
-    tokenStatus.style.display = 'block';
-    enableSaveButtons(true);
-  } else {
-    tokenBar.style.display = 'block';
-    tokenStatus.style.display = 'none';
-    enableSaveButtons(false);
-  }
-}
-
 function enableSaveButtons(enabled) {
   document.getElementById('save-menu-btn').disabled = !enabled;
   document.getElementById('save-gallery-btn').disabled = !enabled;
 }
-
-// Token management
-document.getElementById('save-token-btn')?.addEventListener('click', () => {
-  const input = document.getElementById('github-token-input');
-  const token = input.value.trim();
-  if (!token) {
-    showToast('Zadejte platný GitHub token.', 'error');
-    return;
-  }
-  setGithubToken(token);
-  updateTokenUI();
-  showToast('GitHub token uložen.', 'success');
-  loadAllData();
-});
-
-document.getElementById('clear-token-btn')?.addEventListener('click', () => {
-  clearGithubToken();
-  updateTokenUI();
-  showToast('GitHub token odpojen.', 'info');
-});
 
 // ==========================================================================
 // TABS
