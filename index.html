@@ -49,7 +49,7 @@
         </nav>
 
         <div class="nav-actions">
-          <a href="#rezervace" class="btn btn-primary btn-sm btn-nav">Rezervovat stůl</a>
+          <a href="tel:+420608305150" class="btn btn-primary btn-sm btn-nav">Rezervovat stůl</a>
           <button class="mobile-toggle" aria-label="Otevřít menu" id="mobile-toggle">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -71,7 +71,7 @@
           <p class="hero-desc scroll-reveal">Vítejte v Pasáži Velvet. Vychutnejte si vynikající moderní pojetí české i mezinárodní kuchyně v luxusním prostředí v samém srdci Pardubic.</p>
           <div class="hero-btns scroll-reveal">
             <a href="#menu" class="btn btn-primary">Prohlédnout Menu</a>
-            <a href="#rezervace" class="btn btn-outline">Rezervovat Stůl</a>
+            <a href="tel:+420608305150" class="btn btn-outline">Rezervovat Stůl</a>
           </div>
         </div>
       </div>
@@ -312,72 +312,14 @@
           <div class="text-center">
             <span class="section-subtitle">Rezervace</span>
             <h2 class="section-title">Zajistěte si svůj stůl</h2>
-            <p class="section-desc">Rezervujte si stůl online a my vám potvrdíme rezervaci co nejdříve. Pro rezervace nad 10 osob nás prosím kontaktujte telefonicky.</p>
+            <p class="section-desc">Rezervace přijímáme telefonicky. Zavolejte nám a my vám rádi připravíme stůl přesně podle vašich přání.</p>
           </div>
 
-          <form id="reservation-form" class="reservation-form">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="res-name"><i class="fa-regular fa-user"></i> Jméno a Příjmení</label>
-                <input type="text" id="res-name" name="name" required placeholder="Např. Jan Novák" />
-              </div>
-              <div class="form-group">
-                <label for="res-phone"><i class="fa-solid fa-phone"></i> Telefonní číslo</label>
-                <input type="tel" id="res-phone" name="phone" required placeholder="Např. +420 777 777 777" />
-              </div>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label for="res-email"><i class="fa-regular fa-envelope"></i> E-mailová adresa</label>
-                <input type="email" id="res-email" name="email" required placeholder="Např. jan.novak@email.cz" />
-              </div>
-              <div class="form-group">
-                <label for="res-guests"><i class="fa-solid fa-users"></i> Počet osob</label>
-                <select id="res-guests" name="guests" required>
-                  <option value="1">1 osoba</option>
-                  <option value="2" selected>2 osoby</option>
-                  <option value="3">3 osoby</option>
-                  <option value="4">4 osoby</option>
-                  <option value="5">5 osob</option>
-                  <option value="6">6 osob</option>
-                  <option value="7">7 osob</option>
-                  <option value="8">8 osob</option>
-                  <option value="9">9 osob</option>
-                  <option value="10">10 osob</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="res-date"><i class="fa-regular fa-calendar"></i> Datum</label>
-                <input type="date" id="res-date" name="date" required />
-              </div>
-              <div class="form-group">
-                <label for="res-time"><i class="fa-regular fa-clock"></i> Čas</label>
-                <input type="time" id="res-time" name="time" required min="11:00" max="22:00" />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="res-message"><i class="fa-regular fa-comment"></i> Speciální požadavky (nepovinné)</label>
-              <textarea id="res-message" name="message" rows="3" placeholder="Poznámka pro personál (např. dětská židlička, bezlepková dieta, stůl na zahrádce)..."></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block" id="submit-btn">
-              <span class="btn-text">Odeslat rezervaci</span>
-              <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
-            </button>
-          </form>
-
-          <!-- Success Modal View -->
-          <div class="reservation-success" id="reservation-success">
-            <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
-            <h3>Rezervace odeslána!</h3>
-            <p>Děkujeme. Vaši žádost o rezervaci stolu na jméno <strong id="summary-name"></strong> pro <strong id="summary-guests"></strong> osob dne <strong id="summary-date"></strong> v <strong id="summary-time"></strong> jsme úspěšně přijali.</p>
-            <p class="small-text">Během několika minut vám zašleme potvrzení na e-mail <span id="summary-email"></span> nebo vás kontaktujeme telefonicky.</p>
-            <button class="btn btn-primary btn-sm" id="reset-res-btn">Nová rezervace</button>
+          <div class="reservation-phone">
+            <div class="phone-icon"><i class="fa-solid fa-phone"></i></div>
+            <a href="tel:+420608305150" class="phone-number">608 305 150</a>
+            <p class="phone-note">Pro rezervace a speciální eventy nás neváhejte kontaktovat v rámci otevírací doby.</p>
+            <a href="tel:+420608305150" class="btn btn-primary"><i class="fa-solid fa-phone"></i>&nbsp; Zavolat a rezervovat</a>
           </div>
         </div>
       </div>
@@ -468,7 +410,7 @@
                 <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
                 <div class="info-text">
                   <h3>Telefon</h3>
-                  <p><a href="tel:+420733745377">+420 733 745 377</a></p>
+                  <p><a href="tel:+420608305150">+420 608 305 150</a></p>
                 </div>
               </div>
 
@@ -487,17 +429,17 @@
                   <div class="opening-hours-grid">
                     <span>Po – Út:</span><span>10:50 – 22:00</span>
                     <span>St – Čt:</span><span>10:50 – 23:00</span>
-                    <span>Pátek:</span><span>10:50 – 23:59</span>
+                    <span>Pátek:</span><span>10:50 – 24:00</span>
                     <span>Sobota:</span><span>11:00 – 23:00</span>
-                    <span>Neděle:</span><span>11:00 – 21:00</span>
+                    <span>Neděle:</span><span>11:00 – 20:00</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="social-links">
-              <a href="https://www.facebook.com/pasazvelvet" target="_blank" aria-label="Facebook Pasáž Velvet"><i class="fa-brands fa-facebook-f"></i></a>
-              <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a href="https://www.facebook.com/pasazvelvet/?locale=cs_CZ" target="_blank" aria-label="Facebook Pasáž Velvet"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="https://www.instagram.com/pasazvelvetrestaurace/" target="_blank" aria-label="Instagram Pasáž Velvet"><i class="fa-brands fa-instagram"></i></a>
               <a href="#" aria-label="Tripadvisor"><i class="fa-brands fa-tripadvisor"></i></a>
             </div>
           </div>
@@ -506,8 +448,8 @@
           <div class="contact-map scroll-reveal">
             <div class="map-card">
               <!-- Styled Google Maps iframe with custom luxury dark design overlay -->
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2560.106691652758!2d15.7709322!3d50.0374187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470dc38a8e1b9b1f%3A0xc07a82fe814389df!2zVMWZw61kYSBNw6lydSAxMDksIDUzMCAwMiBQYXJkdWJpY2UgMS1ab2xlbsOpIFDFmWVkbcSbcm7DrSwgQ3plY2hpYQ!5e0!3m2!1sen!2s!4v1685712345678!5m2!1sen!2s" 
+              <iframe
+                src="https://maps.google.com/maps?q=Pas%C3%A1%C5%BE%20Velvet%2C%20t%C5%99%C3%ADda%20M%C3%ADru%20109%2C%20Pardubice&z=17&hl=cs&output=embed"
                 width="100%" 
                 height="100%" 
                 style="border:0;" 
@@ -537,7 +479,7 @@
             <li><a href="#domu">Úvodní stránka</a></li>
             <li><a href="#o-nas">O nás</a></li>
             <li><a href="#menu">Jídelní lístek</a></li>
-            <li><a href="#rezervace">Rezervace stolu</a></li>
+            <li><a href="tel:+420608305150">Rezervace stolu</a></li>
             <li><a href="#galerie">Fotogalerie</a></li>
           </ul>
         </div>

@@ -851,6 +851,48 @@ a {
   transition: var(--transition-smooth);
 }
 
+/* Phone reservation CTA */
+.reservation-phone {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.reservation-phone .phone-icon {
+  font-size: 2.5rem;
+  color: var(--clr-gold);
+  animation: scale-up-bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reservation-phone .phone-number {
+  font-family: var(--font-serif, inherit);
+  font-size: 3rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--clr-text-primary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.reservation-phone .phone-number:hover {
+  color: var(--clr-gold);
+}
+
+.reservation-phone .phone-note {
+  color: var(--clr-text-muted);
+  max-width: 420px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .reservation-phone .phone-number {
+    font-size: 2.2rem;
+  }
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1246,7 +1288,8 @@ a {
 }
 
 .google-map-iframe {
-  filter: grayscale(100%) invert(90%) contrast(95%);
+  /* Keep the dark premium look but preserve enough color so the location pin stays visible */
+  filter: invert(90%) hue-rotate(180deg) grayscale(35%) contrast(95%);
 }
 
 /* --- Footer --- */
