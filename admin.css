@@ -990,3 +990,479 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ==========================================================================
+   MENU IMPORT (Excel → Firestore)
+   ========================================================================== */
+
+.w-160 {
+  width: 160px;
+  flex-shrink: 0;
+}
+
+/* --- Paste box --- */
+.import-textarea {
+  min-height: 160px;
+  font-family: 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85rem !important;
+  line-height: 1.5;
+  white-space: pre;
+  tab-size: 4;
+  resize: vertical;
+}
+
+.import-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* --- Warnings --- */
+.import-warnings {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.import-warning {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--clr-gold-light);
+  background: rgba(197, 168, 128, 0.08);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+}
+
+.import-warning i {
+  color: var(--clr-gold);
+}
+
+/* --- Meta row --- */
+.import-meta {
+  margin-bottom: 20px;
+}
+
+/* --- Preview table --- */
+.import-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.import-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.import-table thead th {
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  padding: 12px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+
+.import-table tbody td {
+  padding: 8px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: middle;
+}
+
+.import-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.import-table input,
+.import-table select {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 9px 10px;
+  font-family: var(--font-sans);
+  color: var(--clr-text-primary);
+  font-size: 0.88rem;
+  font-weight: 300;
+  transition: var(--transition-fast);
+}
+
+.import-table input:focus,
+.import-table select:focus {
+  outline: none;
+  border-color: var(--clr-gold);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.import-table select.imp-cat {
+  color: var(--clr-gold-light);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.import-table select.imp-cat option {
+  background: var(--clr-bg-tertiary);
+  color: var(--clr-text-primary);
+}
+
+/* Column widths */
+.import-table .col-cat { width: 140px; }
+.import-table .col-num { width: 56px; }
+.import-table .col-price { width: 90px; }
+.import-table .col-foodora { width: 90px; }
+.import-table .col-actions { width: 48px; text-align: center; }
+
+.import-table .col-num input,
+.import-table .col-price input,
+.import-table .col-foodora input {
+  text-align: center;
+}
+
+.imp-row-remove {
+  background: transparent;
+  border: none;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: var(--transition-fast);
+  font-size: 0.9rem;
+}
+
+.imp-row-remove:hover {
+  color: var(--clr-accent-red);
+  background: rgba(158, 42, 43, 0.1);
+}
+
+/* --- Save bar --- */
+.import-save-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.import-count {
+  font-size: 0.85rem;
+  color: var(--clr-text-secondary);
+}
+
+/* --- Saved menus list --- */
+.import-saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.import-saved-empty {
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  padding: 8px 0;
+}
+
+.import-saved-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+}
+
+.import-saved-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.import-saved-date {
+  font-weight: 500;
+  color: var(--clr-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.import-saved-date i {
+  color: var(--clr-gold);
+}
+
+.import-saved-day {
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(197, 168, 128, 0.12);
+  color: var(--clr-gold-light);
+}
+
+.import-saved-count {
+  font-size: 0.85rem;
+  color: var(--clr-text-secondary);
+}
+
+@media (max-width: 640px) {
+  .import-save-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .import-save-bar .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   DENNÍ MENU – správa dnů + stav exportu
+   ========================================================================== */
+
+.dm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dm-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  transition: var(--transition-fast);
+}
+
+.dm-card:hover {
+  border-color: var(--glass-border-hover);
+}
+
+.dm-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dm-card-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.dm-date {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--clr-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dm-date i { color: var(--clr-gold); }
+
+.dm-day {
+  font-size: 0.78rem;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(197, 168, 128, 0.12);
+  color: var(--clr-gold-light);
+  letter-spacing: 0.04em;
+}
+
+.dm-count {
+  font-size: 0.82rem;
+  color: var(--clr-text-muted);
+}
+
+.dm-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.dm-preview {
+  margin: 16px 0;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.85rem;
+  color: var(--clr-text-secondary);
+}
+
+.dm-prev-section { margin-bottom: 14px; }
+.dm-prev-section:last-child { margin-bottom: 0; }
+
+.dm-prev-cat {
+  color: var(--clr-gold);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dm-prev-count {
+  color: var(--clr-gold-light);
+  background: rgba(197, 168, 128, 0.14);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.68rem;
+  letter-spacing: 0;
+}
+
+.dm-prev-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dm-prev-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.dm-prev-item:last-child { border-bottom: none; }
+
+.dm-prev-num { color: var(--clr-text-muted); flex-shrink: 0; min-width: 22px; }
+.dm-prev-name { flex: 1; color: var(--clr-text-primary); font-weight: 300; }
+.dm-prev-price { color: var(--clr-gold-light); white-space: nowrap; font-weight: 400; }
+.dm-prev-empty { color: var(--clr-text-muted); font-style: italic; }
+
+/* --- Stav exportu na platformy --- */
+.dm-sync {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dm-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--clr-text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  white-space: nowrap;
+}
+
+.dm-chip.is-pending  { color: #b9a37e; border-color: rgba(197,168,128,0.3); }
+.dm-chip.is-queued   { color: #7ea6d8; border-color: rgba(126,166,216,0.35); background: rgba(126,166,216,0.08); }
+.dm-chip.is-uploading{ color: var(--clr-gold-light); border-color: rgba(197,168,128,0.4); }
+.dm-chip.is-uploaded { color: #6fcf97; border-color: rgba(111,207,151,0.4); background: rgba(111,207,151,0.08); }
+.dm-chip.is-feed     { color: var(--clr-gold-light); border-color: rgba(197,168,128,0.4); background: rgba(197,168,128,0.08); }
+.dm-chip.is-failed   { color: #e07a7a; border-color: rgba(224,122,122,0.4); background: rgba(224,122,122,0.08); }
+.dm-chip.is-disabled { color: var(--clr-text-muted); }
+
+.dm-sync-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dm-countdown {
+  font-size: 0.8rem;
+  color: var(--clr-gold-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dm-countdown.is-due { color: #e0b47a; }
+
+@media (max-width: 640px) {
+  .dm-sync { flex-direction: column; align-items: flex-start; }
+  .dm-card-head { flex-direction: column; align-items: flex-start; }
+}
+
+/* ==========================================================================
+   IMPORT – bloky jednotlivých dnů (více dnů najednou)
+   ========================================================================== */
+
+.import-days-summary {
+  font-size: 0.82rem;
+  color: var(--clr-gold-light);
+  background: rgba(197, 168, 128, 0.1);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.import-day-block {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.import-day-block:last-of-type {
+  margin-bottom: 0;
+}
+
+.import-day-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.import-day-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.import-day-count {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .import-day-actions { margin-left: 0; width: 100%; justify-content: space-between; }
+}
+
+.import-save-hint {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  text-align: right;
+}

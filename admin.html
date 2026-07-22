@@ -86,60 +86,134 @@
             <button class="admin-tab active" data-tab="menu-editor" id="tab-menu">
               <i class="fa-solid fa-utensils"></i> Polední Menu
             </button>
+            <button class="admin-tab" data-tab="menu-import" id="tab-import">
+              <i class="fa-solid fa-file-import"></i> Import z Excelu
+            </button>
             <button class="admin-tab" data-tab="gallery-manager" id="tab-gallery">
               <i class="fa-solid fa-images"></i> Galerie
             </button>
           </div>
 
-          <!-- ===== MENU EDITOR TAB ===== -->
+          <!-- ===== MENU EDITOR TAB (denní menu z Firestore) ===== -->
           <section id="menu-editor" class="admin-section active">
             <div class="section-header">
               <div>
-                <h2><i class="fa-solid fa-bowl-food"></i> Editor poledního menu</h2>
-                <p>Upravte denní nabídku polévky a hlavních chodů. Změny se po uložení promítnou na webu.</p>
+                <h2><i class="fa-solid fa-calendar-days"></i> Denní menu</h2>
+                <p>Přehled uložených denních nabídek. Klikněte na „Upravit" pro editaci konkrétního dne, nebo přidejte nový.</p>
               </div>
-              <button class="btn btn-primary" id="save-menu-btn" disabled>
-                <i class="fa-solid fa-cloud-arrow-up"></i> Uložit menu
-              </button>
-            </div>
-
-            <!-- Soup -->
-            <div class="editor-card">
-              <h3 class="editor-card-title"><i class="fa-solid fa-bowl-food"></i> Polévka</h3>
-              <div class="editor-row">
-                <div class="admin-form-group flex-grow">
-                  <label for="soup-name">Název polévky</label>
-                  <input type="text" id="soup-name" placeholder="Např. Kuřecí vývar s nudlemi" />
-                </div>
-                <div class="admin-form-group w-120">
-                  <label for="soup-price">Cena (Kč)</label>
-                  <input type="number" id="soup-price" placeholder="35" min="0" />
-                </div>
-              </div>
-              <div class="admin-form-group">
-                <label for="soup-desc">Popis</label>
-                <input type="text" id="soup-desc" placeholder="Krátký popis polévky..." />
-              </div>
-            </div>
-
-            <!-- Dishes Container -->
-            <div class="editor-card">
-              <div class="editor-card-header">
-                <h3 class="editor-card-title"><i class="fa-solid fa-utensils"></i> Hlavní chody</h3>
-                <button class="btn btn-outline btn-sm" id="add-dish-btn">
-                  <i class="fa-solid fa-plus"></i> Přidat chod
+              <div class="admin-header-actions">
+                <button class="btn btn-outline btn-sm" id="dm-refresh-btn">
+                  <i class="fa-solid fa-rotate"></i> Načíst
+                </button>
+                <button class="btn btn-primary" id="dm-new-btn">
+                  <i class="fa-solid fa-plus"></i> Nový den
                 </button>
               </div>
-              <div id="dishes-container"></div>
             </div>
 
-            <!-- Menu Note -->
-            <div class="editor-card">
-              <h3 class="editor-card-title"><i class="fa-solid fa-circle-info"></i> Poznámka k menu</h3>
-              <div class="admin-form-group">
-                <label for="menu-note">Text poznámky</label>
-                <input type="text" id="menu-note" placeholder="Např. Rádi vám vyměníme přílohu..." />
+            <!-- Editor jednoho dne (otevře se přes Upravit / Nový den) -->
+            <div class="editor-card" id="dm-editor-card" style="display: none;">
+              <div class="editor-card-header">
+                <h3 class="editor-card-title">
+                  <i class="fa-solid fa-pen-to-square"></i> <span id="dm-editor-title">Úprava dne</span>
+                </h3>
+                <button class="btn btn-outline btn-sm" id="dm-add-row-btn">
+                  <i class="fa-solid fa-plus"></i> Přidat řádek
+                </button>
               </div>
+              <div class="editor-row import-meta">
+                <div class="admin-form-group w-160">
+                  <label for="dm-date"><i class="fa-regular fa-calendar"></i> Datum menu</label>
+                  <input type="date" id="dm-date" />
+                </div>
+                <div class="admin-form-group w-160">
+                  <label for="dm-day">Den</label>
+                  <input type="text" id="dm-day" placeholder="Pondělí" />
+                </div>
+              </div>
+              <div class="import-table-wrap">
+                <table class="import-table">
+                  <thead>
+                    <tr>
+                      <th class="col-cat">Kategorie</th>
+                      <th class="col-num">#</th>
+                      <th class="col-name">Název</th>
+                      <th class="col-desc">Popis</th>
+                      <th class="col-price">Cena</th>
+                      <th class="col-foodora" title="Extra data pro Foodoru">Foodora</th>
+                      <th class="col-actions"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="dm-tbody"></tbody>
+                </table>
+              </div>
+              <div class="import-save-bar">
+                <button class="btn btn-outline btn-sm" id="dm-cancel-btn">Zrušit</button>
+                <button class="btn btn-primary" id="dm-save-btn">
+                  <i class="fa-solid fa-database"></i> Uložit den
+                </button>
+              </div>
+            </div>
+
+            <!-- Seznam uložených dnů -->
+            <div id="dm-list" class="dm-list">
+              <div class="import-saved-empty">Načítání denních menu…</div>
+            </div>
+
+            <!-- Legacy editor (skrytý – ponechán kvůli kompatibilitě s admin.js) -->
+            <div id="legacy-menu-editor" hidden aria-hidden="true">
+              <button id="save-menu-btn" disabled></button>
+              <input id="soup-name" type="text" />
+              <input id="soup-price" type="number" />
+              <input id="soup-desc" type="text" />
+              <div id="dishes-container"></div>
+              <button id="add-dish-btn"></button>
+              <input id="menu-note" type="text" />
+            </div>
+          </section>
+
+          <!-- ===== MENU IMPORT TAB ===== -->
+          <section id="menu-import" class="admin-section">
+            <div class="section-header">
+              <div>
+                <h2><i class="fa-solid fa-file-import"></i> Import menu z Excelu</h2>
+                <p>Zkopírujte buňky přímo z Excelu (Ctrl+C) a vložte je níže. Systém rozpozná polévku, hlavní jídla, dezerty, nápoje, ceny, foodora data i datum. Před uložením můžete vše upravit.</p>
+              </div>
+            </div>
+
+            <!-- Paste box -->
+            <div class="editor-card">
+              <div class="admin-form-group">
+                <label for="import-paste"><i class="fa-solid fa-paste"></i> Vložit z tabulky</label>
+                <textarea id="import-paste" class="import-textarea" rows="8" placeholder="Sem vložte zkopírované buňky z Excelu (Ctrl+V)..."></textarea>
+              </div>
+              <div class="import-toolbar">
+                <button class="btn btn-primary" id="import-parse-btn">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Rozpoznat položky
+                </button>
+                <button class="btn btn-outline btn-sm" id="import-clear-btn">
+                  <i class="fa-solid fa-eraser"></i> Vymazat
+                </button>
+              </div>
+              <div id="import-warnings" class="import-warnings" style="display: none;"></div>
+            </div>
+
+            <!-- Preview / edit (jeden blok = jeden den) -->
+            <div class="editor-card" id="import-preview-card" style="display: none;">
+              <div class="editor-card-header">
+                <h3 class="editor-card-title"><i class="fa-solid fa-list-check"></i> Rozpoznané položky</h3>
+                <span class="import-days-summary" id="import-days-summary"></span>
+              </div>
+
+              <div id="import-days"></div>
+
+              <div class="import-save-bar">
+                <span class="import-count" id="import-count"></span>
+                <button class="btn btn-primary" id="import-save-btn">
+                  <i class="fa-solid fa-floppy-disk"></i> Uložit vše
+                </button>
+              </div>
+              <p class="import-save-hint">Uložené dny najdete v záložce „Polední menu", kde je můžete upravovat.</p>
             </div>
           </section>
 
@@ -228,5 +302,7 @@
 
     <!-- Firebase SDK -->
     <script type="module" src="/admin.js"></script>
+    <script type="module" src="/admin-daily-menus.js"></script>
+    <script type="module" src="/admin-menu-import.js"></script>
   </body>
 </html>

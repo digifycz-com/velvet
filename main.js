@@ -293,7 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Load dynamic content
-  loadDailyMenu();
+  // Denní menu nyní řeší modul daily-menu-public.js (čte z Firestore).
+  // loadDailyMenu();  // (ponecháno jako fallback, viz níže)
   loadGallery();
 });
 
