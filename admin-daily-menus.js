@@ -8,12 +8,9 @@ import {
   collection, doc, getDoc, getDocs, setDoc, deleteDoc,
   serverTimestamp, query, orderBy,
 } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
-import {
-  getFunctions, httpsCallable,
-} from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js';
 
 import {
-  db, app, FUNCTIONS_REGION, MENU_COLLECTION, SYNC_PLATFORMS, PLATFORM_LABELS,
+  db, MENU_COLLECTION, SYNC_PLATFORMS, PLATFORM_LABELS,
 } from '/firebase-db.js';
 import { CATEGORIES } from '/menu-parser.js';
 import {
@@ -124,9 +121,6 @@ function syncBlockHTML(sync) {
       <div class="dm-chips">${chips}</div>
       <div class="dm-sync-actions">
         <span class="dm-countdown" data-scheduled="${esc(scheduled)}" data-processed="${processed}"></span>
-        <button class="btn btn-outline btn-sm dm-upload-now" title="Zařadit k okamžitému odeslání">
-          <i class="fa-solid fa-cloud-arrow-up"></i> Nahrát teď
-        </button>
       </div>
     </div>`;
 }
@@ -158,7 +152,6 @@ function wireCardButtons() {
     const id = card.dataset.id;
     card.querySelector('.dm-edit')?.addEventListener('click', () => openEditor(id));
     card.querySelector('.dm-delete')?.addEventListener('click', () => deleteDay(id));
-    card.querySelector('.dm-upload-now')?.addEventListener('click', () => uploadNow(id));
   });
 }
 
@@ -265,52 +258,6 @@ async function deleteDay(id) {
     loadList();
   } catch (err) {
     toast('Chyba při mazání: ' + err.message, 'error');
-  }
-}
-
-// ==========================================================================
-// EXPORT NA PLATFORMY (zatím čeká na serverovou funkci)
-// ==========================================================================
-
-async function uploadNow(id) {
-  try {
-    const ref = doc(db, MENU_COLLECTION, id);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) return;
-
-    // Optimisticky nastav stav „ve frontě" a naplánuj na teď.
-    const platforms = {};
-    for (const p of SYNC_PLATFORMS) {
-      platforms[p] = { status: 'queued', at: null, message: 'Ručně zařazeno k odeslání' };
-    }
-    await setDoc(ref, {
-      sync: {
-        scheduledFor: new Date().toISOString(),
-        manualTriggeredAt: new Date().toISOString(),
-        processed: false,
-        platforms,
-      },
-    }, { merge: true });
-    loadList();
-
-    // Spusť odeslání na připojené platformy.
-    try {
-      const fns = getFunctions(app, FUNCTIONS_REGION);
-      const resp = await httpsCallable(fns, 'syncMenuNow')({ date: id });
-      const result = (resp && resp.data && resp.data.result) || {};
-      const sent = Object.values(result).filter((s) => s === 'uploaded').length;
-      if (sent > 0) {
-        toast(`Menu odesláno na ${sent} ${sent === 1 ? 'platformu' : 'platformy'}.`, 'success');
-      } else {
-        toast('Zatím není připojená žádná platforma pro odesílání (Foodora / Wolt / Menička).', 'info');
-      }
-    } catch (fnErr) {
-      console.warn('syncMenuNow není dostupná:', fnErr.message);
-      toast('Zatím to nejde odeslat – odesílání ještě není nastavené.', 'info');
-    }
-    loadList();
-  } catch (err) {
-    toast('Chyba: ' + err.message, 'error');
   }
 }
 
