@@ -15,7 +15,7 @@ import {
 import { CATEGORIES } from '/menu-parser.js';
 import {
   renderRows, addEmptyRow, readRows, freshSync,
-  CATEGORY_ORDER, SYNC_STATUS, esc,
+  markNamelessRows, CATEGORY_ORDER, SYNC_STATUS, esc,
 } from '/menu-table.js';
 
 function $(id) { return document.getElementById(id); }
@@ -203,7 +203,15 @@ async function saveDay() {
     return;
   }
 
-  const items = readRows($('dm-tbody'));
+  const tbody = $('dm-tbody');
+  const nameless = markNamelessRows(tbody);
+  if (nameless.length) {
+    toast('Každá položka musí mít vyplněný název.', 'error');
+    nameless[0].focus();
+    return;
+  }
+
+  const items = readRows(tbody);
   if (items.length === 0) {
     toast('Přidejte alespoň jednu položku.', 'error');
     return;

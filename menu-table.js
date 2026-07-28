@@ -92,6 +92,25 @@ export function readRows(tbody) {
   });
 }
 
+// Prázdný přidaný řádek je stále položka: před uložením se musí pojmenovat
+// nebo odstranit. Vrací vstupy bez názvu a zároveň je vizuálně označí.
+export function markNamelessRows(tbody) {
+  const inputs = Array.from(tbody.querySelectorAll('.imp-name'));
+  const invalid = inputs.filter((input) => !input.value.trim());
+
+  inputs.forEach((input) => {
+    input.classList.toggle('is-invalid', invalid.includes(input));
+    if (!input.dataset.nameValidationWired) {
+      input.dataset.nameValidationWired = '1';
+      input.addEventListener('input', () => {
+        if (input.value.trim()) input.classList.remove('is-invalid');
+      });
+    }
+  });
+
+  return invalid;
+}
+
 // --- Synchronizace na platformy (Foodora / Wolt / Menicka) ------------------
 
 /**

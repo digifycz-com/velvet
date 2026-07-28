@@ -11,7 +11,9 @@ import {
 
 import { db, MENU_COLLECTION } from '/firebase-db.js';
 import { parseMenuPaste } from '/menu-parser.js';
-import { renderRows, addEmptyRow, readRows, freshSync } from '/menu-table.js';
+import {
+  renderRows, addEmptyRow, readRows, markNamelessRows, freshSync,
+} from '/menu-table.js';
 import { notifyMenusChanged } from '/admin-daily-menus.js';
 
 function $(id) {
@@ -157,15 +159,23 @@ async function handleSave() {
 
   const days = [];
   const missingDate = [];
+  const namelessInputs = [];
   for (const block of blocks) {
     const date = block.querySelector('.import-day-date').value;
     const day = block.querySelector('.import-day-day').value.trim();
-    const items = readRows(block.querySelector('.import-day-tbody'));
+    const tbody = block.querySelector('.import-day-tbody');
+    namelessInputs.push(...markNamelessRows(tbody));
+    const items = readRows(tbody);
     if (items.length === 0) continue;
     if (!date) { missingDate.push(day || '(bez názvu)'); continue; }
     days.push({ date, day, items });
   }
 
+  if (namelessInputs.length > 0) {
+    toast('Každá položka musí mít vyplněný název.', 'error');
+    namelessInputs[0].focus();
+    return;
+  }
   if (missingDate.length > 0) {
     toast(`Doplňte datum u dnů: ${missingDate.join(', ')}.`, 'error');
     return;

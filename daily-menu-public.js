@@ -42,7 +42,10 @@ function groupByCategory(items) {
 
 function cardHTML(item, category) {
   const number = category === 'hlavni' && item.number
-    ? `<span class="item-number">${esc(item.number)}</span> `
+    ? `<span class="item-number" aria-label="Hlavní jídlo číslo ${esc(item.number)}">
+        <i class="fa-solid fa-utensils" aria-hidden="true"></i>
+        <span>${esc(item.number)}</span>
+      </span> `
     : '';
   const price = item.price != null && item.price !== '' ? `${esc(item.price)} Kč` : '';
   const desc = item.description
@@ -148,10 +151,30 @@ function pickInitialIndex() {
   return Math.max(0, idx);
 }
 
-function compactCategoryLabel(category) {
-  if (category === 'polevka') return 'Polévka';
-  if (category === 'dezert') return 'Dezert';
-  return '';
+function heroMetaHTML(item) {
+  if (item.category === 'polevka') {
+    return `
+      <span class="hero-daily-number hero-daily-icon" role="img" aria-label="Polévka">
+        <i class="fa-solid fa-bowl-food" aria-hidden="true"></i>
+      </span>`;
+  }
+  if (item.category === 'hlavni' && item.number) {
+    return `
+      <span class="hero-daily-number hero-daily-main" aria-label="Hlavní jídlo číslo ${esc(item.number)}">
+        <i class="fa-solid fa-utensils" aria-hidden="true"></i>
+        <span>${esc(item.number)}</span>
+      </span>`;
+  }
+  if (item.category === 'dezert') {
+    return `
+      <span class="hero-daily-number hero-daily-icon" role="img" aria-label="Dezert">
+        <i class="fa-solid fa-ice-cream" aria-hidden="true"></i>
+      </span>`;
+  }
+  return `
+    <span class="hero-daily-number hero-daily-icon" role="img" aria-label="Položka menu">
+      <i class="fa-solid fa-utensils" aria-hidden="true"></i>
+    </span>`;
 }
 
 function renderHeroMenu() {
@@ -188,13 +211,10 @@ function renderHeroMenu() {
   const visible = [...preferred, ...remaining].slice(0, 6);
 
   itemsEl.innerHTML = visible.map((item) => {
-    const number = item.category === 'hlavni' && item.number ? `${esc(item.number)}.` : '';
-    const category = compactCategoryLabel(item.category);
-    const meta = number || category;
     const price = item.price != null && item.price !== '' ? `${esc(item.price)} Kč` : '';
     return `
       <div class="hero-daily-item">
-        ${meta ? `<span class="hero-daily-number">${meta}</span>` : ''}
+        ${heroMetaHTML(item)}
         <span class="hero-daily-name">${esc(item.name)}</span>
         ${price ? `<span class="hero-daily-price">${price}</span>` : ''}
       </div>`;

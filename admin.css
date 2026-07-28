@@ -1137,6 +1137,16 @@
   background-color: rgba(255, 255, 255, 0.06);
 }
 
+.import-table input.is-invalid {
+  border-color: #ef6464;
+  background: rgba(239, 100, 100, 0.08);
+  box-shadow: 0 0 0 2px rgba(239, 100, 100, 0.12);
+}
+
+.import-table input.is-invalid:focus {
+  border-color: #ff8080;
+}
+
 .import-table select.imp-cat {
   color: var(--clr-gold-light);
   font-weight: 500;

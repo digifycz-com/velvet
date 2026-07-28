@@ -526,8 +526,8 @@ a {
 
 .hero-daily-item {
   display: grid;
-  grid-template-columns: minmax(42px, auto) minmax(0, 1fr) auto;
-  align-items: baseline;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
   gap: 12px;
   padding: 11px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.055);
@@ -539,8 +539,40 @@ a {
 
 .hero-daily-number {
   color: var(--clr-gold);
-  font-family: var(--font-serif);
-  font-size: 0.78rem;
+  font-family: var(--font-sans);
+}
+
+.hero-daily-icon,
+.hero-daily-main {
+  width: 42px;
+  height: 28px;
+  border: 1px solid rgba(197, 168, 128, 0.32);
+  border-radius: 999px;
+  background: rgba(197, 168, 128, 0.07);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-daily-icon i {
+  font-size: 0.86rem;
+}
+
+.hero-daily-main {
+  gap: 6px;
+  justify-content: center;
+}
+
+.hero-daily-main i {
+  font-size: 0.68rem;
+}
+
+.hero-daily-main span {
+  min-width: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
 }
 
 .hero-daily-name {
@@ -973,18 +1005,29 @@ a {
 }
 
 .menu-item-name .item-number {
-  font-family: var(--font-serif);
-  font-size: 0.9rem;
-  font-style: italic;
+  font-family: var(--font-sans);
   color: var(--clr-gold);
   margin-right: 12px;
   border: 1px solid rgba(197, 168, 128, 0.3);
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  width: 42px;
+  height: 26px;
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+  background: rgba(197, 168, 128, 0.06);
+}
+
+.menu-item-name .item-number i {
+  font-size: 0.65rem;
+}
+
+.menu-item-name .item-number span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .menu-item-price {
@@ -1837,7 +1880,7 @@ a {
   }
 
   .hero-daily-item {
-    grid-template-columns: 40px minmax(0, 1fr) auto;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
     gap: 8px;
   }
 
