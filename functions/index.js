@@ -10,8 +10,10 @@
 
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
+const { defineSecret } = require('firebase-functions/params');
 const { logger } = require('firebase-functions');
 const admin = require('firebase-admin');
+const crypto = require('node:crypto');
 
 const { buildMenickaXml } = require('./lib/menicka');
 const { pushToFoodora } = require('./lib/foodora');
@@ -22,6 +24,95 @@ const db = admin.firestore();
 
 const MENU_COLLECTION = 'dailyMenus';
 const REGION = 'europe-west1';
+const ADMIN_SHARED_PASSWORD = defineSecret('ADMIN_SHARED_PASSWORD');
+const ADMIN_UID = 'velvet-admin';
+const LOGIN_ATTEMPTS_COLLECTION = '_adminLoginAttempts';
+
+function passwordMatches(received, expected) {
+  const receivedBuffer = Buffer.from(String(received || ''), 'utf8');
+  const expectedBuffer = Buffer.from(String(expected || ''), 'utf8');
+  return receivedBuffer.length === expectedBuffer.length
+    && crypto.timingSafeEqual(receivedBuffer, expectedBuffer);
+}
+
+function requestIp(req) {
+  const forwarded = req.rawRequest?.headers?.['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded) return forwarded.split(',')[0].trim();
+  return req.rawRequest?.ip || 'unknown';
+}
+
+async function recordFailedLogin(ref, now) {
+  const windowMs = 15 * 60 * 1000;
+  const maxAttempts = 8;
+  await db.runTransaction(async (transaction) => {
+    const snap = await transaction.get(ref);
+    const previous = snap.exists ? snap.data() : {};
+    const windowStart = Number(previous.windowStart || 0);
+    const inWindow = now - windowStart < windowMs;
+    const attempts = inWindow ? Number(previous.attempts || 0) + 1 : 1;
+    transaction.set(ref, {
+      attempts,
+      windowStart: inWindow ? windowStart : now,
+      blockedUntil: attempts >= maxAttempts ? now + windowMs : 0,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  });
+}
+
+// ==========================================================================
+// ADMIN LOGIN – bezpečné přihlášení pouze heslem
+// Heslo žije pouze v Google Secret Manageru. Klient po úspěšném ověření
+// dostane krátkodobý Firebase custom token a dále používá standardní Auth.
+// ==========================================================================
+exports.adminPasswordLogin = onCall(
+  {
+    region: REGION,
+    secrets: [ADMIN_SHARED_PASSWORD],
+    maxInstances: 5,
+  },
+  async (req) => {
+    const password = req.data?.password;
+    if (typeof password !== 'string' || !password) {
+      throw new HttpsError('invalid-argument', 'Chybí heslo.');
+    }
+
+    const expected = ADMIN_SHARED_PASSWORD.value();
+    const ipHash = crypto
+      .createHmac('sha256', expected)
+      .update(requestIp(req))
+      .digest('hex');
+    const attemptRef = db.collection(LOGIN_ATTEMPTS_COLLECTION).doc(ipHash);
+    const attemptSnap = await attemptRef.get();
+    const blockedUntil = attemptSnap.exists
+      ? Number(attemptSnap.data().blockedUntil || 0)
+      : 0;
+    const now = Date.now();
+
+    if (blockedUntil > now) {
+      throw new HttpsError('resource-exhausted', 'Příliš mnoho pokusů.');
+    }
+
+    if (!passwordMatches(password, expected)) {
+      await recordFailedLogin(attemptRef, now);
+      await new Promise((resolve) => setTimeout(resolve, 450));
+      throw new HttpsError('unauthenticated', 'Nesprávné heslo.');
+    }
+
+    await attemptRef.delete().catch(() => {});
+    try {
+      await admin.auth().getUser(ADMIN_UID);
+    } catch (err) {
+      if (err.code !== 'auth/user-not-found') throw err;
+      await admin.auth().createUser({
+        uid: ADMIN_UID,
+        displayName: 'Pasáž Velvet administrátor',
+      });
+    }
+
+    const token = await admin.auth().createCustomToken(ADMIN_UID, { admin: true });
+    return { token };
+  },
+);
 
 // Push adaptéry (Menička je pull, řeší se přes menickaFeed).
 // Přístupové údaje se čtou z process.env (functions/.env – viz .env.example).

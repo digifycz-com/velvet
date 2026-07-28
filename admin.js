@@ -3,8 +3,15 @@
    Firebase Auth + GitHub API Integration
    ========================================================================== */
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+import {
+  initializeApp, getApps, getApp,
+} from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+import {
+  getAuth, signInWithCustomToken, onAuthStateChanged, signOut,
+} from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+import {
+  getFunctions, httpsCallable,
+} from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js';
 
 // --- Firebase Configuration ---
 const firebaseConfig = {
@@ -17,8 +24,10 @@ const firebaseConfig = {
   measurementId: "G-YBX1QC01CP"
 };
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const functions = getFunctions(app, 'europe-west1');
+const adminPasswordLogin = httpsCallable(functions, 'adminPasswordLogin');
 
 // --- GitHub API Configuration ---
 const GITHUB_OWNER = 'digifycz-com';
@@ -213,9 +222,8 @@ async function saveJsonToGithub(path, data, message) {
 // AUTHENTICATION
 // ==========================================================================
 
-// TEST MODE: login is temporarily disabled so /admin opens directly.
-// Set AUTH_ENABLED back to true to require e-mail/password login again.
-const AUTH_ENABLED = false;
+// Přístup do administrace ověřuje serverová Firebase funkce pouze heslem.
+const AUTH_ENABLED = true;
 
 const loginScreen = document.getElementById('login-screen');
 const dashboard = document.getElementById('admin-dashboard');
@@ -244,7 +252,6 @@ if (passwordToggle) {
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
     loginBtn.classList.add('loading');
@@ -252,14 +259,16 @@ if (loginForm) {
     loginError.classList.remove('visible');
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const response = await adminPasswordLogin({ password });
+      const token = response?.data?.token;
+      if (!token) throw new Error('Chybí přihlašovací token.');
+      await signInWithCustomToken(auth, token);
+      document.getElementById('login-password').value = '';
     } catch (err) {
-      let msg = 'Přihlášení selhalo.';
-      if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-        msg = 'Nesprávný e-mail nebo heslo.';
-      } else if (err.code === 'auth/too-many-requests') {
-        msg = 'Příliš mnoho pokusů. Zkuste to za chvíli.';
-      }
+      const code = String(err.code || '');
+      let msg = 'Přihlášení selhalo. Zkuste to znovu.';
+      if (code.includes('unauthenticated')) msg = 'Nesprávné heslo.';
+      if (code.includes('resource-exhausted')) msg = 'Příliš mnoho pokusů. Zkuste to za 15 minut.';
       loginError.textContent = msg;
       loginError.classList.add('visible');
     } finally {
@@ -282,7 +291,7 @@ if (AUTH_ENABLED) {
     if (user) {
       loginScreen.style.display = 'none';
       dashboard.style.display = 'block';
-      document.getElementById('admin-user-email').textContent = user.email;
+      document.getElementById('admin-user-email').textContent = user.email || 'administrátor';
       initDashboard();
     } else {
       loginScreen.style.display = 'flex';
@@ -292,7 +301,7 @@ if (AUTH_ENABLED) {
 } else {
   loginScreen.style.display = 'none';
   dashboard.style.display = 'block';
-  document.getElementById('admin-user-email').textContent = 'testovací režim';
+  document.getElementById('admin-user-email').textContent = 'administrátor';
   if (logoutBtn) logoutBtn.style.display = 'none';
   initDashboard();
 }

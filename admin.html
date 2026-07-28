@@ -31,13 +31,9 @@
           <span class="login-badge">ADMINISTRACE</span>
         </div>
         <h1 class="login-title">Přihlášení</h1>
-        <p class="login-subtitle">Zadejte své přihlašovací údaje pro přístup do administrace.</p>
+        <p class="login-subtitle">Zadejte heslo pro přístup do administrace.</p>
         
         <form id="login-form" class="login-form" autocomplete="off">
-          <div class="admin-form-group">
-            <label for="login-email"><i class="fa-regular fa-envelope"></i> E-mail</label>
-            <input type="email" id="login-email" required placeholder="admin@email.cz" autocomplete="email" />
-          </div>
           <div class="admin-form-group">
             <label for="login-password"><i class="fa-solid fa-lock"></i> Heslo</label>
             <div class="password-wrapper">
@@ -88,6 +84,12 @@
             </button>
             <button class="admin-tab" data-tab="menu-import" id="tab-import">
               <i class="fa-solid fa-file-import"></i> Import z Excelu
+            </button>
+            <button class="admin-tab" data-tab="catalog-menu-manager" id="tab-catalog-menu">
+              <i class="fa-solid fa-book-open"></i> Stálé a nápojové menu
+            </button>
+            <button class="admin-tab" data-tab="news-manager" id="tab-news">
+              <i class="fa-solid fa-bullhorn"></i> Aktuality
             </button>
             <button class="admin-tab" data-tab="gallery-manager" id="tab-gallery">
               <i class="fa-solid fa-images"></i> Galerie
@@ -217,6 +219,95 @@
             </div>
           </section>
 
+          <!-- ===== PERMANENT + DRINK MENU MANAGER TAB ===== -->
+          <section id="catalog-menu-manager" class="admin-section">
+            <div class="section-header">
+              <div>
+                <h2><i class="fa-solid fa-book-open"></i> Stálé a nápojové menu</h2>
+                <p>Upravujte kategorie, položky, popisy a ceny zobrazené na veřejném webu.</p>
+              </div>
+              <button class="btn btn-primary" id="catalog-save-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Uložit obě menu
+              </button>
+            </div>
+
+            <div class="catalog-admin-switch" role="tablist" aria-label="Výběr upravovaného menu">
+              <button class="catalog-admin-switch-btn active" data-catalog-panel="permanent" role="tab" aria-selected="true">
+                <i class="fa-solid fa-utensils"></i> Stálé menu
+              </button>
+              <button class="catalog-admin-switch-btn" data-catalog-panel="drinks" role="tab" aria-selected="false">
+                <i class="fa-solid fa-wine-glass"></i> Nápojový lístek
+              </button>
+            </div>
+
+            <div class="catalog-admin-panel active" id="catalog-admin-permanent">
+              <div class="catalog-admin-toolbar">
+                <p>Kategorie a položky se na webu zobrazí ve stejném pořadí jako zde.</p>
+                <button class="btn btn-outline btn-sm catalog-add-category" data-menu-kind="permanent">
+                  <i class="fa-solid fa-plus"></i> Přidat kategorii
+                </button>
+              </div>
+              <div class="catalog-admin-categories" id="catalog-permanent-categories"></div>
+            </div>
+
+            <div class="catalog-admin-panel" id="catalog-admin-drinks">
+              <div class="catalog-admin-toolbar">
+                <p>Kategorie a položky se na webu zobrazí ve stejném pořadí jako zde.</p>
+                <button class="btn btn-outline btn-sm catalog-add-category" data-menu-kind="drinks">
+                  <i class="fa-solid fa-plus"></i> Přidat kategorii
+                </button>
+              </div>
+              <div class="catalog-admin-categories" id="catalog-drinks-categories"></div>
+            </div>
+          </section>
+
+          <!-- ===== NEWS MANAGER TAB ===== -->
+          <section id="news-manager" class="admin-section">
+            <div class="section-header">
+              <div>
+                <h2><i class="fa-solid fa-bullhorn"></i> Aktuality na úvodní stránce</h2>
+                <p>Na webu se vždy zobrazují právě dvě dlaždice. Upravte jejich štítek, nadpis a text.</p>
+              </div>
+              <button class="btn btn-primary" id="news-save-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Uložit aktuality
+              </button>
+            </div>
+
+            <div class="news-admin-grid">
+              <div class="editor-card news-admin-card" data-news-index="0">
+                <span class="news-admin-number">Dlaždice 1</span>
+                <div class="admin-form-group">
+                  <label for="news-0-label">Krátký štítek</label>
+                  <input type="text" id="news-0-label" maxlength="40" placeholder="Např. Velvet" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="news-0-title">Nadpis</label>
+                  <input type="text" id="news-0-title" maxlength="100" placeholder="Nadpis aktuality" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="news-0-text">Text</label>
+                  <textarea id="news-0-text" rows="5" maxlength="320" placeholder="Krátký text aktuality"></textarea>
+                </div>
+              </div>
+
+              <div class="editor-card news-admin-card" data-news-index="1">
+                <span class="news-admin-number">Dlaždice 2</span>
+                <div class="admin-form-group">
+                  <label for="news-1-label">Krátký štítek</label>
+                  <input type="text" id="news-1-label" maxlength="40" placeholder="Např. Rezervace" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="news-1-title">Nadpis</label>
+                  <input type="text" id="news-1-title" maxlength="100" placeholder="Nadpis aktuality" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="news-1-text">Text</label>
+                  <textarea id="news-1-text" rows="5" maxlength="320" placeholder="Krátký text aktuality"></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <!-- ===== GALLERY MANAGER TAB ===== -->
           <section id="gallery-manager" class="admin-section">
             <div class="section-header">
@@ -304,5 +395,7 @@
     <script type="module" src="/admin.js"></script>
     <script type="module" src="/admin-daily-menus.js"></script>
     <script type="module" src="/admin-menu-import.js"></script>
+    <script type="module" src="/admin-catalog-menus.js"></script>
+    <script type="module" src="/admin-news.js"></script>
   </body>
 </html>

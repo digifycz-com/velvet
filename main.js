@@ -83,27 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 4. Menu Tabs Switcher ---
   const tabButtons = document.querySelectorAll('.menu-tab-btn');
-  const menuDaily = document.getElementById('menu-daily');
-  const menuSeasonal = document.getElementById('menu-seasonal');
+  const menuPanels = document.querySelectorAll('#menu > .container > .menu-grid');
 
   tabButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      // Remove active states
-      tabButtons.forEach(button => button.classList.remove('active'));
-      
-      // Add active state to clicked button
+    btn.addEventListener('click', () => {
+      tabButtons.forEach((button) => {
+        button.classList.remove('active');
+        button.setAttribute('aria-selected', 'false');
+      });
+      menuPanels.forEach((panel) => panel.classList.remove('active'));
+
       btn.classList.add('active');
-      
-      // Get target menu category
+      btn.setAttribute('aria-selected', 'true');
       const target = btn.getAttribute('data-target');
-      
-      if (target === 'daily') {
-        menuDaily.classList.add('active');
-        menuSeasonal.classList.remove('active');
-      } else if (target === 'seasonal') {
-        menuSeasonal.classList.add('active');
-        menuDaily.classList.remove('active');
-      }
+      document.getElementById(`menu-${target}`)?.classList.add('active');
     });
   });
 
@@ -297,4 +290,3 @@ document.addEventListener('DOMContentLoaded', () => {
   // loadDailyMenu();  // (ponecháno jako fallback, viz níže)
   loadGallery();
 });
-

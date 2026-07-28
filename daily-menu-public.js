@@ -103,6 +103,7 @@ function render() {
   let html = navBarHTML();
 
   for (const cat of CATEGORY_ORDER) {
+    if (cat === 'napoj') continue; // nápoje jsou interní údaj pro exportní platformy
     const list = groups[cat];
     if (!list || !list.length) continue;
     const icon = CATEGORY_ICONS[cat] || 'fa-utensils';
@@ -147,6 +148,59 @@ function pickInitialIndex() {
   return Math.max(0, idx);
 }
 
+function compactCategoryLabel(category) {
+  if (category === 'polevka') return 'Polévka';
+  if (category === 'dezert') return 'Dezert';
+  return '';
+}
+
+function renderHeroMenu() {
+  const dateEl = document.getElementById('hero-daily-date');
+  const itemsEl = document.getElementById('hero-daily-items');
+  if (!dateEl || !itemsEl) return;
+
+  const today = todayISO();
+  const day = days.find((item) => item.date === today);
+  dateEl.textContent = new Date(`${today}T12:00:00`).toLocaleDateString('cs-CZ', {
+    weekday: 'long', day: 'numeric', month: 'numeric',
+  });
+
+  const publicItems = (day?.items || []).filter((item) => (
+    item.name && item.category !== 'napoj'
+  ));
+
+  if (!publicItems.length) {
+    itemsEl.innerHTML = `
+      <div class="hero-daily-empty">
+        <i class="fa-regular fa-calendar-xmark"></i>
+        <p>Dnešní nabídku právě připravujeme.</p>
+        <span>Podívejte se prosím později nebo nám zavolejte.</span>
+      </div>`;
+    return;
+  }
+
+  const preferred = publicItems.filter((item) => (
+    item.category === 'polevka' || item.category === 'hlavni'
+  ));
+  const remaining = publicItems.filter((item) => (
+    item.category !== 'polevka' && item.category !== 'hlavni'
+  ));
+  const visible = [...preferred, ...remaining].slice(0, 6);
+
+  itemsEl.innerHTML = visible.map((item) => {
+    const number = item.category === 'hlavni' && item.number ? `${esc(item.number)}.` : '';
+    const category = compactCategoryLabel(item.category);
+    const meta = number || category;
+    const price = item.price != null && item.price !== '' ? `${esc(item.price)} Kč` : '';
+    return `
+      <div class="hero-daily-item">
+        ${meta ? `<span class="hero-daily-number">${meta}</span>` : ''}
+        <span class="hero-daily-name">${esc(item.name)}</span>
+        ${price ? `<span class="hero-daily-price">${price}</span>` : ''}
+      </div>`;
+  }).join('');
+}
+
 async function init() {
   const container = document.getElementById('menu-daily');
   if (!container) return;
@@ -154,7 +208,10 @@ async function init() {
   try {
     const q = query(collection(db, MENU_COLLECTION), orderBy('date', 'asc'));
     const snap = await getDocs(q);
-    if (snap.empty) return; // ponecháme statický fallback v HTML
+    if (snap.empty) {
+      renderHeroMenu();
+      return; // ponecháme statický fallback plného menu v HTML
+    }
 
     days = [];
     snap.forEach((docSnap) => {
@@ -163,10 +220,12 @@ async function init() {
     });
 
     currentIndex = pickInitialIndex();
+    renderHeroMenu();
     render();
   } catch (err) {
     // Při chybě (nebo chybějícím oprávnění) ponecháme statický obsah.
     console.log('Denní menu z Firestore se nenačetlo, ponechávám statický obsah:', err.message);
+    renderHeroMenu();
   }
 }
 

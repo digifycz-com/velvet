@@ -40,8 +40,9 @@
         <nav class="nav-menu" id="nav-menu">
           <ul class="nav-list">
             <li><a href="#domu" class="nav-item active">Domů</a></li>
-            <li><a href="#o-nas" class="nav-item">O nás</a></li>
+            <li><a href="#aktuality" class="nav-item">Aktuality</a></li>
             <li><a href="#menu" class="nav-item">Menu</a></li>
+            <li><a href="#o-nas" class="nav-item">O nás</a></li>
             <li><a href="#rezervace" class="nav-item">Rezervace</a></li>
             <li><a href="#galerie" class="nav-item">Galerie</a></li>
             <li><a href="#kontakt" class="nav-item">Kontakt</a></li>
@@ -65,70 +66,64 @@
         <div class="hero-overlay"></div>
       </div>
       <div class="container hero-container">
-        <div class="hero-content">
-          <span class="hero-subtitle scroll-reveal">Prémiový gastronomický zážitek</span>
-          <h1 class="hero-title scroll-reveal">Chutě, které probouzí smysly</h1>
-          <p class="hero-desc scroll-reveal">Vítejte v Pasáži Velvet. Vychutnejte si vynikající moderní pojetí české i mezinárodní kuchyně v luxusním prostředí v samém srdci Pardubic.</p>
-          <div class="hero-btns scroll-reveal">
-            <a href="#menu" class="btn btn-primary">Prohlédnout Menu</a>
-            <a href="tel:+420608305150" class="btn btn-outline">Rezervovat Stůl</a>
+        <div class="hero-grid">
+          <div class="hero-content">
+            <span class="hero-subtitle scroll-reveal">Pasáž Velvet · Pardubice</span>
+            <h1 class="hero-title scroll-reveal">Velvet.<br />Místo, kam se vracíte.</h1>
+            <p class="hero-desc scroll-reveal">Moderní česká kuchyně, poctivé suroviny a klid uprostřed města. Přijďte na rychlý oběd i dlouhý večer.</p>
+            <div class="hero-btns scroll-reveal">
+              <a href="#menu" class="btn btn-primary">Celé dnešní menu</a>
+              <a href="tel:+420608305150" class="btn btn-outline">Rezervovat stůl</a>
+            </div>
           </div>
+
+          <aside class="hero-daily-card scroll-reveal" aria-labelledby="hero-menu-title">
+            <div class="hero-daily-head">
+              <div>
+                <span class="hero-daily-kicker">Dnes podáváme</span>
+                <h2 id="hero-menu-title">Polední menu</h2>
+              </div>
+              <span class="hero-daily-date" id="hero-daily-date">Načítání…</span>
+            </div>
+            <div class="hero-daily-items" id="hero-daily-items" aria-live="polite">
+              <div class="hero-daily-loading">
+                <i class="fa-solid fa-circle-notch fa-spin"></i>
+                <span>Načítáme dnešní nabídku</span>
+              </div>
+            </div>
+            <a class="hero-daily-link" href="#menu">
+              Zobrazit celé menu <i class="fa-solid fa-arrow-down"></i>
+            </a>
+          </aside>
         </div>
       </div>
-      <a href="#o-nas" class="hero-scroll-btn" aria-label="Přejít dolů">
+      <a href="#aktuality" class="hero-scroll-btn" aria-label="Přejít na aktuality">
         <span class="scroll-mouse"><span class="wheel"></span></span>
         <span class="scroll-arrow"></span>
       </a>
     </section>
 
-    <!-- About Section -->
-    <section id="o-nas" class="about">
+    <!-- News Section -->
+    <section id="aktuality" class="news-section">
       <div class="container">
-        <div class="about-grid">
-          <div class="about-images scroll-reveal">
-            <div class="img-wrapper main-img">
-              <img src="/images/terrace_1.png" alt="Moderní terasa restaurace Pasáž Velvet" />
-            </div>
-            <div class="img-wrapper sub-img">
-              <img src="/images/terrace_2.png" alt="Nové venkovní posezení Pasáž Velvet" />
-            </div>
+        <div class="news-heading scroll-reveal">
+          <div>
+            <span class="section-subtitle">Právě ve Velvetu</span>
+            <h2 class="section-title">Aktuality</h2>
           </div>
-          <div class="about-content scroll-reveal">
-            <span class="section-subtitle">O Nás</span>
-            <h2 class="section-title">Kde se tradice potkává s moderním luxusem</h2>
-            <p class="section-desc">Pasáž Velvet je oázou klidu a skvělé chuti na rušné třídě Míru v Pardubicích. Náš elegantní, klimatizovaný a nekuřácký interiér poskytuje ideální zázemí pro rodinné oslavy, romantické večeře i pracovní obědy.</p>
-            
-            <div class="features-grid">
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-cloud-sun"></i></div>
-                <div class="feature-text">
-                  <h3>Letní zahrádka</h3>
-                  <p>Útulné venkovní posezení ve stínu, ideální pro horké letní dny a večery.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-kitchen-set"></i></div>
-                <div class="feature-text">
-                  <h3>Špičková kuchyně</h3>
-                  <p>Připravujeme jídla z čerstvých lokálních surovin s důrazem na kvalitu a detail.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-child"></i></div>
-                <div class="feature-text">
-                  <h3>Dětský koutek</h3>
-                  <p>Zázemí pro rodiny s dětmi, aby si u nás odpočinuli malí i velcí návštěvníci.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
-                <div class="feature-text">
-                  <h3>Klimatizace & Wi-Fi</h3>
-                  <p>Moderní, komfortní prostředí s rychlým internetem a příjemnou teplotou.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p>Co je u nás nového a na co se můžete těšit.</p>
+        </div>
+        <div class="news-grid" id="news-grid">
+          <article class="news-card scroll-reveal">
+            <span class="news-card-label">Velvet</span>
+            <h3>Letní zahrádka je otevřená</h3>
+            <p>Užijte si oběd nebo večerní posezení v klidném stínu přímo v centru Pardubic.</p>
+          </article>
+          <article class="news-card scroll-reveal">
+            <span class="news-card-label">Rezervace</span>
+            <h3>Oslavy a firemní setkání</h3>
+            <p>Rádi pro vás připravíme rodinnou oslavu, pracovní oběd nebo soukromou akci.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -139,14 +134,15 @@
         <div class="text-center scroll-reveal">
           <span class="section-subtitle">Jídelní lístek</span>
           <h2 class="section-title">Vyberte si z naší nabídky</h2>
-          <p class="section-desc max-width-600 mx-auto">Každé jídlo připravujeme s vášní a precizností. Vyberte si z našeho poledního menu nebo stálého sezónního lístku.</p>
+          <p class="section-desc max-width-600 mx-auto">Každé jídlo připravujeme s vášní a precizností. Prohlédněte si polední nabídku, stálé menu i nápojový lístek.</p>
         </div>
 
         <!-- Menu Tabs -->
         <div class="menu-tabs-container scroll-reveal">
-          <div class="menu-tabs">
-            <button class="menu-tab-btn active" data-target="daily">Polední menu</button>
-            <button class="menu-tab-btn" data-target="seasonal">Sezónní menu</button>
+          <div class="menu-tabs" role="tablist" aria-label="Výběr jídelního lístku">
+            <button class="menu-tab-btn active" data-target="daily" role="tab" aria-selected="true">Polední menu</button>
+            <button class="menu-tab-btn" data-target="permanent" role="tab" aria-selected="false">Stálé menu</button>
+            <button class="menu-tab-btn" data-target="drinks" role="tab" aria-selected="false">Nápojový lístek</button>
           </div>
         </div>
 
@@ -217,86 +213,59 @@
           </div>
         </div>
 
-        <!-- Seasonal Menu Tab Content -->
-        <div class="menu-grid" id="menu-seasonal">
-          <!-- Starters & Soups -->
-          <div class="menu-category">
-            <h3 class="category-title"><i class="fa-solid fa-bowl-food"></i> Předkrmy & Polévky</h3>
-            <div class="menu-items">
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Jemný hovězí tatarák</h4>
-                  <span class="menu-item-price">195 Kč</span>
-                </div>
-                <p class="menu-item-description">100g čerstvě namíchaného hovězího masa s křupavými topinkami na sádle, česnek.</p>
-              </div>
+        <!-- Permanent Menu Tab Content -->
+        <div class="menu-grid catalog-menu" id="menu-permanent"></div>
 
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Grilovaný kozí sýr</h4>
-                  <span class="menu-item-price">165 Kč</span>
-                </div>
-                <p class="menu-item-description">Rozpečený kozí sýr na trhaném listovém salátku s karamelizovanými vlašskými ořechy, brusinkami a medovo-hořčičným dresinkem.</p>
-              </div>
+        <!-- Drinks Menu Tab Content -->
+        <div class="menu-grid catalog-menu" id="menu-drinks"></div>
+      </div>
+    </section>
 
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Hráškový krém s krutonky</h4>
-                  <span class="menu-item-price">65 Kč</span>
-                </div>
-                <p class="menu-item-description">Jemný krém z čerstvého hrášku, zjemněný smetanou, podávaný s dokřupava opečenými bylinkovými krutonky.</p>
-              </div>
+    <!-- About Section -->
+    <section id="o-nas" class="about">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-images scroll-reveal">
+            <div class="img-wrapper main-img">
+              <img src="/images/terrace_1.png" alt="Moderní terasa restaurace Pasáž Velvet" />
+            </div>
+            <div class="img-wrapper sub-img">
+              <img src="/images/terrace_2.png" alt="Nové venkovní posezení Pasáž Velvet" />
             </div>
           </div>
+          <div class="about-content scroll-reveal">
+            <span class="section-subtitle">O Nás</span>
+            <h2 class="section-title">Kde se tradice potkává s moderním luxusem</h2>
+            <p class="section-desc">Pasáž Velvet je oázou klidu a skvělé chuti na rušné třídě Míru v Pardubicích. Náš elegantní, klimatizovaný a nekuřácký interiér poskytuje ideální zázemí pro rodinné oslavy, romantické večeře i pracovní obědy.</p>
 
-          <!-- Main Courses -->
-          <div class="menu-category">
-            <h3 class="category-title"><i class="fa-solid fa-wine-glass"></i> Hlavní chody</h3>
-            <div class="menu-items">
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Hovězí svíčková na smetaně</h4>
-                  <span class="menu-item-price">215 Kč</span>
+            <div class="features-grid">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+                <div class="feature-text">
+                  <h3>Letní zahrádka</h3>
+                  <p>Útulné venkovní posezení ve stínu, ideální pro horké letní dny a večery.</p>
                 </div>
-                <p class="menu-item-description">150g špikované hovězí pečeně v tradiční smetanové omáčce, podávaná s domácím karlovarským knedlíkem a brusinkovým terčem se šlehačkou.</p>
               </div>
-
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Grilovaný flank steak</h4>
-                  <span class="menu-item-price">325 Kč</span>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-kitchen-set"></i></div>
+                <div class="feature-text">
+                  <h3>Špičková kuchyně</h3>
+                  <p>Připravujeme jídla z čerstvých lokálních surovin s důrazem na kvalitu a detail.</p>
                 </div>
-                <p class="menu-item-description">200g prémiového flank steaku s omáčkou ze zeleného pepře, podávaný s restovanými fazolkami se slaninou a česnekem.</p>
               </div>
-
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Smažený sýr Gouda</h4>
-                  <span class="menu-item-price">175 Kč</span>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-child"></i></div>
+                <div class="feature-text">
+                  <h3>Dětský koutek</h3>
+                  <p>Zázemí pro rodiny s dětmi, aby si u nás odpočinuli malí i velcí návštěvníci.</p>
                 </div>
-                <p class="menu-item-description">120g smaženého sýru Gouda (48% t.v.s.) v křupavé trojobalu, podávaný s hranolky a naší domácí tatarskou omáčkou.</p>
               </div>
-            </div>
-          </div>
-
-          <!-- Desserts -->
-          <div class="menu-category">
-            <h3 class="category-title"><i class="fa-solid fa-ice-cream"></i> Dezerty</h3>
-            <div class="menu-items">
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Tradiční jablečný závin</h4>
-                  <span class="menu-item-price">95 Kč</span>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                <div class="feature-text">
+                  <h3>Klimatizace & Wi-Fi</h3>
+                  <p>Moderní, komfortní prostředí s rychlým internetem a příjemnou teplotou.</p>
                 </div>
-                <p class="menu-item-description">Teplý domácí štrúdl s vlašskými ořechy a rozinkami, kopeček pravé vanilkové zmrzliny a šlehačka.</p>
-              </div>
-
-              <div class="menu-item-card">
-                <div class="menu-item-header">
-                  <h4 class="menu-item-name">Čokoládový fondant</h4>
-                  <span class="menu-item-price">120 Kč</span>
-                </div>
-                <p class="menu-item-description">Belgický čokoládový koláček s tekutým středem, přelitý horkou malinovou omáčkou.</p>
               </div>
             </div>
           </div>
@@ -504,5 +473,7 @@
     <!-- Main JavaScript Entry -->
     <script type="module" src="/main.js"></script>
     <script type="module" src="/daily-menu-public.js"></script>
+    <script type="module" src="/catalog-menus-public.js"></script>
+    <script type="module" src="/news-public.js"></script>
   </body>
 </html>

@@ -27,6 +27,10 @@ export const FUNCTIONS_REGION = 'europe-west1';
 // Kolekce denních menu (id dokumentu = datum "YYYY-MM-DD").
 export const MENU_COLLECTION = 'dailyMenus';
 
+// Veřejný obsah upravovaný z administrace.
+export const SITE_CONTENT_COLLECTION = 'siteContent';
+export const HOMEPAGE_CONTENT_DOC = 'homepage';
+
 // Platformy pro automatický export.
 export const SYNC_PLATFORMS = ['foodora', 'wolt', 'menicka'];
 
