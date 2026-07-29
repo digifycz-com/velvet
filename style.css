@@ -1306,71 +1306,90 @@ a {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
   margin-top: 50px;
 }
 
+/* Dlaždice = jeden pokrm. Bez popisku – při najetí se fotka jen přiblíží. */
 .gallery-item {
   position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
   border-radius: 4px;
   overflow: hidden;
-  height: 280px;
+  aspect-ratio: 1;
   cursor: pointer;
+  background: none;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: var(--transition-smooth);
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
   transition: var(--transition-slow);
 }
 
-.gallery-overlay {
+.gallery-item:hover,
+.gallery-item:focus-visible {
+  border-color: rgba(201, 169, 110, 0.45);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  outline: none;
+}
+
+.gallery-item:hover img,
+.gallery-item:focus-visible img {
+  transform: scale(1.06);
+}
+
+/* Počet fotek pokrmu – jediné, co dlaždice sděluje. */
+.gallery-count {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(10, 10, 11, 0.8);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(10, 10, 11, 0.62);
+  backdrop-filter: blur(6px);
+  color: var(--clr-gold-light);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
   opacity: 0;
+  transform: translateY(6px);
   transition: var(--transition-smooth);
-  backdrop-filter: blur(4px);
+  pointer-events: none;
 }
 
-.gallery-overlay i {
-  font-size: 1.8rem;
-  color: var(--clr-gold);
-  transform: translateY(15px);
-  transition: var(--transition-smooth);
-}
-
-.gallery-overlay span {
-  font-family: var(--font-serif);
-  font-size: 1.1rem;
-  color: var(--clr-text-primary);
-  transform: translateY(15px);
-  transition: var(--transition-smooth);
-}
-
-.gallery-item:hover img {
-  transform: scale(1.08);
-}
-
-.gallery-item:hover .gallery-overlay {
+.gallery-item:hover .gallery-count,
+.gallery-item:focus-visible .gallery-count {
   opacity: 1;
+  transform: translateY(0);
 }
 
-.gallery-item:hover .gallery-overlay i,
-.gallery-item:hover .gallery-overlay span {
-  transform: translateY(0);
+.gallery-count i {
+  font-size: 0.82rem;
+}
+
+/* Na telefonu se na dlaždici nedá najet myší, takže by se počet fotek nikdy
+   neukázal. Necháme ho vidět natrvalo a podložíme ho jemným stínem, aby byl
+   čitelný i na světlé fotce. */
+@media (max-width: 768px), (hover: none) {
+  .gallery-count {
+    opacity: 1;
+    transform: none;
+    background: rgba(10, 10, 11, 0.7);
+  }
 }
 
 /* --- Lightbox Modal --- */
@@ -1395,9 +1414,20 @@ a {
   opacity: 1;
 }
 
+/* Plocha kolem fotky je klikací – zavírá galerii. */
+.lightbox-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 90px;
+  flex: 1;
+  min-height: 0;
+}
+
 .lightbox-img {
-  max-width: 80%;
-  max-height: 75vh;
+  max-width: 100%;
+  max-height: 68vh;
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
@@ -1411,24 +1441,138 @@ a {
 
 .lightbox-close {
   position: absolute;
-  top: 30px;
+  top: 24px;
   right: 40px;
+  padding: 0;
+  border: none;
+  background: none;
   font-size: 3rem;
+  line-height: 1;
   color: var(--clr-text-secondary);
   cursor: pointer;
   transition: var(--transition-fast);
+  z-index: 2;
 }
 
 .lightbox-close:hover {
   color: var(--clr-gold);
 }
 
+/* Galerie se otevírá s fokusem na křížku – ať to nevypadá jako rámeček navíc. */
+.lightbox-close:focus,
+.lightbox-nav:focus,
+.lightbox-thumb:focus {
+  outline: none;
+}
+
+.lightbox-close:focus-visible,
+.lightbox-nav:focus-visible,
+.lightbox-thumb:focus-visible {
+  outline: 2px solid var(--clr-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Listování mezi fotkami jednoho pokrmu. */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background: rgba(10, 10, 11, 0.55);
+  backdrop-filter: blur(6px);
+  color: var(--clr-text-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  z-index: 2;
+}
+
+.lightbox-nav:hover {
+  background: rgba(201, 169, 110, 0.9);
+  border-color: transparent;
+  color: var(--clr-bg-primary);
+}
+
+.lightbox-nav[hidden] {
+  display: none;
+}
+
+.lightbox-nav.prev { left: 24px; }
+.lightbox-nav.next { right: 24px; }
+
+.lightbox-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 0 20px;
+  text-align: center;
+}
+
 .lightbox-caption {
-  margin-top: 20px;
   font-family: var(--font-serif);
   font-size: 1.2rem;
   color: var(--clr-gold-light);
   letter-spacing: 0.05em;
+}
+
+.lightbox-counter {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--clr-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.lightbox-strip {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 0 20px 4px;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.lightbox-strip:empty {
+  display: none;
+}
+
+.lightbox-thumb {
+  flex: 0 0 auto;
+  width: 62px;
+  height: 62px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  overflow: hidden;
+  background: none;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: var(--transition-fast);
+}
+
+.lightbox-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lightbox-thumb:hover {
+  opacity: 0.8;
+}
+
+.lightbox-thumb.active {
+  opacity: 1;
+  border-color: var(--clr-gold);
 }
 
 /* --- Contact & Location Section --- */
@@ -1848,9 +1992,16 @@ a {
   }
   
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
-  
+
+  .lightbox-stage {
+    padding: 0 70px;
+  }
+
+  .lightbox-nav.prev { left: 12px; }
+  .lightbox-nav.next { right: 12px; }
+
   .reservation-card {
     padding: 40px 30px;
   }
@@ -1917,9 +2068,50 @@ a {
   }
   
   .gallery-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
-  
+
+  /* Na mobilu se listuje hlavně prstem, šipky by překrývaly fotku. */
+  .lightbox-stage {
+    padding: 0 12px;
+  }
+
+  .lightbox-nav {
+    width: 42px;
+    height: 42px;
+  }
+
+  .lightbox-nav.prev { left: 6px; }
+  .lightbox-nav.next { right: 6px; }
+
+  .lightbox-close {
+    top: 12px;
+    right: 18px;
+    font-size: 2.4rem;
+  }
+
+  .lightbox-img {
+    max-height: 60vh;
+  }
+
+  /* Na úzké obrazovce se název zalomí – počítadlo patří pod něj, ne vedle. */
+  .lightbox-meta {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .lightbox-caption {
+    font-size: 1.05rem;
+  }
+
+  .lightbox-thumb {
+    width: 48px;
+    height: 48px;
+  }
+
   .footer-container {
     grid-template-columns: 1fr;
     gap: 40px;

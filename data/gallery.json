@@ -1,47 +1,505 @@
 {
-  "lastUpdated": "2026-06-14T16:00:00+02:00",
+  "lastUpdated": "2026-07-29T19:30:00+02:00",
   "images": [
     {
-      "id": "img-001",
-      "src": "/images/kulajda.jpg",
-      "alt": "Tradiční krémová kulajda s pošírovaným vejcem",
-      "caption": "Poctivá kulajda s vejcem",
+      "id": "pastika-01",
+      "src": "/images/gallery/full/velvet-02.webp",
+      "thumb": "/images/gallery/thumb/velvet-02.webp",
+      "alt": "Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem",
+      "caption": "Paštika z kuřecích jater",
+      "group": "pastika",
+      "groupTitle": "Paštika z kuřecích jater",
       "order": 1
     },
     {
-      "id": "img-002",
-      "src": "/images/peas_cream.jpg",
-      "alt": "Jemný hráškový krém s krutonky",
-      "caption": "Hráškový krém s krutonky",
+      "id": "pastika-02",
+      "src": "/images/gallery/full/velvet-01.webp",
+      "thumb": "/images/gallery/thumb/velvet-01.webp",
+      "alt": "Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem",
+      "caption": "Paštika z kuřecích jater",
+      "group": "pastika",
+      "groupTitle": "Paštika z kuřecích jater",
       "order": 2
     },
     {
-      "id": "img-003",
-      "src": "/images/real_burger.jpg",
-      "alt": "Domácí hovězí burger s hranolky",
-      "caption": "Hovězí burger s hranolky",
+      "id": "pastika-03",
+      "src": "/images/gallery/full/velvet-05.webp",
+      "thumb": "/images/gallery/thumb/velvet-05.webp",
+      "alt": "Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem",
+      "caption": "Paštika z kuřecích jater",
+      "group": "pastika",
+      "groupTitle": "Paštika z kuřecích jater",
       "order": 3
     },
     {
-      "id": "img-004",
-      "src": "/images/real_svickova.png",
-      "alt": "Tradiční hovězí svíčková na smetaně",
-      "caption": "Tradiční svíčková na smetaně",
+      "id": "pastika-04",
+      "src": "/images/gallery/full/velvet-03.webp",
+      "thumb": "/images/gallery/thumb/velvet-03.webp",
+      "alt": "Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem",
+      "caption": "Paštika z kuřecích jater",
+      "group": "pastika",
+      "groupTitle": "Paštika z kuřecích jater",
       "order": 4
     },
     {
-      "id": "img-005",
-      "src": "/images/fried_cheese.jpg",
-      "alt": "Smažený sýr Gouda s pažitkovými brambory a tatarkou",
-      "caption": "Smažený sýr Gouda s bramborem",
+      "id": "pastika-05",
+      "src": "/images/gallery/full/velvet-04.webp",
+      "thumb": "/images/gallery/thumb/velvet-04.webp",
+      "alt": "Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem",
+      "caption": "Paštika z kuřecích jater",
+      "group": "pastika",
+      "groupTitle": "Paštika z kuřecích jater",
       "order": 5
     },
     {
-      "id": "img-006",
-      "src": "/images/lemonade.png",
-      "alt": "Domácí malinová limonáda s ledem",
-      "caption": "Domácí malinová limonáda",
+      "id": "pastika-06",
+      "src": "/images/gallery/full/velvet-06.webp",
+      "thumb": "/images/gallery/thumb/velvet-06.webp",
+      "alt": "Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem",
+      "caption": "Paštika z kuřecích jater",
+      "group": "pastika",
+      "groupTitle": "Paštika z kuřecích jater",
       "order": 6
+    },
+    {
+      "id": "koleno-01",
+      "src": "/images/gallery/full/velvet-12.webp",
+      "thumb": "/images/gallery/thumb/velvet-12.webp",
+      "alt": "Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou",
+      "caption": "Grilované vepřové koleno",
+      "group": "koleno",
+      "groupTitle": "Grilované vepřové koleno",
+      "order": 7
+    },
+    {
+      "id": "koleno-02",
+      "src": "/images/gallery/full/velvet-08.webp",
+      "thumb": "/images/gallery/thumb/velvet-08.webp",
+      "alt": "Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou",
+      "caption": "Grilované vepřové koleno",
+      "group": "koleno",
+      "groupTitle": "Grilované vepřové koleno",
+      "order": 8
+    },
+    {
+      "id": "koleno-03",
+      "src": "/images/gallery/full/velvet-11.webp",
+      "thumb": "/images/gallery/thumb/velvet-11.webp",
+      "alt": "Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou",
+      "caption": "Grilované vepřové koleno",
+      "group": "koleno",
+      "groupTitle": "Grilované vepřové koleno",
+      "order": 9
+    },
+    {
+      "id": "koleno-04",
+      "src": "/images/gallery/full/velvet-09.webp",
+      "thumb": "/images/gallery/thumb/velvet-09.webp",
+      "alt": "Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou",
+      "caption": "Grilované vepřové koleno",
+      "group": "koleno",
+      "groupTitle": "Grilované vepřové koleno",
+      "order": 10
+    },
+    {
+      "id": "koleno-05",
+      "src": "/images/gallery/full/velvet-10.webp",
+      "thumb": "/images/gallery/thumb/velvet-10.webp",
+      "alt": "Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou",
+      "caption": "Grilované vepřové koleno",
+      "group": "koleno",
+      "groupTitle": "Grilované vepřové koleno",
+      "order": 11
+    },
+    {
+      "id": "koleno-06",
+      "src": "/images/gallery/full/velvet-13.webp",
+      "thumb": "/images/gallery/thumb/velvet-13.webp",
+      "alt": "Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou",
+      "caption": "Grilované vepřové koleno",
+      "group": "koleno",
+      "groupTitle": "Grilované vepřové koleno",
+      "order": 12
+    },
+    {
+      "id": "koleno-07",
+      "src": "/images/gallery/full/velvet-07.webp",
+      "thumb": "/images/gallery/thumb/velvet-07.webp",
+      "alt": "Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou",
+      "caption": "Grilované vepřové koleno",
+      "group": "koleno",
+      "groupTitle": "Grilované vepřové koleno",
+      "order": 13
+    },
+    {
+      "id": "zebra-01",
+      "src": "/images/gallery/full/velvet-17.webp",
+      "thumb": "/images/gallery/thumb/velvet-17.webp",
+      "alt": "Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami",
+      "caption": "Pečená pikantní žebra Velvet",
+      "group": "zebra",
+      "groupTitle": "Pečená pikantní žebra Velvet",
+      "order": 14
+    },
+    {
+      "id": "zebra-02",
+      "src": "/images/gallery/full/velvet-19.webp",
+      "thumb": "/images/gallery/thumb/velvet-19.webp",
+      "alt": "Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami",
+      "caption": "Pečená pikantní žebra Velvet",
+      "group": "zebra",
+      "groupTitle": "Pečená pikantní žebra Velvet",
+      "order": 15
+    },
+    {
+      "id": "zebra-03",
+      "src": "/images/gallery/full/velvet-14.webp",
+      "thumb": "/images/gallery/thumb/velvet-14.webp",
+      "alt": "Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami",
+      "caption": "Pečená pikantní žebra Velvet",
+      "group": "zebra",
+      "groupTitle": "Pečená pikantní žebra Velvet",
+      "order": 16
+    },
+    {
+      "id": "zebra-04",
+      "src": "/images/gallery/full/velvet-15.webp",
+      "thumb": "/images/gallery/thumb/velvet-15.webp",
+      "alt": "Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami",
+      "caption": "Pečená pikantní žebra Velvet",
+      "group": "zebra",
+      "groupTitle": "Pečená pikantní žebra Velvet",
+      "order": 17
+    },
+    {
+      "id": "zebra-05",
+      "src": "/images/gallery/full/velvet-20.webp",
+      "thumb": "/images/gallery/thumb/velvet-20.webp",
+      "alt": "Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami",
+      "caption": "Pečená pikantní žebra Velvet",
+      "group": "zebra",
+      "groupTitle": "Pečená pikantní žebra Velvet",
+      "order": 18
+    },
+    {
+      "id": "zebra-06",
+      "src": "/images/gallery/full/velvet-16.webp",
+      "thumb": "/images/gallery/thumb/velvet-16.webp",
+      "alt": "Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami",
+      "caption": "Pečená pikantní žebra Velvet",
+      "group": "zebra",
+      "groupTitle": "Pečená pikantní žebra Velvet",
+      "order": 19
+    },
+    {
+      "id": "zebra-07",
+      "src": "/images/gallery/full/velvet-18.webp",
+      "thumb": "/images/gallery/thumb/velvet-18.webp",
+      "alt": "Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami",
+      "caption": "Pečená pikantní žebra Velvet",
+      "group": "zebra",
+      "groupTitle": "Pečená pikantní žebra Velvet",
+      "order": 20
+    },
+    {
+      "id": "trhany-burger-01",
+      "src": "/images/gallery/full/velvet-22.webp",
+      "thumb": "/images/gallery/thumb/velvet-22.webp",
+      "alt": "Trhaný burger v sezamové housce s hranolky a coleslawem",
+      "caption": "Trhaný burger",
+      "group": "trhany-burger",
+      "groupTitle": "Trhaný burger",
+      "order": 21
+    },
+    {
+      "id": "trhany-burger-02",
+      "src": "/images/gallery/full/velvet-21.webp",
+      "thumb": "/images/gallery/thumb/velvet-21.webp",
+      "alt": "Trhaný burger v sezamové housce s hranolky a coleslawem",
+      "caption": "Trhaný burger",
+      "group": "trhany-burger",
+      "groupTitle": "Trhaný burger",
+      "order": 22
+    },
+    {
+      "id": "trhany-burger-03",
+      "src": "/images/gallery/full/velvet-26.webp",
+      "thumb": "/images/gallery/thumb/velvet-26.webp",
+      "alt": "Trhaný burger v sezamové housce s hranolky a coleslawem",
+      "caption": "Trhaný burger",
+      "group": "trhany-burger",
+      "groupTitle": "Trhaný burger",
+      "order": 23
+    },
+    {
+      "id": "trhany-burger-04",
+      "src": "/images/gallery/full/velvet-24.webp",
+      "thumb": "/images/gallery/thumb/velvet-24.webp",
+      "alt": "Trhaný burger v sezamové housce s hranolky a coleslawem",
+      "caption": "Trhaný burger",
+      "group": "trhany-burger",
+      "groupTitle": "Trhaný burger",
+      "order": 24
+    },
+    {
+      "id": "trhany-burger-05",
+      "src": "/images/gallery/full/velvet-25.webp",
+      "thumb": "/images/gallery/thumb/velvet-25.webp",
+      "alt": "Trhaný burger v sezamové housce s hranolky a coleslawem",
+      "caption": "Trhaný burger",
+      "group": "trhany-burger",
+      "groupTitle": "Trhaný burger",
+      "order": 25
+    },
+    {
+      "id": "trhany-burger-06",
+      "src": "/images/gallery/full/velvet-23.webp",
+      "thumb": "/images/gallery/thumb/velvet-23.webp",
+      "alt": "Trhaný burger v sezamové housce s hranolky a coleslawem",
+      "caption": "Trhaný burger",
+      "group": "trhany-burger",
+      "groupTitle": "Trhaný burger",
+      "order": 26
+    },
+    {
+      "id": "klasik-burger-01",
+      "src": "/images/gallery/full/velvet-28.webp",
+      "thumb": "/images/gallery/thumb/velvet-28.webp",
+      "alt": "Klasik burger s cheddarem, slaninou a hranolky",
+      "caption": "Klasik burger",
+      "group": "klasik-burger",
+      "groupTitle": "Klasik burger",
+      "order": 27
+    },
+    {
+      "id": "klasik-burger-02",
+      "src": "/images/gallery/full/velvet-27.webp",
+      "thumb": "/images/gallery/thumb/velvet-27.webp",
+      "alt": "Klasik burger s cheddarem, slaninou a hranolky",
+      "caption": "Klasik burger",
+      "group": "klasik-burger",
+      "groupTitle": "Klasik burger",
+      "order": 28
+    },
+    {
+      "id": "klasik-burger-03",
+      "src": "/images/gallery/full/velvet-29.webp",
+      "thumb": "/images/gallery/thumb/velvet-29.webp",
+      "alt": "Klasik burger s cheddarem, slaninou a hranolky",
+      "caption": "Klasik burger",
+      "group": "klasik-burger",
+      "groupTitle": "Klasik burger",
+      "order": 29
+    },
+    {
+      "id": "klasik-burger-04",
+      "src": "/images/gallery/full/velvet-31.webp",
+      "thumb": "/images/gallery/thumb/velvet-31.webp",
+      "alt": "Klasik burger s cheddarem, slaninou a hranolky",
+      "caption": "Klasik burger",
+      "group": "klasik-burger",
+      "groupTitle": "Klasik burger",
+      "order": 30
+    },
+    {
+      "id": "klasik-burger-05",
+      "src": "/images/gallery/full/velvet-33.webp",
+      "thumb": "/images/gallery/thumb/velvet-33.webp",
+      "alt": "Klasik burger s cheddarem, slaninou a hranolky",
+      "caption": "Klasik burger",
+      "group": "klasik-burger",
+      "groupTitle": "Klasik burger",
+      "order": 31
+    },
+    {
+      "id": "klasik-burger-06",
+      "src": "/images/gallery/full/velvet-30.webp",
+      "thumb": "/images/gallery/thumb/velvet-30.webp",
+      "alt": "Klasik burger s cheddarem, slaninou a hranolky",
+      "caption": "Klasik burger",
+      "group": "klasik-burger",
+      "groupTitle": "Klasik burger",
+      "order": 32
+    },
+    {
+      "id": "klasik-burger-07",
+      "src": "/images/gallery/full/velvet-32.webp",
+      "thumb": "/images/gallery/thumb/velvet-32.webp",
+      "alt": "Klasik burger s cheddarem, slaninou a hranolky",
+      "caption": "Klasik burger",
+      "group": "klasik-burger",
+      "groupTitle": "Klasik burger",
+      "order": 33
+    },
+    {
+      "id": "krkovice-01",
+      "src": "/images/gallery/full/velvet-40.webp",
+      "thumb": "/images/gallery/thumb/velvet-40.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 34
+    },
+    {
+      "id": "krkovice-02",
+      "src": "/images/gallery/full/velvet-36.webp",
+      "thumb": "/images/gallery/thumb/velvet-36.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 35
+    },
+    {
+      "id": "krkovice-03",
+      "src": "/images/gallery/full/velvet-37.webp",
+      "thumb": "/images/gallery/thumb/velvet-37.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 36
+    },
+    {
+      "id": "krkovice-04",
+      "src": "/images/gallery/full/velvet-38.webp",
+      "thumb": "/images/gallery/thumb/velvet-38.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 37
+    },
+    {
+      "id": "krkovice-05",
+      "src": "/images/gallery/full/velvet-34.webp",
+      "thumb": "/images/gallery/thumb/velvet-34.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 38
+    },
+    {
+      "id": "krkovice-06",
+      "src": "/images/gallery/full/velvet-35.webp",
+      "thumb": "/images/gallery/thumb/velvet-35.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 39
+    },
+    {
+      "id": "krkovice-07",
+      "src": "/images/gallery/full/velvet-39.webp",
+      "thumb": "/images/gallery/thumb/velvet-39.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 40
+    },
+    {
+      "id": "krkovice-08",
+      "src": "/images/gallery/full/velvet-41.webp",
+      "thumb": "/images/gallery/thumb/velvet-41.webp",
+      "alt": "Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem",
+      "caption": "Špalek vepřové krkovice v BBQ",
+      "group": "krkovice",
+      "groupTitle": "Špalek vepřové krkovice v BBQ",
+      "order": 41
+    },
+    {
+      "id": "salat-kozi-syr-01",
+      "src": "/images/gallery/full/velvet-42.webp",
+      "thumb": "/images/gallery/thumb/velvet-42.webp",
+      "alt": "Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou",
+      "caption": "Salát s kozím sýrem",
+      "group": "salat-kozi-syr",
+      "groupTitle": "Salát s kozím sýrem",
+      "order": 42
+    },
+    {
+      "id": "salat-kozi-syr-02",
+      "src": "/images/gallery/full/velvet-46.webp",
+      "thumb": "/images/gallery/thumb/velvet-46.webp",
+      "alt": "Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou",
+      "caption": "Salát s kozím sýrem",
+      "group": "salat-kozi-syr",
+      "groupTitle": "Salát s kozím sýrem",
+      "order": 43
+    },
+    {
+      "id": "salat-kozi-syr-03",
+      "src": "/images/gallery/full/velvet-43.webp",
+      "thumb": "/images/gallery/thumb/velvet-43.webp",
+      "alt": "Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou",
+      "caption": "Salát s kozím sýrem",
+      "group": "salat-kozi-syr",
+      "groupTitle": "Salát s kozím sýrem",
+      "order": 44
+    },
+    {
+      "id": "salat-kozi-syr-04",
+      "src": "/images/gallery/full/velvet-45.webp",
+      "thumb": "/images/gallery/thumb/velvet-45.webp",
+      "alt": "Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou",
+      "caption": "Salát s kozím sýrem",
+      "group": "salat-kozi-syr",
+      "groupTitle": "Salát s kozím sýrem",
+      "order": 45
+    },
+    {
+      "id": "salat-kozi-syr-05",
+      "src": "/images/gallery/full/velvet-47.webp",
+      "thumb": "/images/gallery/thumb/velvet-47.webp",
+      "alt": "Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou",
+      "caption": "Salát s kozím sýrem",
+      "group": "salat-kozi-syr",
+      "groupTitle": "Salát s kozím sýrem",
+      "order": 46
+    },
+    {
+      "id": "salat-kozi-syr-06",
+      "src": "/images/gallery/full/velvet-44.webp",
+      "thumb": "/images/gallery/thumb/velvet-44.webp",
+      "alt": "Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou",
+      "caption": "Salát s kozím sýrem",
+      "group": "salat-kozi-syr",
+      "groupTitle": "Salát s kozím sýrem",
+      "order": 47
+    },
+    {
+      "id": "bbq-talir-01",
+      "src": "/images/gallery/full/velvet-49.webp",
+      "thumb": "/images/gallery/thumb/velvet-49.webp",
+      "alt": "Trhaný BBQ talíř s hranolky, cheddarem, slaninou a jalapeños",
+      "caption": "Trhaný BBQ talíř",
+      "group": "bbq-talir",
+      "groupTitle": "Trhaný BBQ talíř",
+      "order": 48
+    },
+    {
+      "id": "bbq-talir-02",
+      "src": "/images/gallery/full/velvet-48.webp",
+      "thumb": "/images/gallery/thumb/velvet-48.webp",
+      "alt": "Trhaný BBQ talíř s hranolky, cheddarem, slaninou a jalapeños",
+      "caption": "Trhaný BBQ talíř",
+      "group": "bbq-talir",
+      "groupTitle": "Trhaný BBQ talíř",
+      "order": 49
+    },
+    {
+      "id": "bbq-talir-03",
+      "src": "/images/gallery/full/velvet-50.webp",
+      "thumb": "/images/gallery/thumb/velvet-50.webp",
+      "alt": "Trhaný BBQ talíř s hranolky, cheddarem, slaninou a jalapeños",
+      "caption": "Trhaný BBQ talíř",
+      "group": "bbq-talir",
+      "groupTitle": "Trhaný BBQ talíř",
+      "order": 50
     }
   ]
 }

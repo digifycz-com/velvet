@@ -303,58 +303,62 @@
           <p class="section-desc max-width-600 mx-auto">Prohlédněte si naše kulinářské výtvory, jedinečnou atmosféru naší restaurace i útulnou letní zahrádku.</p>
         </div>
 
+        <!-- Jedna dlaždice = jeden pokrm. data-photos drží všechny jeho fotky
+             (plná velikost); náhledy se odvozují záměnou /full/ za /thumb/. -->
         <div class="gallery-grid scroll-reveal">
-          <div class="gallery-item" data-image="/images/kulajda.jpg">
-            <img src="/images/kulajda.jpg" alt="Tradiční krémová kulajda s pošírovaným vejcem" />
-            <div class="gallery-overlay">
-              <i class="fa-solid fa-magnifying-glass-plus"></i>
-              <span>Poctivá kulajda s vejcem</span>
-            </div>
-          </div>
-          <div class="gallery-item" data-image="/images/peas_cream.jpg">
-            <img src="/images/peas_cream.jpg" alt="Jemný hráškový krém s krutonky" />
-            <div class="gallery-overlay">
-              <i class="fa-solid fa-magnifying-glass-plus"></i>
-              <span>Hráškový krém s krutonky</span>
-            </div>
-          </div>
-          <div class="gallery-item" data-image="/images/real_burger.jpg">
-            <img src="/images/real_burger.jpg" alt="Domácí hovězí burger s hranolky" />
-            <div class="gallery-overlay">
-              <i class="fa-solid fa-magnifying-glass-plus"></i>
-              <span>Hovězí burger s hranolky</span>
-            </div>
-          </div>
-          <div class="gallery-item" data-image="/images/real_svickova.png">
-            <img src="/images/real_svickova.png" alt="Tradiční hovězí svíčková na smetaně" />
-            <div class="gallery-overlay">
-              <i class="fa-solid fa-magnifying-glass-plus"></i>
-              <span>Tradiční svíčková na smetaně</span>
-            </div>
-          </div>
-          <div class="gallery-item" data-image="/images/fried_cheese.jpg">
-            <img src="/images/fried_cheese.jpg" alt="Smažený sýr Gouda s pažitkovými brambory a tatarkou" />
-            <div class="gallery-overlay">
-              <i class="fa-solid fa-magnifying-glass-plus"></i>
-              <span>Smažený sýr Gouda s bramborem</span>
-            </div>
-          </div>
-          <div class="gallery-item" data-image="/images/lemonade.png">
-            <img src="/images/lemonade.png" alt="Domácí malinová limonáda s ledem" />
-            <div class="gallery-overlay">
-              <i class="fa-solid fa-magnifying-glass-plus"></i>
-              <span>Domácí malinová limonáda</span>
-            </div>
-          </div>
+          <button type="button" class="gallery-item" data-title="Paštika z kuřecích jater" data-photos="/images/gallery/full/velvet-02.webp,/images/gallery/full/velvet-01.webp,/images/gallery/full/velvet-05.webp,/images/gallery/full/velvet-03.webp,/images/gallery/full/velvet-04.webp,/images/gallery/full/velvet-06.webp">
+            <img src="/images/gallery/thumb/velvet-02.webp" alt="Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>6</span>
+          </button>
+          <button type="button" class="gallery-item" data-title="Grilované vepřové koleno" data-photos="/images/gallery/full/velvet-12.webp,/images/gallery/full/velvet-08.webp,/images/gallery/full/velvet-11.webp,/images/gallery/full/velvet-09.webp,/images/gallery/full/velvet-10.webp,/images/gallery/full/velvet-13.webp,/images/gallery/full/velvet-07.webp">
+            <img src="/images/gallery/thumb/velvet-12.webp" alt="Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou" loading="lazy" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>7</span>
+          </button>
+          <button type="button" class="gallery-item" data-title="Pečená pikantní žebra Velvet" data-photos="/images/gallery/full/velvet-17.webp,/images/gallery/full/velvet-19.webp,/images/gallery/full/velvet-14.webp,/images/gallery/full/velvet-15.webp,/images/gallery/full/velvet-20.webp,/images/gallery/full/velvet-16.webp,/images/gallery/full/velvet-18.webp">
+            <img src="/images/gallery/thumb/velvet-17.webp" alt="Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami" loading="lazy" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>7</span>
+          </button>
+          <button type="button" class="gallery-item" data-title="Trhaný burger" data-photos="/images/gallery/full/velvet-22.webp,/images/gallery/full/velvet-21.webp,/images/gallery/full/velvet-26.webp,/images/gallery/full/velvet-24.webp,/images/gallery/full/velvet-25.webp,/images/gallery/full/velvet-23.webp">
+            <img src="/images/gallery/thumb/velvet-22.webp" alt="Trhaný burger v sezamové housce s hranolky a coleslawem" loading="lazy" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>6</span>
+          </button>
+          <button type="button" class="gallery-item" data-title="Klasik burger" data-photos="/images/gallery/full/velvet-28.webp,/images/gallery/full/velvet-27.webp,/images/gallery/full/velvet-29.webp,/images/gallery/full/velvet-31.webp,/images/gallery/full/velvet-33.webp,/images/gallery/full/velvet-30.webp,/images/gallery/full/velvet-32.webp">
+            <img src="/images/gallery/thumb/velvet-28.webp" alt="Klasik burger s cheddarem, slaninou a hranolky" loading="lazy" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>7</span>
+          </button>
+          <button type="button" class="gallery-item" data-title="Špalek vepřové krkovice v BBQ" data-photos="/images/gallery/full/velvet-40.webp,/images/gallery/full/velvet-36.webp,/images/gallery/full/velvet-37.webp,/images/gallery/full/velvet-38.webp,/images/gallery/full/velvet-34.webp,/images/gallery/full/velvet-35.webp,/images/gallery/full/velvet-39.webp,/images/gallery/full/velvet-41.webp">
+            <img src="/images/gallery/thumb/velvet-40.webp" alt="Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem" loading="lazy" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>8</span>
+          </button>
+          <button type="button" class="gallery-item" data-title="Salát s kozím sýrem" data-photos="/images/gallery/full/velvet-42.webp,/images/gallery/full/velvet-46.webp,/images/gallery/full/velvet-43.webp,/images/gallery/full/velvet-45.webp,/images/gallery/full/velvet-47.webp,/images/gallery/full/velvet-44.webp">
+            <img src="/images/gallery/thumb/velvet-42.webp" alt="Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou" loading="lazy" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>6</span>
+          </button>
+          <button type="button" class="gallery-item" data-title="Trhaný BBQ talíř" data-photos="/images/gallery/full/velvet-49.webp,/images/gallery/full/velvet-48.webp,/images/gallery/full/velvet-50.webp">
+            <img src="/images/gallery/thumb/velvet-49.webp" alt="Trhaný BBQ talíř s hranolky, cheddarem, slaninou a jalapeños" loading="lazy" />
+            <span class="gallery-count"><i class="fa-regular fa-images"></i>3</span>
+          </button>
         </div>
       </div>
     </section>
 
     <!-- Lightbox Modal for Gallery -->
-    <div class="lightbox" id="lightbox">
-      <span class="lightbox-close">&times;</span>
-      <img class="lightbox-img" id="lightbox-img" src="" alt="Zvětšený náhled" />
-      <div class="lightbox-caption" id="lightbox-caption"></div>
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Fotogalerie">
+      <button type="button" class="lightbox-close" aria-label="Zavřít galerii">&times;</button>
+      <button type="button" class="lightbox-nav prev" id="lightbox-prev" aria-label="Předchozí fotografie">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button type="button" class="lightbox-nav next" id="lightbox-next" aria-label="Další fotografie">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+      <div class="lightbox-stage">
+        <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+      </div>
+      <div class="lightbox-meta">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+        <div class="lightbox-counter" id="lightbox-counter" aria-live="polite"></div>
+      </div>
+      <div class="lightbox-strip" id="lightbox-strip"></div>
     </div>
 
     <!-- Contact & Map Section -->
