@@ -36,7 +36,11 @@ function formatDateLabel(day) {
 
 function groupByCategory(items) {
   const groups = {};
-  for (const it of items || []) (groups[it.category] ||= []).push(it);
+  for (const it of items || []) {
+    // Prázdné řádky z importu (jen cena, bez názvu) do veřejného menu nepatří.
+    if (!it?.name || !String(it.name).trim()) continue;
+    (groups[it.category] ||= []).push(it);
+  }
   return groups;
 }
 
