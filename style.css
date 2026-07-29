@@ -2151,46 +2151,6 @@ a {
   column-gap: 64px;
 }
 
-/* Rychlá navigace kategorií – přes všechny sloupce nad výpisem. */
-.catalog-nav {
-  column-span: all;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 30px;
-}
-
-.catalog-nav-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 15px;
-  border-radius: 999px;
-  border: 1px solid rgba(197, 168, 128, 0.18);
-  background: rgba(255, 255, 255, 0.02);
-  color: var(--clr-text-secondary);
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: var(--transition-fast);
-}
-
-.catalog-nav-chip i {
-  font-size: 0.75rem;
-  color: var(--clr-gold);
-  opacity: 0.75;
-}
-
-.catalog-nav-chip:hover {
-  border-color: var(--clr-gold);
-  background: rgba(197, 168, 128, 0.1);
-  color: var(--clr-text-primary);
-}
-
-.catalog-nav-chip:hover i { opacity: 1; }
-
 .catalog-category {
   min-width: 0;
   /* inline-block + width kvůli spolehlivému zalomení sloupců v Safari */

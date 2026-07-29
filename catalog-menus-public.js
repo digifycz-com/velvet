@@ -57,25 +57,11 @@ function anchorId(containerId, category, index) {
   return `${containerId}-${slug}`;
 }
 
-/* Rychlá navigace – u 13 kategorií je scrollování k „Teplým nápojům“ utrpení. */
-function navHTML(containerId, categories) {
-  const links = categories.map((category, index) => {
-    if (!category.items.some((item) => item?.name)) return '';
-    return `
-      <a class="catalog-nav-chip" href="#${anchorId(containerId, category, index)}">
-        <i class="fa-solid ${ICONS[category.id] || 'fa-utensils'}" aria-hidden="true"></i>
-        ${esc(category.title)}
-      </a>`;
-  }).join('');
-  if (!links.trim()) return '';
-  return `<nav class="catalog-nav" aria-label="Přejít na kategorii">${links}</nav>`;
-}
-
 function renderMenu(containerId, categories) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  container.innerHTML = navHTML(containerId, categories) + categories.map((category, index) => {
+  container.innerHTML = categories.map((category, index) => {
     const items = category.items.filter((item) => item?.name);
     if (!items.length) return '';
     const icon = ICONS[category.id] || 'fa-utensils';
