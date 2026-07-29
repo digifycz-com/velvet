@@ -37,11 +37,7 @@ const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_R
 
 // --- State ---
 let currentMenuData = null;
-let currentGalleryData = null;
-let stagedFiles = []; // Files ready to upload
-let editingImageId = null;
 let menuDirty = false;
-let galleryDirty = false;
 
 // ==========================================================================
 // UTILITIES
@@ -91,9 +87,6 @@ function hideLoading() {
   if (overlay) overlay.remove();
 }
 
-function generateId() {
-  return 'img-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-}
 
 // ==========================================================================
 // GITHUB API
@@ -143,62 +136,6 @@ async function githubPut(path, content, message, sha = null) {
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || `GitHub PUT error: ${res.status}`);
-  }
-
-  return res.json();
-}
-
-async function githubPutBinary(path, base64Data, message, sha = null) {
-  const token = getGithubToken();
-  if (!token) throw new Error('GitHub token není nastaven');
-
-  const body = {
-    message,
-    content: base64Data,
-    branch: GITHUB_BRANCH
-  };
-
-  if (sha) body.sha = sha;
-
-  const res = await fetch(`${GITHUB_API_BASE}/contents/${path}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || `GitHub upload error: ${res.status}`);
-  }
-
-  return res.json();
-}
-
-async function githubDelete(path, sha, message) {
-  const token = getGithubToken();
-  if (!token) throw new Error('GitHub token není nastaven');
-
-  const res = await fetch(`${GITHUB_API_BASE}/contents/${path}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      message,
-      sha,
-      branch: GITHUB_BRANCH
-    })
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || `GitHub DELETE error: ${res.status}`);
   }
 
   return res.json();
@@ -291,7 +228,9 @@ if (AUTH_ENABLED) {
     if (user) {
       loginScreen.style.display = 'none';
       dashboard.style.display = 'block';
-      document.getElementById('admin-user-email').textContent = user.email || 'administrátor';
+      // Přihlašuje se heslem pod jedním společným účtem (ADMIN_UID), takže
+      // e-mail z Auth záznamu neříká, kdo je právě přihlášený – neukazujeme ho.
+      document.getElementById('admin-user-email').textContent = 'administrátor';
       initDashboard();
     } else {
       loginScreen.style.display = 'flex';
@@ -325,7 +264,6 @@ function initDashboard() {
 
 function enableSaveButtons(enabled) {
   document.getElementById('save-menu-btn').disabled = !enabled;
-  document.getElementById('save-gallery-btn').disabled = !enabled;
 }
 
 // ==========================================================================
@@ -353,7 +291,7 @@ function setupTabs() {
 
 async function loadAllData() {
   try {
-    await Promise.all([loadMenuData(), loadGalleryData()]);
+    await loadMenuData();
   } catch (err) {
     console.error('Error loading data:', err);
     showToast('Chyba při načítání dat: ' + err.message, 'error');
@@ -382,31 +320,6 @@ async function loadMenuData() {
       }
     } catch (localErr) {
       showToast('Chyba při načítání menu.', 'error');
-    }
-  }
-}
-
-async function loadGalleryData() {
-  try {
-    const result = await loadJsonFromGithub('data/gallery.json');
-    if (result) {
-      currentGalleryData = result.data;
-      renderGalleryAdmin();
-      showToast('Galerie načtena.', 'success');
-    } else {
-      showToast('Soubor gallery.json nebyl nalezen.', 'error');
-    }
-  } catch (err) {
-    console.error('Error loading gallery:', err);
-    try {
-      const res = await fetch('/data/gallery.json');
-      if (res.ok) {
-        currentGalleryData = await res.json();
-        renderGalleryAdmin();
-        showToast('Galerie načtena (lokálně).', 'info');
-      }
-    } catch (localErr) {
-      showToast('Chyba při načítání galerie.', 'error');
     }
   }
 }
@@ -538,7 +451,9 @@ document.getElementById('save-menu-btn')?.addEventListener('click', async () => 
   }));
 
   currentMenuData.lastUpdated = new Date().toISOString();
-  currentMenuData.updatedBy = auth.currentUser?.email || 'admin';
+  // Společný účet, takže e-mail nikoho neidentifikuje – navíc by se zapsal
+  // do menu.json ve veřejném repozitáři.
+  currentMenuData.updatedBy = 'admin';
 
   showLoading('Ukládání menu...');
 
@@ -554,328 +469,3 @@ document.getElementById('save-menu-btn')?.addEventListener('click', async () => 
   }
 });
 
-// ==========================================================================
-// GALLERY MANAGER
-// ==========================================================================
-
-function renderGalleryAdmin() {
-  if (!currentGalleryData) return;
-
-  const grid = document.getElementById('gallery-admin-grid');
-  const emptyState = document.getElementById('gallery-empty');
-  const images = currentGalleryData.images || [];
-
-  if (images.length === 0) {
-    grid.style.display = 'none';
-    emptyState.style.display = 'block';
-    return;
-  }
-
-  grid.style.display = 'grid';
-  emptyState.style.display = 'none';
-
-  // Sort by order
-  images.sort((a, b) => a.order - b.order);
-
-  grid.innerHTML = images.map(img => `
-    <div class="gallery-admin-item" data-id="${img.id}">
-      <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy" />
-      <div class="gallery-admin-overlay">
-        <span class="gallery-admin-caption">${escapeHtml(img.caption)}</span>
-        <div class="gallery-admin-actions">
-          <button class="gallery-action-btn edit" data-id="${img.id}" title="Upravit">
-            <i class="fa-solid fa-pen"></i>
-          </button>
-          <button class="gallery-action-btn delete" data-id="${img.id}" title="Smazat">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  // Attach event listeners
-  grid.querySelectorAll('.gallery-action-btn.edit').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openEditModal(btn.dataset.id);
-    });
-  });
-
-  grid.querySelectorAll('.gallery-action-btn.delete').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      deleteGalleryImage(btn.dataset.id);
-    });
-  });
-}
-
-// --- Upload Zone ---
-const uploadZone = document.getElementById('upload-zone');
-const fileInput = document.getElementById('file-input');
-
-if (uploadZone && fileInput) {
-  uploadZone.addEventListener('click', () => fileInput.click());
-
-  uploadZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadZone.classList.add('drag-over');
-  });
-
-  uploadZone.addEventListener('dragleave', () => {
-    uploadZone.classList.remove('drag-over');
-  });
-
-  uploadZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadZone.classList.remove('drag-over');
-    handleFiles(e.dataTransfer.files);
-  });
-
-  fileInput.addEventListener('change', () => {
-    handleFiles(fileInput.files);
-    fileInput.value = '';
-  });
-}
-
-function handleFiles(fileList) {
-  const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-  const maxSize = 5 * 1024 * 1024; // 5MB
-
-  for (const file of fileList) {
-    if (!validTypes.includes(file.type)) {
-      showToast(`${file.name}: Nepodporovaný formát.`, 'error');
-      continue;
-    }
-    if (file.size > maxSize) {
-      showToast(`${file.name}: Příliš velký soubor (max 5 MB).`, 'error');
-      continue;
-    }
-    stagedFiles.push(file);
-  }
-
-  renderUploadPreview();
-}
-
-function renderUploadPreview() {
-  const card = document.getElementById('upload-preview-card');
-  const grid = document.getElementById('upload-preview-grid');
-
-  if (stagedFiles.length === 0) {
-    card.style.display = 'none';
-    return;
-  }
-
-  card.style.display = 'block';
-  grid.innerHTML = '';
-
-  stagedFiles.forEach((file, index) => {
-    const item = document.createElement('div');
-    item.className = 'upload-preview-item';
-
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
-    img.alt = file.name;
-
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'upload-preview-remove';
-    removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-    removeBtn.addEventListener('click', () => {
-      stagedFiles.splice(index, 1);
-      renderUploadPreview();
-    });
-
-    item.appendChild(img);
-    item.appendChild(removeBtn);
-    grid.appendChild(item);
-  });
-}
-
-// Cancel upload
-document.getElementById('cancel-upload-btn')?.addEventListener('click', () => {
-  stagedFiles = [];
-  renderUploadPreview();
-});
-
-// Confirm upload
-document.getElementById('confirm-upload-btn')?.addEventListener('click', async () => {
-  if (stagedFiles.length === 0) return;
-  if (!getGithubToken()) {
-    showToast('Nejprve nastavte GitHub token.', 'error');
-    return;
-  }
-
-  showLoading(`Nahrávání ${stagedFiles.length} fotografií...`);
-
-  try {
-    const maxOrder = currentGalleryData?.images?.length
-      ? Math.max(...currentGalleryData.images.map(i => i.order))
-      : 0;
-
-    for (let i = 0; i < stagedFiles.length; i++) {
-      const file = stagedFiles[i];
-      const ext = file.name.split('.').pop().toLowerCase();
-      const fileName = `gallery_${Date.now()}_${i}.${ext}`;
-      const filePath = `public/images/gallery/${fileName}`;
-
-      // Read file as base64
-      const base64 = await fileToBase64(file);
-
-      // Upload to GitHub
-      await githubPutBinary(filePath, base64, `Přidání fotografie: ${fileName}`);
-
-      // Add to gallery data
-      if (!currentGalleryData) {
-        currentGalleryData = { lastUpdated: new Date().toISOString(), images: [] };
-      }
-
-      currentGalleryData.images.push({
-        id: generateId(),
-        src: `/images/gallery/${fileName}`,
-        alt: file.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' '),
-        caption: file.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' '),
-        order: maxOrder + i + 1
-      });
-    }
-
-    // Save updated gallery.json
-    currentGalleryData.lastUpdated = new Date().toISOString();
-    await saveJsonToGithub('data/gallery.json', currentGalleryData, `Přidání ${stagedFiles.length} fotografií do galerie`);
-
-    showToast(`${stagedFiles.length} fotografií úspěšně nahráno!`, 'success');
-    stagedFiles = [];
-    renderUploadPreview();
-    renderGalleryAdmin();
-    galleryDirty = false;
-  } catch (err) {
-    console.error('Upload error:', err);
-    showToast('Chyba při nahrávání: ' + err.message, 'error');
-  } finally {
-    hideLoading();
-  }
-});
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      // Remove the data:... prefix
-      const base64 = reader.result.split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-// --- Delete Gallery Image ---
-async function deleteGalleryImage(imageId) {
-  if (!confirm('Opravdu chcete smazat tuto fotografii?')) return;
-  if (!getGithubToken()) {
-    showToast('Nejprve nastavte GitHub token.', 'error');
-    return;
-  }
-
-  const image = currentGalleryData.images.find(i => i.id === imageId);
-  if (!image) return;
-
-  showLoading('Mazání fotografie...');
-
-  try {
-    // Try to delete the actual image file from GitHub
-    const imagePath = image.src.startsWith('/') ? 'public' + image.src : image.src;
-    const fileInfo = await githubGet(imagePath);
-    if (fileInfo) {
-      await githubDelete(imagePath, fileInfo.sha, `Smazání fotografie: ${image.caption}`);
-    }
-
-    // Remove from gallery data
-    currentGalleryData.images = currentGalleryData.images.filter(i => i.id !== imageId);
-    currentGalleryData.lastUpdated = new Date().toISOString();
-
-    // Save updated gallery.json
-    await saveJsonToGithub('data/gallery.json', currentGalleryData, `Smazání fotografie: ${image.caption}`);
-
-    showToast('Fotografie smazána.', 'success');
-    renderGalleryAdmin();
-  } catch (err) {
-    console.error('Delete error:', err);
-    showToast('Chyba při mazání: ' + err.message, 'error');
-  } finally {
-    hideLoading();
-  }
-}
-
-// --- Edit Image Modal ---
-const editModal = document.getElementById('edit-image-modal');
-
-function openEditModal(imageId) {
-  editingImageId = imageId;
-  const image = currentGalleryData.images.find(i => i.id === imageId);
-  if (!image) return;
-
-  document.getElementById('edit-modal-img').src = image.src;
-  document.getElementById('edit-img-caption').value = image.caption || '';
-  document.getElementById('edit-img-alt').value = image.alt || '';
-  editModal.style.display = 'flex';
-}
-
-function closeEditModal() {
-  editModal.style.display = 'none';
-  editingImageId = null;
-}
-
-document.getElementById('close-edit-modal')?.addEventListener('click', closeEditModal);
-document.getElementById('cancel-edit-modal')?.addEventListener('click', closeEditModal);
-
-editModal?.addEventListener('click', (e) => {
-  if (e.target === editModal) closeEditModal();
-});
-
-document.getElementById('save-edit-modal')?.addEventListener('click', () => {
-  if (!editingImageId) return;
-
-  const image = currentGalleryData.images.find(i => i.id === editingImageId);
-  if (!image) return;
-
-  image.caption = document.getElementById('edit-img-caption').value.trim();
-  image.alt = document.getElementById('edit-img-alt').value.trim();
-
-  renderGalleryAdmin();
-  closeEditModal();
-  galleryDirty = true;
-  showToast('Popisek upraven. Nezapomeňte uložit galerii.', 'info');
-});
-
-// Save gallery button
-document.getElementById('save-gallery-btn')?.addEventListener('click', async () => {
-  if (!currentGalleryData || !getGithubToken()) return;
-
-  currentGalleryData.lastUpdated = new Date().toISOString();
-
-  showLoading('Ukládání galerie...');
-
-  try {
-    await saveJsonToGithub('data/gallery.json', currentGalleryData, `Aktualizace galerie – ${new Date().toLocaleDateString('cs-CZ')}`);
-    showToast('Galerie úspěšně uložena!', 'success');
-    galleryDirty = false;
-  } catch (err) {
-    console.error('Save gallery error:', err);
-    showToast('Chyba při ukládání galerie: ' + err.message, 'error');
-  } finally {
-    hideLoading();
-  }
-});
-
-// ==========================================================================
-// KEYBOARD SHORTCUTS
-// ==========================================================================
-
-document.addEventListener('keydown', (e) => {
-  // Escape to close modals
-  if (e.key === 'Escape') {
-    if (editModal.style.display === 'flex') {
-      closeEditModal();
-    }
-  }
-});

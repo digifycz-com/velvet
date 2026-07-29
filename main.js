@@ -25,7 +25,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 2. Sticky Header and Scroll Tracking ---
   const header = document.querySelector('.header');
   const navItems = document.querySelectorAll('.nav-item');
-  const sections = document.querySelectorAll('section');
+
+  // Sledujeme jen sekce, na které navigace opravdu vede. Uvnitř jídelních
+  // lístků jsou další <section> pro kotvy kategorií – ty jsou ve skrytých
+  // tabech, takže mají offsetTop 0 a dřív přepisovaly zvýrazněnou položku.
+  const navTargets = [...navItems]
+    .map(item => document.getElementById(item.getAttribute('href').slice(1)))
+    .filter(Boolean);
+
+  function updateActiveNavItem() {
+    // Sekce jsou v pořadí navigace, takže vyhraje poslední, jejíž začátek
+    // už vyjel nad horní hranu (pod fixní hlavičkou).
+    let current = '';
+    navTargets.forEach(section => {
+      if (section.getBoundingClientRect().top <= 140) {
+        current = section.id;
+      }
+    });
+
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('href').slice(1) === current);
+    });
+  }
 
   window.addEventListener('scroll', () => {
     // Toggle sticky class
@@ -35,23 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
       header.classList.remove('sticky');
     }
 
-    // Scroll tracking active nav links
-    let current = '';
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.clientHeight;
-      if (window.scrollY >= (sectionTop - 120)) {
-        current = section.getAttribute('id');
-      }
-    });
-
-    navItems.forEach(item => {
-      item.classList.remove('active');
-      if (item.getAttribute('href').slice(1) === current) {
-        item.classList.add('active');
-      }
-    });
+    updateActiveNavItem();
   });
+
+  updateActiveNavItem();
 
   // --- 3. Mobile Navigation Menu Toggle ---
   const mobileToggle = document.getElementById('mobile-toggle');

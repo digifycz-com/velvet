@@ -1822,6 +1822,16 @@ a {
   color: var(--clr-text-muted);
 }
 
+/* Kredit autora – globální `a { color: inherit }` by z odkazu udělal
+   nerozeznatelný text, takže mu barvu vracíme. */
+.footer-bottom p a {
+  color: var(--clr-text-secondary);
+}
+
+.footer-bottom p a:hover {
+  color: var(--clr-gold);
+}
+
 /* --- Reveal on Scroll Animation --- */
 .scroll-reveal {
   opacity: 0;
