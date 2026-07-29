@@ -956,49 +956,60 @@ a {
 }
 
 .category-title {
-  font-size: 1.3rem;
-  margin-bottom: 16px;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 18px;
   color: var(--clr-gold);
-  border-bottom: 1px solid rgba(197, 168, 128, 0.15);
-  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(197, 168, 128, 0.22);
+  padding-bottom: 11px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
 }
 
 .category-title i {
   font-size: 1.05rem;
   color: var(--clr-gold);
+  opacity: 0.8;
 }
 
-/* stretch (výchozí) srovná karty v řádku na stejnou výšku */
 .menu-items {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 12px;
+  column-gap: 52px;
+  row-gap: 18px;
 }
 
-/* Luxury Menu Cards */
+/* Tištěné menu: žádné rámečky, jen řádek název · tečky · cena. */
 .menu-item-card {
-  padding: 14px 18px;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.015);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: var(--transition-smooth);
+  padding: 0;
+  border: 0;
+  background: none;
+  transition: var(--transition-fast);
 }
 
-.menu-item-card:hover {
-  background-color: rgba(197, 168, 128, 0.03);
-  border-color: rgba(197, 168, 128, 0.22);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+.menu-item-card:hover .menu-item-name {
+  color: var(--clr-gold-light, var(--clr-gold));
 }
 
 .menu-item-header {
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
-  gap: 14px;
+  gap: 10px;
 }
+
+/* tečkovaná linka mezi názvem a cenou */
+.menu-item-header::before {
+  content: '';
+  order: 1;
+  flex: 1 1 auto;
+  min-width: 16px;
+  border-bottom: 1px dotted rgba(197, 168, 128, 0.32);
+}
+
+.menu-item-header .menu-item-name { order: 0; flex: 0 1 auto; }
+.menu-item-header .menu-item-price { order: 2; }
 
 .menu-item-name {
   font-family: var(--font-sans);
@@ -1037,8 +1048,8 @@ a {
 }
 
 .menu-item-price {
-  font-family: var(--font-sans);
-  font-size: 0.98rem;
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
   font-weight: 600;
   color: var(--clr-gold);
   white-space: nowrap;
@@ -1944,7 +1955,8 @@ a {
 .catalog-menu.menu-grid.active {
   display: block;
   columns: 2;
-  column-gap: 26px;
+  /* bez rámečků musí sloupce oddělit mezera, ne linka */
+  column-gap: 64px;
 }
 
 /* Rychlá navigace kategorií – přes všechny sloupce nad výpisem. */
@@ -1992,20 +2004,14 @@ a {
   /* inline-block + width kvůli spolehlivému zalomení sloupců v Safari */
   display: inline-block;
   width: 100%;
-  margin: 0 0 26px;
+  margin: 0 0 38px;
   /* aby kotva neskončila pod lepivou hlavičkou */
   scroll-margin-top: 110px;
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
-  padding: 22px 24px;
-  border: 1px solid rgba(197, 168, 128, 0.12);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.018);
-}
-
-.catalog-category .category-title {
-  margin-bottom: 14px;
-  font-size: 1.2rem;
+  padding: 0;
+  border: 0;
+  background: none;
 }
 
 .catalog-items {
@@ -2083,8 +2089,7 @@ a {
   }
 
   .catalog-category {
-    padding: 20px 18px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   .catalog-item p {
