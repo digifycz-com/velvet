@@ -520,6 +520,17 @@ a {
   padding-top: 5px;
 }
 
+/* Po 16:30 ukazujeme zítřejší nabídku – datum patří pod titulek. */
+.hero-daily-head--stacked {
+  display: block;
+}
+
+.hero-daily-head--stacked .hero-daily-date {
+  display: block;
+  padding-top: 8px;
+  white-space: normal;
+}
+
 .hero-daily-items {
   padding: 8px 0;
 }
@@ -630,6 +641,39 @@ a {
 .hero-daily-empty span {
   color: var(--clr-text-muted);
   font-size: 0.8rem;
+}
+
+/* --- Polední okno (do 16:30 pražského času) ---------------------------------
+   Denní menu je hlavní důvod, proč lidi v tuhle dobu na web chodí, takže
+   karta jde v heru dopředu (vlevo, na mobilu nad tlačítko) a dostane výraznější
+   rám. Po 16:30 (.lunch-tomorrow) zůstává vše na původním místě. */
+.lunch-today .hero-grid {
+  grid-template-columns: minmax(420px, 0.95fr) minmax(0, 1fr);
+}
+
+.lunch-today .hero-daily-card {
+  order: 1;
+  border-color: rgba(197, 168, 128, 0.5);
+  background: rgba(12, 12, 14, 0.9);
+  box-shadow:
+    0 26px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 4px rgba(197, 168, 128, 0.075);
+}
+
+.lunch-today .hero-content {
+  order: 2;
+}
+
+.lunch-today .hero-daily-kicker {
+  color: var(--clr-gold-light);
+}
+
+.lunch-today .hero-daily-head h2 {
+  font-size: 2rem;
+}
+
+.lunch-today .hero-daily-name {
+  font-size: 0.92rem;
 }
 
 /* Mouse Scroll Indicator */
@@ -2348,4 +2392,44 @@ a {
 @media (max-width: 560px) {
   .daily-nav-date { font-size: 1.1rem; }
   .daily-nav-center { min-width: 0; }
+}
+
+/* --- Polední okno na úzkých displejích --------------------------------------
+   Ve stacked layoutu musí karta ležet mezi popiskem a tlačítkem "Rezervovat
+   stůl". display: contents rozpustí .hero-content, takže jeho děti i karta jsou
+   přímo grid items a lze je poskládat pomocí order. */
+@media (max-width: 768px) {
+  .lunch-today .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .lunch-today .hero-content {
+    display: contents;
+  }
+
+  .lunch-today .hero-subtitle,
+  .lunch-today .hero-title,
+  .lunch-today .hero-desc {
+    max-width: 620px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .lunch-today .hero-subtitle { order: 1; }
+  .lunch-today .hero-title { order: 2; }
+
+  .lunch-today .hero-desc {
+    order: 3;
+    margin-bottom: 30px;
+  }
+
+  .lunch-today .hero-daily-card {
+    order: 4;
+    margin: 0 auto 34px;
+  }
+
+  .lunch-today .hero-btns {
+    order: 5;
+  }
 }

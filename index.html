@@ -20,6 +20,74 @@
     
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="/style.css" />
+
+    <!--
+      Okno poledního menu (pražský čas):
+      00:00–16:29  → nabídka na dnešní den, karta je v heru vedoucí prvek
+      16:30–23:59  → nabídka na zítřek, karta zůstává na původním místě
+      Nastavíme třídu na <html> už tady, aby layout nepřeskočil.
+    -->
+    <script>
+      (function () {
+        var TIME_ZONE = 'Europe/Prague';
+        var CUTOVER_MINUTES = 16 * 60 + 30; // 16:30
+
+        function pragueNow() {
+          var parts = new Intl.DateTimeFormat('en-GB', {
+            timeZone: TIME_ZONE,
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false,
+          }).formatToParts(new Date());
+          function get(type) {
+            for (var i = 0; i < parts.length; i++) {
+              if (parts[i].type === type) return parts[i].value;
+            }
+            return '0';
+          }
+          return {
+            date: get('year') + '-' + get('month') + '-' + get('day'),
+            // Některé prohlížeče vrací pro půlnoc "24" místo "00".
+            seconds: (Number(get('hour')) % 24) * 3600
+              + Number(get('minute')) * 60
+              + Number(get('second')),
+          };
+        }
+
+        function shiftISO(iso, days) {
+          var d = new Date(iso + 'T12:00:00Z');
+          d.setUTCDate(d.getUTCDate() + days);
+          return d.toISOString().slice(0, 10);
+        }
+
+        // ?lunch=today / ?lunch=tomorrow slouží k náhledu obou stavů kdykoli.
+        function lunchWindow() {
+          var preview = null;
+          try {
+            preview = new URLSearchParams(window.location.search).get('lunch');
+          } catch (e) { /* starší prohlížeč – náhled prostě nebude */ }
+
+          var now = pragueNow();
+          var cutoverSeconds = CUTOVER_MINUTES * 60;
+          var showTomorrow = preview === 'tomorrow'
+            || (preview !== 'today' && now.seconds >= cutoverSeconds);
+          var nextSwitchSeconds = showTomorrow ? 24 * 3600 : cutoverSeconds;
+
+          var tomorrow = shiftISO(now.date, 1);
+          return {
+            mode: showTomorrow ? 'tomorrow' : 'today',
+            date: showTomorrow ? tomorrow : now.date,
+            today: now.date,
+            tomorrow: tomorrow,
+            // +2 s rezerva, aby timer neskočil o chlup dřív a nepřepnul se zpět
+            msUntilSwitch: (nextSwitchSeconds - now.seconds) * 1000 + 2000,
+          };
+        }
+
+        window.velvetLunchWindow = lunchWindow;
+        document.documentElement.classList.add('lunch-' + lunchWindow().mode);
+      })();
+    </script>
   </head>
   <body>
     <!-- Custom Page Loader -->
@@ -76,10 +144,10 @@
             </div>
           </div>
 
-          <aside class="hero-daily-card scroll-reveal" aria-labelledby="hero-menu-title">
-            <div class="hero-daily-head">
-              <div>
-                <span class="hero-daily-kicker">Dnes podáváme</span>
+          <aside class="hero-daily-card scroll-reveal" id="hero-daily-card" aria-labelledby="hero-menu-title">
+            <div class="hero-daily-head" id="hero-daily-head">
+              <div class="hero-daily-heading" id="hero-daily-heading">
+                <span class="hero-daily-kicker" id="hero-daily-kicker">Dnes podáváme</span>
                 <h2 id="hero-menu-title">Polední menu</h2>
               </div>
               <span class="hero-daily-date" id="hero-daily-date">Načítání…</span>

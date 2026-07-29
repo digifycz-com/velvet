@@ -11,11 +11,34 @@ import { CATEGORY_ORDER, CATEGORY_ICONS, esc } from '/menu-table.js';
 
 let days = [];
 let currentIndex = 0;
+// Jakmile si někdo sám přelistuje den, nepřepisujeme mu volbu v 16:30.
+let userPickedDay = false;
 
 function todayISO() {
   const d = new Date();
   const p = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+function shiftISO(iso, days) {
+  const d = new Date(`${iso}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+/* Okno poledního menu počítá inline skript v <head> index.html (pražský čas,
+   přepnutí v 16:30). Tady ho jen čteme; fallback = dnešní den. */
+function lunchWindow() {
+  const win = window.velvetLunchWindow?.();
+  if (win?.date) return win;
+  const today = todayISO();
+  return {
+    mode: 'today',
+    date: today,
+    today,
+    tomorrow: shiftISO(today, 1),
+    msUntilSwitch: null,
+  };
 }
 
 function formatDateLabel(day) {
@@ -67,7 +90,10 @@ function cardHTML(item, category) {
 
 function navBarHTML() {
   const day = days[currentIndex];
-  const isToday = day && day.date === todayISO();
+  const win = lunchWindow();
+  let badge = '';
+  if (day?.date === win.today) badge = 'Dnes';
+  else if (day?.date === win.tomorrow) badge = 'Zítra';
   const prevDisabled = currentIndex <= 0 ? 'disabled' : '';
   const nextDisabled = currentIndex >= days.length - 1 ? 'disabled' : '';
   return `
@@ -77,7 +103,7 @@ function navBarHTML() {
       </button>
       <div class="daily-nav-center">
         <span class="daily-nav-date">${esc(formatDateLabel(day))}</span>
-        ${isToday ? '<span class="daily-nav-today">Dnes</span>' : ''}
+        ${badge ? `<span class="daily-nav-today">${badge}</span>` : ''}
         <label class="daily-nav-cal" title="Vybrat datum">
           <i class="fa-regular fa-calendar"></i>
           <input type="date" id="daily-date" value="${esc(day?.date || '')}" />
@@ -129,14 +155,15 @@ function render() {
 
 function wireNav() {
   document.getElementById('daily-prev')?.addEventListener('click', () => {
-    if (currentIndex > 0) { currentIndex--; render(); }
+    if (currentIndex > 0) { currentIndex--; userPickedDay = true; render(); }
   });
   document.getElementById('daily-next')?.addEventListener('click', () => {
-    if (currentIndex < days.length - 1) { currentIndex++; render(); }
+    if (currentIndex < days.length - 1) { currentIndex++; userPickedDay = true; render(); }
   });
   document.getElementById('daily-date')?.addEventListener('change', (e) => {
     const target = e.target.value;
     if (!target) return;
+    userPickedDay = true;
     // Přesně, nebo nejbližší následující dostupný den.
     let idx = days.findIndex((d) => d.date === target);
     if (idx === -1) idx = days.findIndex((d) => d.date >= target);
@@ -146,11 +173,13 @@ function wireNav() {
   });
 }
 
+/* Sekce Menu startuje na stejném dni jako karta v heru – tedy po 16:30
+   už na zítřejší nabídce. */
 function pickInitialIndex() {
-  const today = todayISO();
+  const { date } = lunchWindow();
   // days je seřazené vzestupně podle data.
-  let idx = days.findIndex((d) => d.date === today);
-  if (idx === -1) idx = days.findIndex((d) => d.date >= today); // nejbližší budoucí
+  let idx = days.findIndex((d) => d.date === date);
+  if (idx === -1) idx = days.findIndex((d) => d.date >= date); // nejbližší budoucí
   if (idx === -1) idx = days.length - 1; // jinak poslední (nejnovější minulé)
   return Math.max(0, idx);
 }
@@ -181,14 +210,43 @@ function heroMetaHTML(item) {
     </span>`;
 }
 
+/* Přepne texty a umístění karty podle toho, jestli zveme na dnešní oběd,
+   nebo už jen ukazujeme, co bude zítra. */
+function applyLunchMode(mode) {
+  const root = document.documentElement;
+  root.classList.toggle('lunch-today', mode === 'today');
+  root.classList.toggle('lunch-tomorrow', mode === 'tomorrow');
+
+  const kickerEl = document.getElementById('hero-daily-kicker');
+  const titleEl = document.getElementById('hero-menu-title');
+  const headingEl = document.getElementById('hero-daily-heading');
+  const headEl = document.getElementById('hero-daily-head');
+  const dateEl = document.getElementById('hero-daily-date');
+
+  if (kickerEl) {
+    kickerEl.textContent = mode === 'tomorrow' ? 'Zítra podáváme' : 'Dnes podáváme';
+  }
+  if (titleEl) {
+    titleEl.textContent = mode === 'tomorrow' ? 'Polední menu na zítra' : 'Polední menu';
+  }
+  // Po 16:30 patří datum pod titulek, ať je jasné, na který den nabídka je.
+  if (headingEl && headEl && dateEl) {
+    headEl.classList.toggle('hero-daily-head--stacked', mode === 'tomorrow');
+    const target = mode === 'tomorrow' ? headingEl : headEl;
+    if (dateEl.parentElement !== target) target.appendChild(dateEl);
+  }
+}
+
 function renderHeroMenu() {
   const dateEl = document.getElementById('hero-daily-date');
   const itemsEl = document.getElementById('hero-daily-items');
   if (!dateEl || !itemsEl) return;
 
-  const today = todayISO();
-  const day = days.find((item) => item.date === today);
-  dateEl.textContent = new Date(`${today}T12:00:00`).toLocaleDateString('cs-CZ', {
+  const { mode, date } = lunchWindow();
+  applyLunchMode(mode);
+
+  const day = days.find((item) => item.date === date);
+  dateEl.textContent = new Date(`${date}T12:00:00`).toLocaleDateString('cs-CZ', {
     weekday: 'long', day: 'numeric', month: 'numeric',
   });
 
@@ -200,7 +258,7 @@ function renderHeroMenu() {
     itemsEl.innerHTML = `
       <div class="hero-daily-empty">
         <i class="fa-regular fa-calendar-xmark"></i>
-        <p>Dnešní nabídku právě připravujeme.</p>
+        <p>${mode === 'tomorrow' ? 'Zítřejší' : 'Dnešní'} nabídku právě připravujeme.</p>
         <span>Podívejte se prosím později nebo nám zavolejte.</span>
       </div>`;
     return;
@@ -225,9 +283,27 @@ function renderHeroMenu() {
   }).join('');
 }
 
+/* Stránka může zůstat otevřená přes 16:30 nebo přes půlnoc – v ten moment
+   kartu přerenderujeme, ať nikdo nekouká na neaktuální den. */
+function scheduleLunchSwitch() {
+  const { msUntilSwitch } = lunchWindow();
+  if (!msUntilSwitch || msUntilSwitch <= 0) return;
+  // setTimeout nad ~24,8 dne přeteče; tady jde max o 24 h, takže je to v pohodě.
+  window.setTimeout(() => {
+    renderHeroMenu();
+    if (days.length && !userPickedDay) {
+      currentIndex = pickInitialIndex();
+      render();
+    }
+    scheduleLunchSwitch();
+  }, msUntilSwitch);
+}
+
 async function init() {
   const container = document.getElementById('menu-daily');
   if (!container) return;
+
+  scheduleLunchSwitch();
 
   try {
     const q = query(collection(db, MENU_COLLECTION), orderBy('date', 'asc'));
