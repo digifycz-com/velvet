@@ -1125,11 +1125,6 @@ a {
   gap: 8px;
 }
 
-.btn-email-menu {
-  display: inline-flex;
-  gap: 8px;
-}
-
 /* --- Reservation Section --- */
 .reservation {
   padding: 120px 0;
@@ -1771,7 +1766,7 @@ a {
 
 .footer-container {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1.5fr;
+  grid-template-columns: 1.5fr 1fr;
   gap: 80px;
   padding-bottom: 60px;
 }
@@ -1794,8 +1789,7 @@ a {
   max-width: 320px;
 }
 
-.footer-links h3,
-.footer-newsletter h3 {
+.footer-links h3 {
   font-family: var(--font-sans);
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -1821,38 +1815,6 @@ a {
 .footer-links a:hover {
   color: var(--clr-gold);
   padding-left: 5px;
-}
-
-.footer-newsletter p {
-  font-size: 0.95rem;
-  margin-bottom: 20px;
-}
-
-.newsletter-form {
-  display: flex;
-  gap: 10px;
-}
-
-.newsletter-form input {
-  flex-grow: 1;
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  padding: 12px 18px;
-  color: var(--clr-text-primary);
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 300;
-  transition: var(--transition-fast);
-}
-
-.newsletter-form input:focus {
-  outline: none;
-  border-color: var(--clr-gold);
-}
-
-.newsletter-form .btn {
-  padding: 12px 20px;
 }
 
 .footer-bottom {
@@ -1939,11 +1901,6 @@ a {
   .footer-container {
     grid-template-columns: 1fr 1fr;
     gap: 50px;
-  }
-  
-  .footer-newsletter {
-    grid-column: span 2;
-    max-width: 500px;
   }
 }
 
@@ -2182,18 +2139,6 @@ a {
   .footer-container {
     grid-template-columns: 1fr;
     gap: 40px;
-  }
-  
-  .footer-newsletter {
-    grid-column: span 1;
-  }
-  
-  .newsletter-form {
-    flex-direction: column;
-  }
-  
-  .newsletter-form .btn {
-    width: 100%;
   }
 }
 

@@ -337,7 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="menu-items">${dishCards}</div>
             <div class="menu-note text-center">
               <p><i class="fa-solid fa-circle-info"></i> ${escapeText(data.note || 'Rádi vám vyměníme přílohu v rámci jiného denního menu.')}</p>
-              <a href="http://eepurl.com/bTX329" target="_blank" class="btn btn-outline btn-sm btn-email-menu"><i class="fa-regular fa-envelope"></i> Chci menu na e-mail</a>
             </div>
           </div>`;
       }
