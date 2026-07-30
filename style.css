@@ -2013,7 +2013,20 @@ a {
     text-align: center;
     margin: 0 auto;
   }
-  
+
+  /* Na mobilu je logo hned nad textem – utažené mezery, ať se hero vejde
+     na výšku i s kartou dnešního menu. */
+  .hero-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 0.28em;
+    margin-bottom: 14px;
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    margin-bottom: 30px;
+  }
+
   .hero-btns {
     justify-content: center;
   }
