@@ -271,10 +271,18 @@ function renderHeroMenu() {
 
   itemsEl.innerHTML = visible.map((item) => {
     const price = item.price != null && item.price !== '' ? `${esc(item.price)} Kč` : '';
+    // Polévky a dezerty popis z importu většinou nemají – řádek pak zůstane jednořádkový.
+    const description = String(item.description || '').trim();
+    const desc = description
+      ? `<span class="hero-daily-desc">${esc(description)}</span>`
+      : '';
     return `
       <div class="hero-daily-item">
         ${heroMetaHTML(item)}
-        <span class="hero-daily-name">${esc(item.name)}</span>
+        <div class="hero-daily-text">
+          <span class="hero-daily-name">${esc(item.name)}</span>
+          ${desc}
+        </div>
         ${price ? `<span class="hero-daily-price">${price}</span>` : ''}
       </div>`;
   }).join('');

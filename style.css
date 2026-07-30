@@ -535,13 +535,21 @@ a {
   padding: 8px 0;
 }
 
+/* Řádek je dvouřádkový (název + popis), takže ikona i cena se zarovnávají
+   k prvnímu řádku textu, ne na střed celé buňky. Tomu slouží padding-top
+   4px níže – s 28px vysokou ikonou to vyjde na stejnou osu. */
 .hero-daily-item {
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr) auto;
-  align-items: center;
+  align-items: start;
   gap: 12px;
   padding: 11px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.hero-daily-text {
+  min-width: 0;
+  padding-top: 4px;
 }
 
 .hero-daily-item:last-child {
@@ -587,15 +595,27 @@ a {
 }
 
 .hero-daily-name {
+  display: block;
   color: var(--clr-text-primary);
   font-size: 0.88rem;
   line-height: 1.35;
 }
 
+.hero-daily-desc {
+  display: block;
+  margin-top: 3px;
+  color: var(--clr-text-muted);
+  font-size: 0.78rem;
+  font-weight: 300;
+  line-height: 1.45;
+}
+
 .hero-daily-price {
+  padding-top: 4px;
   color: var(--clr-gold-light);
   font-family: var(--font-serif);
   font-size: 0.88rem;
+  line-height: 1.35;
   white-space: nowrap;
 }
 
