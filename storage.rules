@@ -1,0 +1,35 @@
+rules_version = '2';
+
+// ============================================================================
+// PASÁŽ VELVET – pravidla pro Firebase Storage
+//
+// Obrázky aktualit a galerie zobrazuje veřejná landing page → čtení veřejné.
+// Nahrávat a mazat smí jen účet s admin claimem, který vydává serverová
+// funkce po ověření společného hesla (stejně jako u Firestore).
+// ============================================================================
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /news/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.admin == true
+                   && request.resource.size < 15 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    match /gallery/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.admin == true
+                   && request.resource.size < 15 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // Vše ostatní zakázáno.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

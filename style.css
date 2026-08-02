@@ -477,8 +477,82 @@ a {
   gap: 20px;
 }
 
-/* Compact today's menu inside hero */
+/* Aktuality v heru – zkrácená verze dlaždic ze sekce Aktuality. Vedle karty
+   poledního menu drží hero pohromadě, proto jen štítek a nadpis. */
+.hero-news {
+  margin-top: 38px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(197, 168, 128, 0.16);
+}
+
+.hero-news-kicker {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--clr-gold);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.hero-news-items {
+  display: grid;
+  gap: 10px;
+}
+
+.hero-news-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  background: rgba(18, 18, 20, 0.55);
+  transition: var(--transition-fast);
+}
+
+.hero-news-item:hover {
+  border-color: rgba(197, 168, 128, 0.35);
+  background: rgba(18, 18, 20, 0.8);
+}
+
+.hero-news-thumb {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.hero-news-label {
+  flex: 0 0 auto;
+  color: var(--clr-gold);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-news-title {
+  min-width: 0;
+  color: var(--clr-text-primary);
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  line-height: 1.3;
+  /* Dlouhý nadpis nesmí rozhodit výšku hera – ustřihne se po dvou řádcích. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Compact today's menu inside hero.
+   Na nižších displejích se karta nevejde celá. Dřív se přebytek prostě
+   uřízl i s odkazem na celé menu – proto je karta flex sloupec a krátí se
+   jen seznam položek. Hlavička a odkaz zůstávají vždycky vidět. */
 .hero-daily-card {
+  display: flex;
+  flex-direction: column;
   background: rgba(12, 12, 14, 0.82);
   border: 1px solid rgba(197, 168, 128, 0.24);
   border-radius: 10px;
@@ -490,6 +564,7 @@ a {
 }
 
 .hero-daily-head {
+  flex: 0 0 auto;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -533,6 +608,26 @@ a {
 
 .hero-daily-items {
   padding: 8px 0;
+  /* min-height kvůli flexu – bez něj by se seznam odmítl zkrátit pod obsah. */
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197, 168, 128, 0.35) transparent;
+}
+
+.hero-daily-items::-webkit-scrollbar {
+  width: 4px;
+}
+
+.hero-daily-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hero-daily-items::-webkit-scrollbar-thumb {
+  background: rgba(197, 168, 128, 0.35);
+  border-radius: 2px;
 }
 
 /* Řádek je dvouřádkový (název + popis), takže ikona i cena se zarovnávají
@@ -620,6 +715,7 @@ a {
 }
 
 .hero-daily-link {
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -824,6 +920,70 @@ a {
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
 }
 
+.news-card-body {
+  position: relative;
+  z-index: 2;
+}
+
+/* --- Dlaždice s fotkou z administrace ---------------------------------------
+   Fotka vyplní celou dlaždici, text nad ní drží čitelnost díky přechodu. */
+.news-card--photo {
+  min-height: 300px;
+}
+
+/* Dekorativní kroužek by přes fotku působil jako škrábanec. */
+.news-card--photo::before {
+  display: none;
+}
+
+.news-card--photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 11, 0.94) 0%,
+    rgba(10, 10, 11, 0.75) 45%,
+    rgba(10, 10, 11, 0.25) 100%
+  );
+}
+
+.news-card-img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-slow);
+}
+
+.news-card--photo:hover .news-card-img {
+  transform: scale(1.05);
+}
+
+.news-card--clickable {
+  cursor: pointer;
+}
+
+.news-card-count {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(10, 10, 11, 0.72);
+  backdrop-filter: blur(6px);
+  color: var(--clr-gold-light);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
 .news-card-label {
   margin-bottom: 13px;
   color: var(--clr-gold);
@@ -952,6 +1112,15 @@ a {
   border-top: 1px solid rgba(255, 255, 255, 0.02);
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   position: relative;
+}
+
+/* Cíl odkazu "Zobrazit celé menu" – prázdná kotva těsně nad přepínačem.
+   Odstup od zafixované hlavičky řeší scroll-padding-top na <html>, tady
+   stačí přidat malou mezeru, ať záložky nelepí těsně pod ni. */
+.anchor-offset {
+  display: block;
+  height: 0;
+  scroll-margin-top: 20px;
 }
 
 /* Glass Tabs Container */
@@ -1370,7 +1539,8 @@ a {
   margin-top: 50px;
 }
 
-/* Dlaždice = jeden pokrm. Bez popisku – při najetí se fotka jen přiblíží. */
+/* Dlaždice = jedna kategorie jídel. Název je vidět natrvalo, jinak by
+   návštěvník nepoznal, co se pod dlaždicí skrývá. */
 .gallery-item {
   position: relative;
   display: block;
@@ -1407,11 +1577,37 @@ a {
   transform: scale(1.06);
 }
 
-/* Počet fotek pokrmu – jediné, co dlaždice sděluje. */
+/* Přechod pod názvem – bez něj se světlá fotka a bílý text perou. */
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  background: linear-gradient(to top, rgba(10, 10, 11, 0.88), transparent);
+  pointer-events: none;
+}
+
+.gallery-label {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  z-index: 1;
+  max-width: calc(100% - 28px);
+  color: var(--clr-text-primary);
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.25;
+  text-align: left;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Počet fotek v kategorii. */
 .gallery-count {
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 12px;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -2409,5 +2605,11 @@ a {
 
   .lunch-today .hero-btns {
     order: 5;
+  }
+
+  .lunch-today .hero-news {
+    order: 6;
+    max-width: 620px;
+    margin-inline: auto;
   }
 }

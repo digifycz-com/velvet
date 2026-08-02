@@ -91,6 +91,9 @@
             <button class="admin-tab" data-tab="news-manager" id="tab-news">
               <i class="fa-solid fa-bullhorn"></i> Aktuality
             </button>
+            <button class="admin-tab" data-tab="gallery-manager" id="tab-gallery">
+              <i class="fa-solid fa-images"></i> Galerie
+            </button>
           </div>
 
           <!-- ===== MENU EDITOR TAB (denní menu z Firestore) ===== -->
@@ -285,6 +288,15 @@
                   <label for="news-0-text">Text</label>
                   <textarea id="news-0-text" rows="5" maxlength="320" placeholder="Krátký text aktuality"></textarea>
                 </div>
+                <div class="admin-form-group">
+                  <label>Fotky</label>
+                  <p class="admin-hint">První fotka slouží jako pozadí dlaždice. Při více fotkách se po kliknutí otevře prohlížeč.</p>
+                  <div class="news-photo-grid" id="news-0-photos"></div>
+                  <label class="btn btn-outline btn-sm file-btn">
+                    <i class="fa-solid fa-image"></i> Přidat fotky
+                    <input type="file" id="news-0-file" accept="image/*" multiple hidden />
+                  </label>
+                </div>
               </div>
 
               <div class="editor-card news-admin-card" data-news-index="1">
@@ -301,8 +313,37 @@
                   <label for="news-1-text">Text</label>
                   <textarea id="news-1-text" rows="5" maxlength="320" placeholder="Krátký text aktuality"></textarea>
                 </div>
+                <div class="admin-form-group">
+                  <label>Fotky</label>
+                  <p class="admin-hint">První fotka slouží jako pozadí dlaždice. Při více fotkách se po kliknutí otevře prohlížeč.</p>
+                  <div class="news-photo-grid" id="news-1-photos"></div>
+                  <label class="btn btn-outline btn-sm file-btn">
+                    <i class="fa-solid fa-image"></i> Přidat fotky
+                    <input type="file" id="news-1-file" accept="image/*" multiple hidden />
+                  </label>
+                </div>
               </div>
             </div>
+          </section>
+
+          <!-- ===== GALERIE ===== -->
+          <section id="gallery-manager" class="admin-section">
+            <div class="section-header">
+              <div>
+                <h2><i class="fa-solid fa-images"></i> Fotogalerie</h2>
+                <p>Jedna dlaždice na webu = jedna kategorie. Po rozkliknutí se návštěvníkovi otevřou všechny její fotky.</p>
+              </div>
+              <div class="admin-header-actions">
+                <button class="btn btn-outline btn-sm" id="gallery-add-category-btn">
+                  <i class="fa-solid fa-plus"></i> Nová kategorie
+                </button>
+                <button class="btn btn-primary" id="gallery-save-btn">
+                  <i class="fa-solid fa-floppy-disk"></i> Uložit galerii
+                </button>
+              </div>
+            </div>
+
+            <div id="gallery-categories"></div>
           </section>
 
         </div>
@@ -318,5 +359,6 @@
     <script type="module" src="/admin-menu-import.js"></script>
     <script type="module" src="/admin-catalog-menus.js"></script>
     <script type="module" src="/admin-news.js"></script>
+    <script type="module" src="/admin-gallery.js"></script>
   </body>
 </html>

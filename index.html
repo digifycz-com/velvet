@@ -142,6 +142,22 @@
             <div class="hero-btns scroll-reveal">
               <a href="tel:+420608305150" class="btn btn-outline">Rezervovat stůl</a>
             </div>
+
+            <!-- Aktuality i v heru. Statický obsah je záloha, news-public.js
+                 ho přepíše stejnými daty, jako plní sekci Aktuality níž. -->
+            <div class="hero-news scroll-reveal" id="hero-news">
+              <span class="hero-news-kicker">Právě ve Velvetu</span>
+              <div class="hero-news-items" id="hero-news-items">
+                <a class="hero-news-item" href="#aktuality">
+                  <span class="hero-news-label">Velvet</span>
+                  <span class="hero-news-title">Letní zahrádka je otevřená</span>
+                </a>
+                <a class="hero-news-item" href="#aktuality">
+                  <span class="hero-news-label">Rezervace</span>
+                  <span class="hero-news-title">Oslavy a firemní setkání</span>
+                </a>
+              </div>
+            </div>
           </div>
 
           <aside class="hero-daily-card scroll-reveal" id="hero-daily-card" aria-labelledby="hero-menu-title">
@@ -158,7 +174,7 @@
                 <span>Načítáme dnešní nabídku</span>
               </div>
             </div>
-            <a class="hero-daily-link" href="#menu">
+            <a class="hero-daily-link" href="#menu-jidla">
               Zobrazit celé menu <i class="fa-solid fa-arrow-down"></i>
             </a>
           </aside>
@@ -182,14 +198,18 @@
         </div>
         <div class="news-grid" id="news-grid">
           <article class="news-card scroll-reveal">
-            <span class="news-card-label">Velvet</span>
-            <h3>Letní zahrádka je otevřená</h3>
-            <p>Užijte si oběd nebo večerní posezení v klidném stínu přímo v centru Pardubic.</p>
+            <div class="news-card-body">
+              <span class="news-card-label">Velvet</span>
+              <h3>Letní zahrádka je otevřená</h3>
+              <p>Užijte si oběd nebo večerní posezení v klidném stínu přímo v centru Pardubic.</p>
+            </div>
           </article>
           <article class="news-card scroll-reveal">
-            <span class="news-card-label">Rezervace</span>
-            <h3>Oslavy a firemní setkání</h3>
-            <p>Rádi pro vás připravíme rodinnou oslavu, pracovní oběd nebo soukromou akci.</p>
+            <div class="news-card-body">
+              <span class="news-card-label">Rezervace</span>
+              <h3>Oslavy a firemní setkání</h3>
+              <p>Rádi pro vás připravíme rodinnou oslavu, pracovní oběd nebo soukromou akci.</p>
+            </div>
           </article>
         </div>
       </div>
@@ -203,6 +223,11 @@
           <h2 class="section-title">Vyberte si z naší nabídky</h2>
           <p class="section-desc max-width-600 mx-auto">Každé jídlo připravujeme s vášní a precizností. Prohlédněte si polední nabídku, stálé menu i nápojový lístek.</p>
         </div>
+
+        <!-- Kotva pro "Zobrazit celé menu" z hera: sjede se rovnou na přepínač
+             se jídly pod ním, ne na nadpis sekce. Záložky zůstávají vidět,
+             aby šlo přepnout na stálé menu a nápoje. -->
+        <span id="menu-jidla" class="anchor-offset" aria-hidden="true"></span>
 
         <!-- Menu Tabs -->
         <div class="menu-tabs-container scroll-reveal">
@@ -369,42 +394,10 @@
           <p class="section-desc max-width-600 mx-auto">Prohlédněte si naše kulinářské výtvory, jedinečnou atmosféru naší restaurace i útulnou letní zahrádku.</p>
         </div>
 
-        <!-- Jedna dlaždice = jeden pokrm. data-photos drží všechny jeho fotky
-             (plná velikost); náhledy se odvozují záměnou /full/ za /thumb/. -->
-        <div class="gallery-grid scroll-reveal">
-          <button type="button" class="gallery-item" data-title="Paštika z kuřecích jater" data-photos="/images/gallery/full/velvet-02.webp,/images/gallery/full/velvet-01.webp,/images/gallery/full/velvet-05.webp,/images/gallery/full/velvet-03.webp,/images/gallery/full/velvet-04.webp,/images/gallery/full/velvet-06.webp">
-            <img src="/images/gallery/thumb/velvet-02.webp" alt="Paštika z kuřecích jater s brusinkovou omáčkou a opečeným chlebem" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>6</span>
-          </button>
-          <button type="button" class="gallery-item" data-title="Grilované vepřové koleno" data-photos="/images/gallery/full/velvet-12.webp,/images/gallery/full/velvet-08.webp,/images/gallery/full/velvet-11.webp,/images/gallery/full/velvet-09.webp,/images/gallery/full/velvet-10.webp,/images/gallery/full/velvet-13.webp,/images/gallery/full/velvet-07.webp">
-            <img src="/images/gallery/thumb/velvet-12.webp" alt="Grilované vepřové koleno s křenem, hořčicí a nakládanou zeleninou" loading="lazy" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>7</span>
-          </button>
-          <button type="button" class="gallery-item" data-title="Pečená pikantní žebra Velvet" data-photos="/images/gallery/full/velvet-17.webp,/images/gallery/full/velvet-19.webp,/images/gallery/full/velvet-14.webp,/images/gallery/full/velvet-15.webp,/images/gallery/full/velvet-20.webp,/images/gallery/full/velvet-16.webp,/images/gallery/full/velvet-18.webp">
-            <img src="/images/gallery/thumb/velvet-17.webp" alt="Pečená pikantní žebra Velvet s nakládanou cibulkou a okurkami" loading="lazy" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>7</span>
-          </button>
-          <button type="button" class="gallery-item" data-title="Trhaný burger" data-photos="/images/gallery/full/velvet-22.webp,/images/gallery/full/velvet-21.webp,/images/gallery/full/velvet-26.webp,/images/gallery/full/velvet-24.webp,/images/gallery/full/velvet-25.webp,/images/gallery/full/velvet-23.webp">
-            <img src="/images/gallery/thumb/velvet-22.webp" alt="Trhaný burger v sezamové housce s hranolky a coleslawem" loading="lazy" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>6</span>
-          </button>
-          <button type="button" class="gallery-item" data-title="Klasik burger" data-photos="/images/gallery/full/velvet-28.webp,/images/gallery/full/velvet-27.webp,/images/gallery/full/velvet-29.webp,/images/gallery/full/velvet-31.webp,/images/gallery/full/velvet-33.webp,/images/gallery/full/velvet-30.webp,/images/gallery/full/velvet-32.webp">
-            <img src="/images/gallery/thumb/velvet-28.webp" alt="Klasik burger s cheddarem, slaninou a hranolky" loading="lazy" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>7</span>
-          </button>
-          <button type="button" class="gallery-item" data-title="Špalek vepřové krkovice v BBQ" data-photos="/images/gallery/full/velvet-40.webp,/images/gallery/full/velvet-36.webp,/images/gallery/full/velvet-37.webp,/images/gallery/full/velvet-38.webp,/images/gallery/full/velvet-34.webp,/images/gallery/full/velvet-35.webp,/images/gallery/full/velvet-39.webp,/images/gallery/full/velvet-41.webp">
-            <img src="/images/gallery/thumb/velvet-40.webp" alt="Špalek vepřové krkovice v BBQ omáčce s hranolky a coleslawem" loading="lazy" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>8</span>
-          </button>
-          <button type="button" class="gallery-item" data-title="Salát s kozím sýrem" data-photos="/images/gallery/full/velvet-42.webp,/images/gallery/full/velvet-46.webp,/images/gallery/full/velvet-43.webp,/images/gallery/full/velvet-45.webp,/images/gallery/full/velvet-47.webp,/images/gallery/full/velvet-44.webp">
-            <img src="/images/gallery/thumb/velvet-42.webp" alt="Salát s kozím sýrem v panko strouhance, trhanými listy a červenou řepou" loading="lazy" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>6</span>
-          </button>
-          <button type="button" class="gallery-item" data-title="Trhaný BBQ talíř" data-photos="/images/gallery/full/velvet-49.webp,/images/gallery/full/velvet-48.webp,/images/gallery/full/velvet-50.webp">
-            <img src="/images/gallery/thumb/velvet-49.webp" alt="Trhaný BBQ talíř s hranolky, cheddarem, slaninou a jalapeños" loading="lazy" />
-            <span class="gallery-count"><i class="fa-regular fa-images"></i>3</span>
-          </button>
-        </div>
+        <!-- Jedna dlaždice = jedna kategorie jídel. Obsah plní gallery-public.js
+             (výchozí data hned, uložená verze z administrace vzápětí);
+             data-photos drží všechny fotky kategorie pro lightbox. -->
+        <div class="gallery-grid scroll-reveal"></div>
       </div>
     </section>
 
@@ -532,6 +525,7 @@
     <!-- Main JavaScript Entry -->
     <script type="module" src="/main.js"></script>
     <script type="module" src="/daily-menu-public.js"></script>
+    <script type="module" src="/gallery-public.js"></script>
     <script type="module" src="/catalog-menus-public.js"></script>
     <script type="module" src="/news-public.js"></script>
   </body>

@@ -183,6 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
     lightboxClose?.focus();
   }
 
+  // Lightbox používají i karty aktualit s fotkami (news-public.js).
+  window.velvetOpenGallery = openGallery;
+
   function closeLightbox() {
     if (!lightbox) return;
     lightbox.classList.remove('active');
@@ -347,57 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- 9. Dynamic Gallery Loading from JSON ---
-  async function loadGallery() {
-    try {
-      const res = await fetch('/data/gallery.json');
-      if (!res.ok) return; // Keep hardcoded content as fallback
-      const data = await res.json();
-
-      const galleryGrid = document.querySelector('.gallery-grid');
-      if (!galleryGrid || !data || !data.images) return;
-
-      // Sort by order
-      const images = data.images.slice().sort((a, b) => a.order - b.order);
-
-      // Fotky jednoho pokrmu spojíme do jedné dlaždice. Fotka bez pole `group`
-      // (např. čerstvě nahraná v administraci) tvoří vlastní samostatnou skupinu.
-      const groups = [];
-      const byKey = new Map();
-
-      images.forEach(img => {
-        const key = img.group || `single-${img.id}`;
-        let group = byKey.get(key);
-        if (!group) {
-          group = { key, title: '', photos: [], alt: img.alt };
-          byKey.set(key, group);
-          groups.push(group);
-        }
-        group.photos.push(img.src);
-        // Popisek skupiny bere první vyplněnou hodnotu, kterou najde.
-        if (!group.title) group.title = img.groupTitle || img.caption || '';
-      });
-
-      if (!groups.length) return;
-
-      galleryGrid.innerHTML = groups.map(group => {
-        const cover = group.photos[0];
-        const coverThumb = cover.includes('/full/') ? cover.replace('/full/', '/thumb/') : cover;
-        const count = group.photos.length;
-        return `
-        <button type="button" class="gallery-item" data-title="${escapeText(group.title)}" data-photos="${escapeText(group.photos.join(','))}">
-          <img src="${coverThumb}" alt="${escapeText(group.alt || group.title)}" loading="lazy" />
-          ${count > 1 ? `<span class="gallery-count"><i class="fa-regular fa-images"></i>${count}</span>` : ''}
-        </button>
-      `;
-      }).join('');
-
-      // Kliknutí řeší delegovaný listener na mřížce, takže se nic znovu nenavazuje.
-    } catch (err) {
-      console.log('Using hardcoded gallery (JSON fetch failed):', err.message);
-    }
-  }
-
   function escapeText(str) {
     if (!str) return '';
     const div = document.createElement('div');
@@ -406,8 +358,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return div.innerHTML.replace(/"/g, '&quot;');
   }
 
-  // Load dynamic content
-  // Denní menu nyní řeší modul daily-menu-public.js (čte z Firestore).
-  // loadDailyMenu();  // (ponecháno jako fallback, viz níže)
-  loadGallery();
+  // Denní menu řeší daily-menu-public.js, galerii gallery-public.js –
+  // oba čtou z Firestore a vykreslují se samy.
 });
