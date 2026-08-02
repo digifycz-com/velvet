@@ -10,7 +10,7 @@ import {
 import {
   db, SITE_CONTENT_COLLECTION, HOMEPAGE_CONTENT_DOC,
 } from '/firebase-db.js';
-import { uploadImage, deleteImage } from '/firebase-storage.js';
+import { uploadImage, deleteImage, formatSavings } from '/firebase-storage.js';
 
 const DEFAULT_NEWS = [
   {
@@ -105,15 +105,21 @@ async function handleFiles(index, input) {
   const label = input.closest('.file-btn');
   label?.classList.add('loading');
   try {
+    const nove = [];
     for (const file of files) {
       // Postupně, ne paralelně – u fotek z telefonu je převod náročný
       // a naráz by to na slabším notebooku zamrzlo.
       // eslint-disable-next-line no-await-in-loop
       const img = await uploadImage(file, 'news', { thumb: true });
       photos[index].push(img);
+      nove.push(img);
       renderPhotos(index);
     }
-    toast(`Nahráno ${files.length} ${files.length === 1 ? 'foto' : 'fotek'}. Nezapomeňte uložit.`, 'success');
+    toast(
+      `Nahráno ${files.length} ${files.length === 1 ? 'foto' : 'fotek'} `
+      + `(${formatSavings(nove)}). Nezapomeňte uložit.`,
+      'success',
+    );
   } catch (err) {
     toast('Nahrání se nepodařilo: ' + err.message, 'error');
   } finally {

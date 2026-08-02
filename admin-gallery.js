@@ -9,7 +9,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
 import { db, SITE_CONTENT_COLLECTION } from '/firebase-db.js';
 import { esc } from '/menu-table.js';
-import { uploadImage, deleteImage } from '/firebase-storage.js';
+import { uploadImage, deleteImage, formatSavings } from '/firebase-storage.js';
 import { DEFAULT_GALLERY, GALLERY_DOC } from '/gallery-data.js';
 
 let categories = [];
@@ -122,14 +122,20 @@ async function handleFiles(index, input) {
   const label = input.closest('.file-btn');
   label?.classList.add('loading');
   try {
+    const nove = [];
     for (const file of files) {
       // Postupně – převod velkých fotek je náročný a naráz by to zamrzlo.
       // eslint-disable-next-line no-await-in-loop
       const img = await uploadImage(file, 'gallery', { thumb: true });
       categories[index].photos.push(img);
+      nove.push(img);
     }
     render();
-    toast(`Nahráno ${files.length} ${files.length === 1 ? 'foto' : 'fotek'}. Nezapomeňte uložit.`, 'success');
+    toast(
+      `Nahráno ${files.length} ${files.length === 1 ? 'foto' : 'fotek'} `
+      + `(${formatSavings(nove)}). Nezapomeňte uložit.`,
+      'success',
+    );
   } catch (err) {
     render();
     toast('Nahrání se nepodařilo: ' + err.message, 'error');
