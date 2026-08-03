@@ -31,6 +31,14 @@ const QUALITY_STEPS = [0.78, 0.68, 0.58, 0.5, 0.42];
 
 export const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
 
+// Storage jinak posílá "private, max-age=0" a prohlížeč fotky stahuje při
+// každém načtení znovu – zbytečný přenos i účtované operace. Název souboru
+// je unikátní a obsah se nikdy nemění, takže je bezpečné cachovat natrvalo.
+const IMAGE_METADATA = {
+  contentType: 'image/webp',
+  cacheControl: 'public, max-age=31536000, immutable',
+};
+
 function loadImage(file) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -119,7 +127,7 @@ export async function uploadImage(file, folder, { thumb = false } = {}) {
   const fullBlob = await toWebp(img, FULL_MAX_EDGE, FULL_MAX_BYTES);
   const fullPath = `${folder}/${name}.webp`;
   const fullRef = ref(storage, fullPath);
-  await uploadBytes(fullRef, fullBlob, { contentType: 'image/webp' });
+  await uploadBytes(fullRef, fullBlob, IMAGE_METADATA);
 
   const result = {
     url: await getDownloadURL(fullRef),
@@ -133,7 +141,7 @@ export async function uploadImage(file, folder, { thumb = false } = {}) {
     const thumbBlob = await toWebp(img, THUMB_MAX_EDGE, THUMB_MAX_BYTES);
     const thumbPath = `${folder}/${name}-thumb.webp`;
     const thumbRef = ref(storage, thumbPath);
-    await uploadBytes(thumbRef, thumbBlob, { contentType: 'image/webp' });
+    await uploadBytes(thumbRef, thumbBlob, IMAGE_METADATA);
     result.thumbUrl = await getDownloadURL(thumbRef);
     result.thumbPath = thumbPath;
     result.bytes += thumbBlob.size;
