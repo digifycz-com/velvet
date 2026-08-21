@@ -41,8 +41,64 @@ function toast(message, type = 'info') {
 let editingDate = null; // null = nový den
 
 // ==========================================================================
+// DATUMY – pojmenování dnů a řazení seznamu
+// ==========================================================================
+
+const WEEKDAY_FMT = new Intl.DateTimeFormat('cs-CZ', { weekday: 'long' });
+const DATE_FMT = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
+
+// Dnešek jako "YYYY-MM-DD" v místním čase. Přes toISOString() to nejde –
+// ta počítá v UTC a večer by vracela už zítřek.
+function todayISO() {
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 10);
+}
+
+// Poledne = datum přežije i přechod na letní/zimní čas.
+function dateFromISO(iso) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(iso) ? new Date(`${iso}T12:00:00`) : null;
+}
+
+function weekdayName(iso) {
+  const d = dateFromISO(iso);
+  return d ? WEEKDAY_FMT.format(d) : '';
+}
+
+function humanDate(iso) {
+  const d = dateFromISO(iso);
+  return d ? DATE_FMT.format(d) : iso;
+}
+
+// „Dnes" / „Zítra" – jen pro dva nejbližší dny, jinak prázdné.
+function relativeLabel(iso, today) {
+  if (iso === today) return 'Dnes';
+  const t = dateFromISO(today);
+  if (t) {
+    t.setDate(t.getDate() + 1);
+    const tomorrow = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+    if (iso === tomorrow) return 'Zítra';
+  }
+  return '';
+}
+
+/* Řazení seznamu: nahoře nejbližší nadcházející den (dnešek, zítřek, …)
+   vzestupně, teprve pod nimi už proběhlé dny od nejnovějšího. Čistě sestupně
+   podle data by nahoru vyplaval nejvzdálenější naplánovaný den – a ten, který
+   se edituje nejčastěji, by skončil uprostřed seznamu. */
+function splitByToday(entries, today) {
+  const upcoming = entries.filter((e) => e.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
+  const past = entries.filter((e) => e.date < today).sort((a, b) => (a.date > b.date ? -1 : 1));
+  return { upcoming, past };
+}
+
+// ==========================================================================
 // SEZNAM DNŮ
 // ==========================================================================
+
+function groupHeaderHTML(text, count) {
+  return `<div class="dm-group-head"><span>${esc(text)}</span><span class="dm-group-count">${count}</span></div>`;
+}
 
 export async function loadList() {
   const list = $('dm-list');
@@ -58,10 +114,25 @@ export async function loadList() {
       return;
     }
 
-    list.innerHTML = '';
+    const entries = [];
     snap.forEach((docSnap) => {
-      list.appendChild(renderCard(docSnap.id, docSnap.data()));
+      const data = docSnap.data();
+      entries.push({ id: docSnap.id, data, date: String(data.date || docSnap.id || '').slice(0, 10) });
     });
+
+    const today = todayISO();
+    const { upcoming, past } = splitByToday(entries, today);
+
+    list.innerHTML = '';
+    if (upcoming.length) {
+      list.insertAdjacentHTML('beforeend', groupHeaderHTML('Nadcházející', upcoming.length));
+      for (const e of upcoming) list.appendChild(renderCard(e.id, e.data, today));
+    }
+    if (past.length) {
+      list.insertAdjacentHTML('beforeend', groupHeaderHTML('Proběhlo', past.length));
+      for (const e of past) list.appendChild(renderCard(e.id, e.data, today, true));
+    }
+
     wireCardButtons();
     tickCountdowns();
   } catch (err) {
@@ -125,15 +196,25 @@ function syncBlockHTML(sync) {
     </div>`;
 }
 
-function renderCard(id, d) {
+function renderCard(id, d, today, isPast = false) {
+  const date = String(d.date || id || '').slice(0, 10);
+  // Den v týdnu počítáme z data. Pole `day` z Excelu bývá prázdné, takže
+  // v kartě dřív nebylo poznat, na jaký den menu vlastně je.
+  const weekday = weekdayName(date);
+  const relative = relativeLabel(date, today);
+
   const card = document.createElement('div');
-  card.className = 'dm-card';
+  card.className = `dm-card${isPast ? ' is-past' : ''}`;
   card.dataset.id = id;
   card.innerHTML = `
     <div class="dm-card-head">
       <div class="dm-card-title">
-        <span class="dm-date"><i class="fa-regular fa-calendar"></i> ${esc(d.date || id)}</span>
-        ${d.day ? `<span class="dm-day">${esc(d.day)}</span>` : ''}
+        <span class="dm-date">
+          <i class="fa-regular fa-calendar"></i>
+          ${weekday ? `<span class="dm-weekday">${esc(weekday)}</span>` : ''}
+          <span class="dm-datenum">${esc(humanDate(date) || id)}</span>
+        </span>
+        ${relative ? `<span class="dm-day is-relative">${esc(relative)}</span>` : ''}
         <span class="dm-count">${d.itemCount ?? (d.items ? d.items.length : 0)} položek</span>
       </div>
       <div class="dm-card-actions">

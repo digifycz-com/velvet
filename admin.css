@@ -1261,6 +1261,17 @@
 
 .dm-date i { color: var(--clr-gold); }
 
+/* Den v týdnu nese hlavní váhu – podle něj se v seznamu hledá.
+   Datum zůstává vedle jako upřesnění. */
+.dm-weekday { text-transform: capitalize; }
+
+.dm-datenum {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--clr-text-muted);
+  letter-spacing: 0.02em;
+}
+
 .dm-day {
   font-size: 0.78rem;
   padding: 3px 12px;
@@ -1269,6 +1280,46 @@
   color: var(--clr-gold-light);
   letter-spacing: 0.04em;
 }
+
+.dm-day.is-relative {
+  background: rgba(197, 168, 128, 0.2);
+  color: var(--clr-gold-light);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+/* Oddělovač mezi nadcházejícími a už proběhlými dny. */
+.dm-group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 2px 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--clr-text-muted);
+}
+
+.dm-group-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--glass-border);
+}
+
+.dm-group-count {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Proběhlé dny drží nižší vizuální prioritu, ať nekonkurují nadcházejícím. */
+.dm-card.is-past { opacity: 0.62; }
+.dm-card.is-past:hover { opacity: 1; }
 
 .dm-count {
   font-size: 0.82rem;
