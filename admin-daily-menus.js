@@ -123,7 +123,8 @@ function hideOldDays(entries, today) {
 // Načtené dny si držíme v paměti, ať filtrování nesahá pokaždé do Firestore.
 let allEntries = [];
 let listToday = '';
-const filters = { period: 'all', sort: 'near', search: '' };
+// Otevírá se rovnou na nadcházejících dnech – to je to, co se edituje.
+const filters = { period: 'upcoming', sort: 'near', search: '' };
 
 // Bez diakritiky, bez mezer, malými písmeny – ať „patek 22.8" najde
 // „Pátek 22. 8. 2026".
