@@ -141,7 +141,12 @@ async function purgeOldDays(entries, today) {
     toast(`Uklizeno ${deletedIds.size} ${oldDaysWord(deletedIds.size)} (do ${humanDate(cutoff)}).`, 'info');
   }
   if (failed) {
-    console.error('Úklid starých dnů selhal u', failed, 'záznamů');
+    // Bez konkrétního důvodu se to ladí špatně – vypíšeme, co Firestore vrátil.
+    const reason = results.find((r) => r.status === 'rejected')?.reason;
+    console.error(
+      `Úklid starých dnů selhal u ${failed} záznamů:`,
+      reason?.code || '(bez kódu)', reason?.message || reason,
+    );
     toast(`${failed} ${oldDaysWord(failed)} se nepodařilo smazat.`, 'error');
   }
 
