@@ -70,15 +70,17 @@ function humanDate(iso) {
   return d ? DATE_FMT.format(d) : iso;
 }
 
+function shiftISO(iso, days) {
+  const d = dateFromISO(iso);
+  if (!d) return iso;
+  d.setDate(d.getDate() + days);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 // „Dnes" / „Zítra" – jen pro dva nejbližší dny, jinak prázdné.
 function relativeLabel(iso, today) {
   if (iso === today) return 'Dnes';
-  const t = dateFromISO(today);
-  if (t) {
-    t.setDate(t.getDate() + 1);
-    const tomorrow = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
-    if (iso === tomorrow) return 'Zítra';
-  }
+  if (iso === shiftISO(today, 1)) return 'Zítra';
   return '';
 }
 
@@ -90,6 +92,46 @@ function splitByToday(entries, today) {
   const upcoming = entries.filter((e) => e.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
   const past = entries.filter((e) => e.date < today).sort((a, b) => (a.date > b.date ? -1 : 1));
   return { upcoming, past };
+}
+
+// ==========================================================================
+// ÚKLID STARÉ HISTORIE
+// ==========================================================================
+
+// Kolik dnů dozadu zůstává v databázi (kromě dneška).
+const KEEP_PAST_DAYS = 2;
+
+/* Maže dny starší než KEEP_PAST_DAYS. Běží při každém načtení seznamu –
+   naplánovaná Cloud Function by byla spolehlivější, ale její nasazení vyžaduje
+   oprávnění, které tenhle účet nemá. V praxi to stačí: admin se otevírá pokaždé,
+   když se přidává menu. Vrací dny, které mají zůstat v seznamu. */
+async function purgeOldDays(entries, today) {
+  // Pojistka proti rozbitým hodinám v počítači – při resetnutém datu (1970,
+  // 2001) by se jinak smazalo úplně všechno.
+  if (today < '2025-01-01') return entries;
+
+  const cutoff = shiftISO(today, -KEEP_PAST_DAYS);
+  const stale = entries.filter((e) => /^\d{4}-\d{2}-\d{2}$/.test(e.date) && e.date < cutoff);
+  if (!stale.length) return entries;
+
+  const results = await Promise.allSettled(
+    stale.map((e) => deleteDoc(doc(db, MENU_COLLECTION, e.id)))
+  );
+
+  const deletedIds = new Set();
+  results.forEach((res, i) => { if (res.status === 'fulfilled') deletedIds.add(stale[i].id); });
+
+  const failed = stale.length - deletedIds.size;
+  if (deletedIds.size) {
+    toast(`Uklizeno ${deletedIds.size} starých dnů (do ${humanDate(cutoff)}).`, 'info');
+  }
+  if (failed) {
+    console.error('Úklid starých dnů selhal u', failed, 'záznamů');
+    toast(`${failed} starých dnů se nepodařilo smazat.`, 'error');
+  }
+
+  // Nepovedené necháme v seznamu, ať je vidět, že tam pořád jsou.
+  return entries.filter((e) => !deletedIds.has(e.id));
 }
 
 // ==========================================================================
@@ -141,7 +183,7 @@ export async function loadList() {
     });
 
     const today = todayISO();
-    const { upcoming, past } = splitByToday(entries, today);
+    const { upcoming, past } = splitByToday(await purgeOldDays(entries, today), today);
 
     list.innerHTML = '';
     if (upcoming.length) {
