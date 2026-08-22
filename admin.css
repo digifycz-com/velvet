@@ -1255,6 +1255,14 @@
 
 .dm-filter-chip:hover { color: var(--clr-text-primary); }
 
+/* Výchozí modrý outline prohlížeče do zlaté palety nesedí. */
+.dm-filter-chip:focus { outline: none; }
+
+.dm-filter-chip:focus-visible {
+  outline: 2px solid var(--clr-gold);
+  outline-offset: 2px;
+}
+
 .dm-filter-chip.is-active {
   background: rgba(197, 168, 128, 0.14);
   color: var(--clr-gold-light);
