@@ -10,7 +10,11 @@ import {
 } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
 
 import {
-  db, MENU_COLLECTION, SYNC_PLATFORMS, PLATFORM_LABELS,
+  getAuth, onAuthStateChanged,
+} from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+
+import {
+  app, db, MENU_COLLECTION, SYNC_PLATFORMS, PLATFORM_LABELS,
 } from '/firebase-db.js';
 import { CATEGORIES } from '/menu-parser.js';
 import {
@@ -101,11 +105,22 @@ function splitByToday(entries, today) {
 // Kolik dnů dozadu zůstává v databázi (kromě dneška).
 const KEEP_PAST_DAYS = 2;
 
+// Čeština skloňuje podle počtu: 1 den, 2–4 dny, 5 a víc dnů.
+function oldDaysWord(n) {
+  if (n === 1) return 'starý den';
+  if (n >= 2 && n <= 4) return 'staré dny';
+  return 'starých dnů';
+}
+
 /* Maže dny starší než KEEP_PAST_DAYS. Běží při každém načtení seznamu –
    naplánovaná Cloud Function by byla spolehlivější, ale její nasazení vyžaduje
    oprávnění, které tenhle účet nemá. V praxi to stačí: admin se otevírá pokaždé,
    když se přidává menu. Vrací dny, které mají zůstat v seznamu. */
 async function purgeOldDays(entries, today) {
+  // Čtení menu je veřejné, mazání ale ne. Bez přihlášeného admina by Firestore
+  // každý pokus odmítl, tak se o to ani nepokoušíme.
+  if (!getAuth(app).currentUser) return entries;
+
   // Pojistka proti rozbitým hodinám v počítači – při resetnutém datu (1970,
   // 2001) by se jinak smazalo úplně všechno.
   if (today < '2025-01-01') return entries;
@@ -123,11 +138,11 @@ async function purgeOldDays(entries, today) {
 
   const failed = stale.length - deletedIds.size;
   if (deletedIds.size) {
-    toast(`Uklizeno ${deletedIds.size} starých dnů (do ${humanDate(cutoff)}).`, 'info');
+    toast(`Uklizeno ${deletedIds.size} ${oldDaysWord(deletedIds.size)} (do ${humanDate(cutoff)}).`, 'info');
   }
   if (failed) {
     console.error('Úklid starých dnů selhal u', failed, 'záznamů');
-    toast(`${failed} starých dnů se nepodařilo smazat.`, 'error');
+    toast(`${failed} ${oldDaysWord(failed)} se nepodařilo smazat.`, 'error');
   }
 
   // Nepovedené necháme v seznamu, ať je vidět, že tam pořád jsou.
@@ -557,7 +572,11 @@ function init() {
   $('dm-save-btn')?.addEventListener('click', saveDay);
   $('dm-add-row-btn')?.addEventListener('click', () => addEmptyRow($('dm-tbody')));
 
-  loadList();
+  // Seznam načítáme až po přihlášení. Dřív by úklid staré historie běžel
+  // neověřený a Firestore by mazání odmítl.
+  onAuthStateChanged(getAuth(app), (user) => {
+    if (user) loadList();
+  });
   setInterval(tickCountdowns, 1000);
 }
 
