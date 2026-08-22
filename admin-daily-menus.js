@@ -99,59 +99,21 @@ function splitByToday(entries, today) {
 }
 
 // ==========================================================================
-// ÚKLID STARÉ HISTORIE
+// SKRÝVÁNÍ STARÉ HISTORIE
 // ==========================================================================
 
-// Kolik dnů dozadu zůstává v databázi (kromě dneška).
+// Kolik dnů dozadu se v seznamu ještě ukazuje (kromě dneška).
 const KEEP_PAST_DAYS = 2;
 
-// Čeština skloňuje podle počtu: 1 den, 2–4 dny, 5 a víc dnů.
-function oldDaysWord(n) {
-  if (n === 1) return 'starý den';
-  if (n >= 2 && n <= 4) return 'staré dny';
-  return 'starých dnů';
-}
-
-/* Maže dny starší než KEEP_PAST_DAYS. Běží při každém načtení seznamu –
-   naplánovaná Cloud Function by byla spolehlivější, ale její nasazení vyžaduje
-   oprávnění, které tenhle účet nemá. V praxi to stačí: admin se otevírá pokaždé,
-   když se přidává menu. Vrací dny, které mají zůstat v seznamu. */
-async function purgeOldDays(entries, today) {
-  // Čtení menu je veřejné, mazání ale ne. Bez přihlášeného admina by Firestore
-  // každý pokus odmítl, tak se o to ani nepokoušíme.
-  if (!getAuth(app).currentUser) return entries;
-
-  // Pojistka proti rozbitým hodinám v počítači – při resetnutém datu (1970,
-  // 2001) by se jinak smazalo úplně všechno.
+/* Starší dny se do seznamu vůbec nedostanou. Zůstávají v databázi – mazání
+   z prohlížeče Firestore odmítá (chybí oprávnění), takže je jen nezobrazujeme. */
+function hideOldDays(entries, today) {
+  // Pojistka proti rozbitým hodinám v počítači: při nesmyslném datu radši
+  // ukážeme všechno, než abychom schovali i to, co je aktuální.
   if (today < '2025-01-01') return entries;
 
   const cutoff = shiftISO(today, -KEEP_PAST_DAYS);
-  const stale = entries.filter((e) => /^\d{4}-\d{2}-\d{2}$/.test(e.date) && e.date < cutoff);
-  if (!stale.length) return entries;
-
-  const results = await Promise.allSettled(
-    stale.map((e) => deleteDoc(doc(db, MENU_COLLECTION, e.id)))
-  );
-
-  const deletedIds = new Set();
-  results.forEach((res, i) => { if (res.status === 'fulfilled') deletedIds.add(stale[i].id); });
-
-  const failed = stale.length - deletedIds.size;
-  if (deletedIds.size) {
-    toast(`Uklizeno ${deletedIds.size} ${oldDaysWord(deletedIds.size)} (do ${humanDate(cutoff)}).`, 'info');
-  }
-  if (failed) {
-    // Bez konkrétního důvodu se to ladí špatně – vypíšeme, co Firestore vrátil.
-    const reason = results.find((r) => r.status === 'rejected')?.reason;
-    console.error(
-      `Úklid starých dnů selhal u ${failed} záznamů:`,
-      reason?.code || '(bez kódu)', reason?.message || reason,
-    );
-    toast(`${failed} ${oldDaysWord(failed)} se nepodařilo smazat.`, 'error');
-  }
-
-  // Nepovedené necháme v seznamu, ať je vidět, že tam pořád jsou.
-  return entries.filter((e) => !deletedIds.has(e.id));
+  return entries.filter((e) => !/^\d{4}-\d{2}-\d{2}$/.test(e.date) || e.date >= cutoff);
 }
 
 // ==========================================================================
@@ -255,10 +217,10 @@ export async function loadList() {
     });
 
     listToday = todayISO();
-    allEntries = await purgeOldDays(entries, listToday);
+    allEntries = hideOldDays(entries, listToday);
 
     if (!allEntries.length) {
-      list.innerHTML = '<div class="import-saved-empty">Zatím nejsou uložena žádná denní menu. Importujte je v záložce „Import z Excelu" nebo přidejte nový den.</div>';
+      list.innerHTML = '<div class="import-saved-empty">Žádné aktuální denní menu. Starší než dva dny se nezobrazují – importujte nové v záložce „Import z Excelu" nebo přidejte nový den.</div>';
       return;
     }
 
