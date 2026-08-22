@@ -100,6 +100,26 @@ function groupHeaderHTML(text, count) {
   return `<div class="dm-group-head"><span>${esc(text)}</span><span class="dm-group-count">${count}</span></div>`;
 }
 
+function pastToggleHTML(count) {
+  return `
+    <button type="button" class="dm-group-head dm-past-toggle" aria-expanded="false">
+      <span>Proběhlo</span>
+      <span class="dm-group-count">${count}</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </button>`;
+}
+
+function wirePastToggle(list, wrap) {
+  const btn = list.querySelector('.dm-past-toggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const open = wrap.hidden;
+    wrap.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.classList.toggle('is-open', open);
+  });
+}
+
 export async function loadList() {
   const list = $('dm-list');
   if (!list) return;
@@ -129,8 +149,15 @@ export async function loadList() {
       for (const e of upcoming) list.appendChild(renderCard(e.id, e.data, today));
     }
     if (past.length) {
-      list.insertAdjacentHTML('beforeend', groupHeaderHTML('Proběhlo', past.length));
-      for (const e of past) list.appendChild(renderCard(e.id, e.data, today, true));
+      // Proběhlé dny zůstávají v databázi, ale v seznamu jsou sbalené –
+      // jinak se v nich aktuální nabídka utopí. Rozbalí se kliknutím.
+      list.insertAdjacentHTML('beforeend', pastToggleHTML(past.length));
+      const wrap = document.createElement('div');
+      wrap.className = 'dm-past-wrap';
+      wrap.hidden = true;
+      for (const e of past) wrap.appendChild(renderCard(e.id, e.data, today, true));
+      list.appendChild(wrap);
+      wirePastToggle(list, wrap);
     }
 
     wireCardButtons();

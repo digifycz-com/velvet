@@ -1317,6 +1317,37 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
+/* Proběhlé dny jsou sbalené pod tlačítkem – v databázi zůstávají, ze seznamu
+   ale zmizí, aby v nich aktuální nabídka nezanikla. */
+.dm-past-toggle {
+  width: 100%;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  padding: 6px 2px;
+  margin-top: 8px;
+  transition: var(--transition-fast);
+}
+
+.dm-past-toggle:hover { color: var(--clr-gold-light); }
+
+.dm-past-toggle i {
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+}
+
+.dm-past-toggle.is-open i { transform: rotate(180deg); }
+
+.dm-past-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Bez tohohle by display:flex výše přebilo výchozí [hidden] { display: none }. */
+.dm-past-wrap[hidden] { display: none; }
+
 /* Proběhlé dny drží nižší vizuální prioritu, ať nekonkurují nadcházejícím. */
 .dm-card.is-past { opacity: 0.62; }
 .dm-card.is-past:hover { opacity: 1; }

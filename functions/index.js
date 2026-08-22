@@ -197,60 +197,6 @@ exports.syncMenuNow = onCall({ region: REGION }, async (req) => {
 });
 
 // ==========================================================================
-// 4) ÚKLID – jednou denně smaže dny starší než KEEP_PAST_DAYS. Bez toho se
-//    v administraci (a taky ve feedu pro Meničku) hromadí desítky dávno
-//    proběhlých dnů a aktuální nabídka se v nich ztrácí.
-// ==========================================================================
-
-// Kolik dnů dozadu (kromě dneška) v databázi zůstává.
-const KEEP_PAST_DAYS = 2;
-
-// Dnešek jako "YYYY-MM-DD" v pražské zóně. Functions běží v UTC, takže
-// new Date().toISOString() by v noci ukazoval ještě včerejšek.
-function pragueDateISO() {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Prague', year: 'numeric', month: '2-digit', day: '2-digit',
-  }).formatToParts(new Date());
-  const part = (type) => parts.find((p) => p.type === type).value;
-  return `${part('year')}-${part('month')}-${part('day')}`;
-}
-
-function shiftISO(iso, days) {
-  const d = new Date(`${iso}T12:00:00Z`); // poledne = bezpečné vůči přechodu na letní čas
-  d.setUTCDate(d.getUTCDate() + days);
-  return d.toISOString().slice(0, 10);
-}
-
-exports.cleanupOldMenus = onSchedule(
-  { region: REGION, schedule: '30 3 * * *', timeZone: 'Europe/Prague' },
-  async () => {
-    const cutoff = shiftISO(pragueDateISO(), -KEEP_PAST_DAYS);
-    const snap = await db.collection(MENU_COLLECTION).get();
-
-    // Datum bereme z pole `date`, u případných starších záznamů z ID dokumentu.
-    const stale = snap.docs.filter((doc) => {
-      const date = String(doc.data().date || doc.id || '').slice(0, 10);
-      return /^\d{4}-\d{2}-\d{2}$/.test(date) && date < cutoff;
-    });
-
-    if (!stale.length) {
-      logger.info(`cleanupOldMenus: nic ke smazání (hranice ${cutoff})`);
-      return;
-    }
-
-    // Batch zvládne 500 zápisů. Denně jich přibude pár, ale první úklid
-    // nasbírané historie se do jedné dávky vejít nemusí.
-    for (let i = 0; i < stale.length; i += 400) {
-      const batch = db.batch();
-      for (const doc of stale.slice(i, i + 400)) batch.delete(doc.ref);
-      await batch.commit();
-    }
-
-    logger.info(`cleanupOldMenus: smazáno ${stale.length} dnů starších než ${cutoff}`);
-  }
-);
-
-// ==========================================================================
 // Sdílená logika: odešle jeden den na všechny push platformy + Meničku.
 // Průběžně zapisuje stav do sync.platforms.<name>.
 // ==========================================================================
