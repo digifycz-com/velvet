@@ -1217,6 +1217,117 @@
    DENNÍ MENU – správa dnů + stav exportu
    ========================================================================== */
 
+/* --- Filtrování a řazení seznamu dnů --- */
+.dm-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.dm-filter-chips {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+}
+
+.dm-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+}
+
+.dm-filter-chip:hover { color: var(--clr-text-primary); }
+
+.dm-filter-chip.is-active {
+  background: rgba(197, 168, 128, 0.14);
+  color: var(--clr-gold-light);
+}
+
+.dm-filter-num {
+  font-size: 0.72rem;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dm-filter-chip.is-active .dm-filter-num {
+  background: rgba(197, 168, 128, 0.2);
+}
+
+.dm-toolbar-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dm-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dm-search-wrap i {
+  position: absolute;
+  left: 14px;
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  pointer-events: none;
+}
+
+#dm-search,
+#dm-sort {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--clr-text-primary);
+  transition: var(--transition-fast);
+}
+
+#dm-search {
+  padding-left: 38px;
+  width: 230px;
+}
+
+#dm-search::placeholder { color: var(--clr-text-muted); }
+
+#dm-sort { cursor: pointer; }
+
+#dm-search:focus,
+#dm-sort:focus {
+  outline: none;
+  border-color: var(--clr-gold);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 700px) {
+  .dm-toolbar { align-items: stretch; }
+  .dm-filter-chips { justify-content: space-between; }
+  .dm-toolbar-tools { width: 100%; }
+  #dm-search { flex: 1; width: auto; }
+}
+
 .dm-list {
   display: flex;
   flex-direction: column;

@@ -135,6 +135,56 @@ async function purgeOldDays(entries, today) {
 }
 
 // ==========================================================================
+// FILTROVÁNÍ A ŘAZENÍ
+// ==========================================================================
+
+// Načtené dny si držíme v paměti, ať filtrování nesahá pokaždé do Firestore.
+let allEntries = [];
+let listToday = '';
+const filters = { period: 'all', sort: 'near', search: '' };
+
+// Bez diakritiky, bez mezer, malými písmeny – ať „patek 22.8" najde
+// „Pátek 22. 8. 2026".
+function normalize(str) {
+  return String(str || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/\s+/g, '');
+}
+
+function searchHaystack(entry) {
+  return normalize(`${weekdayName(entry.date)} ${humanDate(entry.date)} ${entry.date} ${entry.data.day || ''}`);
+}
+
+function sortEntries(entries, mode, today) {
+  const asc = (a, b) => (a.date < b.date ? -1 : 1);
+  if (mode === 'far') return [...entries].sort((a, b) => asc(b, a));
+  if (mode === 'oldest') return [...entries].sort(asc);
+  // 'near' = nadcházející vzestupně, pod nimi proběhlé od nejnovějšího.
+  const { upcoming, past } = splitByToday(entries, today);
+  return [...upcoming, ...past];
+}
+
+function applyFilters() {
+  const needle = normalize(filters.search);
+  let entries = allEntries;
+  if (filters.period === 'upcoming') entries = entries.filter((e) => e.date >= listToday);
+  if (filters.period === 'past') entries = entries.filter((e) => e.date < listToday);
+  if (needle) entries = entries.filter((e) => searchHaystack(e).includes(needle));
+  return entries;
+}
+
+function updateFilterCounts() {
+  const counts = {
+    all: allEntries.length,
+    upcoming: allEntries.filter((e) => e.date >= listToday).length,
+    past: allEntries.filter((e) => e.date < listToday).length,
+  };
+  document.querySelectorAll('.dm-filter-num').forEach((el) => {
+    el.textContent = counts[el.dataset.count] ?? 0;
+  });
+}
+
+// ==========================================================================
 // SEZNAM DNŮ
 // ==========================================================================
 
@@ -165,6 +215,8 @@ function wirePastToggle(list, wrap) {
 export async function loadList() {
   const list = $('dm-list');
   if (!list) return;
+  const toolbar = $('dm-toolbar');
+  if (toolbar) toolbar.hidden = true;
   list.innerHTML = '<div class="import-saved-empty"><i class="fa-solid fa-circle-notch fa-spin"></i> Načítání denních menu…</div>';
 
   try {
@@ -182,28 +234,16 @@ export async function loadList() {
       entries.push({ id: docSnap.id, data, date: String(data.date || docSnap.id || '').slice(0, 10) });
     });
 
-    const today = todayISO();
-    const { upcoming, past } = splitByToday(await purgeOldDays(entries, today), today);
+    listToday = todayISO();
+    allEntries = await purgeOldDays(entries, listToday);
 
-    list.innerHTML = '';
-    if (upcoming.length) {
-      list.insertAdjacentHTML('beforeend', groupHeaderHTML('Nadcházející', upcoming.length));
-      for (const e of upcoming) list.appendChild(renderCard(e.id, e.data, today));
-    }
-    if (past.length) {
-      // Proběhlé dny zůstávají v databázi, ale v seznamu jsou sbalené –
-      // jinak se v nich aktuální nabídka utopí. Rozbalí se kliknutím.
-      list.insertAdjacentHTML('beforeend', pastToggleHTML(past.length));
-      const wrap = document.createElement('div');
-      wrap.className = 'dm-past-wrap';
-      wrap.hidden = true;
-      for (const e of past) wrap.appendChild(renderCard(e.id, e.data, today, true));
-      list.appendChild(wrap);
-      wirePastToggle(list, wrap);
+    if (!allEntries.length) {
+      list.innerHTML = '<div class="import-saved-empty">Zatím nejsou uložena žádná denní menu. Importujte je v záložce „Import z Excelu" nebo přidejte nový den.</div>';
+      return;
     }
 
-    wireCardButtons();
-    tickCountdowns();
+    if (toolbar) toolbar.hidden = false;
+    renderList();
   } catch (err) {
     console.error('Firestore load error:', err);
     if (String(err.code || '').includes('permission')) {
@@ -212,6 +252,51 @@ export async function loadList() {
       list.innerHTML = `<div class="import-saved-empty">Chyba při načítání: ${esc(err.message)}</div>`;
     }
   }
+}
+
+/* Vykreslí seznam podle aktuálních filtrů. Skupiny „Nadcházející" a sbalené
+   „Proběhlo" dávají smysl jen ve výchozím pohledu – jakmile se filtruje nebo
+   hledá, je čitelnější prostý seznam výsledků. */
+function renderList() {
+  const list = $('dm-list');
+  if (!list) return;
+
+  const entries = applyFilters();
+  updateFilterCounts();
+
+  if (!entries.length) {
+    list.innerHTML = '<div class="import-saved-empty">Žádný den neodpovídá zadání.</div>';
+    return;
+  }
+
+  const grouped = filters.sort === 'near' && filters.period === 'all' && !normalize(filters.search);
+  list.innerHTML = '';
+
+  if (grouped) {
+    const { upcoming, past } = splitByToday(entries, listToday);
+    if (upcoming.length) {
+      list.insertAdjacentHTML('beforeend', groupHeaderHTML('Nadcházející', upcoming.length));
+      for (const e of upcoming) list.appendChild(renderCard(e.id, e.data, listToday));
+    }
+    if (past.length) {
+      // Proběhlé dny zůstávají v databázi, ale v seznamu jsou sbalené –
+      // jinak se v nich aktuální nabídka utopí. Rozbalí se kliknutím.
+      list.insertAdjacentHTML('beforeend', pastToggleHTML(past.length));
+      const wrap = document.createElement('div');
+      wrap.className = 'dm-past-wrap';
+      wrap.hidden = true;
+      for (const e of past) wrap.appendChild(renderCard(e.id, e.data, listToday, true));
+      list.appendChild(wrap);
+      wirePastToggle(list, wrap);
+    }
+  } else {
+    for (const e of sortEntries(entries, filters.sort, listToday)) {
+      list.appendChild(renderCard(e.id, e.data, listToday, e.date < listToday));
+    }
+  }
+
+  wireCardButtons();
+  tickCountdowns();
 }
 
 // Refresh volaný z import modulu po uložení.
@@ -448,6 +533,23 @@ function tickCountdowns() {
 
 function init() {
   if (!$('dm-list')) return;
+
+  $('dm-search')?.addEventListener('input', (e) => {
+    filters.search = e.target.value;
+    renderList();
+  });
+  $('dm-sort')?.addEventListener('change', (e) => {
+    filters.sort = e.target.value;
+    renderList();
+  });
+  document.querySelectorAll('.dm-filter-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      filters.period = chip.dataset.period;
+      document.querySelectorAll('.dm-filter-chip')
+        .forEach((c) => c.classList.toggle('is-active', c === chip));
+      renderList();
+    });
+  });
 
   $('dm-new-btn')?.addEventListener('click', () => openEditor(null));
   $('dm-refresh-btn')?.addEventListener('click', loadList);

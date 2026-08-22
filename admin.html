@@ -157,6 +157,32 @@
               </div>
             </div>
 
+            <!-- Filtrování a řazení seznamu -->
+            <div class="dm-toolbar" id="dm-toolbar" hidden>
+              <div class="dm-filter-chips">
+                <button type="button" class="dm-filter-chip is-active" data-period="all">
+                  Vše <span class="dm-filter-num" data-count="all"></span>
+                </button>
+                <button type="button" class="dm-filter-chip" data-period="upcoming">
+                  Nadcházející <span class="dm-filter-num" data-count="upcoming"></span>
+                </button>
+                <button type="button" class="dm-filter-chip" data-period="past">
+                  Proběhlé <span class="dm-filter-num" data-count="past"></span>
+                </button>
+              </div>
+              <div class="dm-toolbar-tools">
+                <div class="dm-search-wrap">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="search" id="dm-search" placeholder="Hledat den nebo datum…" autocomplete="off" />
+                </div>
+                <select id="dm-sort" aria-label="Řazení dnů">
+                  <option value="near">Nejbližší první</option>
+                  <option value="far">Nejvzdálenější první</option>
+                  <option value="oldest">Nejstarší první</option>
+                </select>
+              </div>
+            </div>
+
             <!-- Seznam uložených dnů -->
             <div id="dm-list" class="dm-list">
               <div class="import-saved-empty">Načítání denních menu…</div>
